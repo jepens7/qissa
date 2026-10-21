@@ -1,0 +1,27 @@
+{
+  "versi": 1,
+  "episodes": [
+    {
+      "id": "ep01",
+      "nomor": 1,
+      "judul": "Tangkapan Layar",
+      "teaser": "Seorang teman mengirimkan tangkapan layar chat pribadi Nadia. Kamu belum membukanya. Tapi ibu jarimu sudah di atasnya.",
+      "durasi_menit": 5,
+      "url": "/content/ep01.json",
+      "versi_konten": "2026-10-21.1",
+      "review": { "status": "draft", "oleh": null, "tanggal": null },
+      "rilis": "2026-11-04"
+    },
+    {
+      "id": "ep02",
+      "nomor": 2,
+      "judul": "Transferan Nyasar",
+      "teaser": "Pembeli yang kasar salah transfer Rp2,5 juta untuk sepatu Rp250 ribu. Dia tidak sadar. Kos jatuh tempo malam ini.",
+      "durasi_menit": 7,
+      "url": "/content/ep02.json",
+      "versi_konten": "2026-10-21.1",
+      "review": { "status": "draft", "oleh": null, "tanggal": null },
+      "rilis": "2026-11-04"
+    }
+  ]
+}

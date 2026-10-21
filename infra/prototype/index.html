@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qissa — Lu bakal gimana?</title>
+<meta name="description" content="Cerita pendek dalam bentuk chat. Kamu yang memilih; dalilnya datang setelahnya. Untuk 17 tahun ke atas.">
+<meta name="theme-color" content="#10161C">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Qissa — Lu bakal gimana?">
+<meta property="og:description" content="Temen lu ngirim screenshot chat pribadi orang yang lu kenal. Lu bakal gimana? Cerita pendek dalam bentuk chat.">
+<meta property="og:url" content="https://qissa.id/">
+<meta property="og:image" content="https://qissa.id/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="id_ID">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Amiri&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#E3E8EC; --screen:#F2F4F6; --surface:#FFFFFF; --surface-2:#E8EDF3;
+  --ink:#141A1F; --ink-2:#4A545D; --muted:#78848D; --line:rgba(20,26,31,.11);
+  --accent:#2B4DD6; --accent-ink:#1E3BAE; --on-accent:#FFFFFF;
+  --out:#DCE4FB; --out-ink:#152657;
+  --paper:#FBF7EE; --paper-ink:#2A2420; --paper-muted:#7A6E60; --paper-rule:#DCD2C0;
+  --bank:#0E3B2E; --bank-ink:#E9F5EF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#090D11; --screen:#10161C; --surface:#1A222B; --surface-2:#232E39;
+    --ink:#E8EDF1; --ink-2:#B9C2CB; --muted:#8E9AA5; --line:rgba(232,237,241,.11);
+    --accent:#8DA3FF; --accent-ink:#B4C2FF; --on-accent:#0B0F13;
+    --out:#223466; --out-ink:#DCE4FB;
+    --paper:#2B2622; --paper-ink:#EFE7D8; --paper-muted:#B5A991; --paper-rule:#4C4238;
+    --bank:#163F33; --bank-ink:#E9F5EF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#090D11; --screen:#10161C; --surface:#1A222B; --surface-2:#232E39;
+  --ink:#E8EDF1; --ink-2:#B9C2CB; --muted:#8E9AA5; --line:rgba(232,237,241,.11);
+  --accent:#8DA3FF; --accent-ink:#B4C2FF; --on-accent:#0B0F13;
+  --out:#223466; --out-ink:#DCE4FB;
+  --paper:#2B2622; --paper-ink:#EFE7D8; --paper-muted:#B5A991; --paper-rule:#4C4238;
+  --bank:#163F33; --bank-ink:#E9F5EF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--screen);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+@media (min-width:600px){ body{background:var(--bg)} }
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:440px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--out);color:var(--out-ink);display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.who{min-width:0;flex:1}
+.name{font-weight:600;font-size:15.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{font-size:12.5px;color:var(--muted);line-height:1.2;margin-top:3px}
+.ep{font-size:12.5px;color:var(--muted);flex:none;background:transparent;border:0;font:inherit;font-size:12.5px;padding:6px 0;cursor:pointer}
+.ep:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+main{max-width:440px;margin:0 auto;background:var(--screen);padding:14px 12px 28px}
+@media (min-width:600px){ main{border-left:1px solid var(--line);border-right:1px solid var(--line);min-height:100vh} }
+
+.home h1{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:500;font-size:34px;line-height:1.1;letter-spacing:-.01em;margin:10px 4px 6px}
+.home .lead{margin:0 4px 18px;font-size:15px;color:var(--ink-2)}
+.epcard{display:block;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:18px;padding:18px 18px 16px;font:inherit;margin:0 0 12px;cursor:pointer}
+.epcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.epcard .num{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.epcard .ttl{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:24px;line-height:1.15;margin:0 0 8px}
+.epcard .tz{font-size:14.5px;color:var(--ink-2);margin:0 0 10px;line-height:1.45}
+.epcard .st{font-size:12.5px;color:var(--accent-ink);margin:0}
+
+.poll{background:var(--surface);border-radius:18px;padding:22px 20px 14px;margin:4px 0 16px}
+.poll .kicker{font-size:13px;color:var(--muted);margin:0 0 10px}
+.poll .q{font-family:'Newsreader',Georgia,serif;font-size:21px;line-height:1.35;margin:0 0 6px;color:var(--ink)}
+.poll .ask{font-size:15px;color:var(--ink-2);margin:0 0 14px}
+.chan{background:var(--surface);border-radius:16px;padding:16px 18px;margin:14px 0}
+.chan p{margin:0 0 10px;font-size:14.5px;color:var(--ink-2)}
+.cover{background:var(--surface);border-radius:18px;padding:24px 20px 20px;margin:4px 0 18px}
+.cover .kicker{font-size:13px;color:var(--muted);margin:0 0 8px}
+.cover h1{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:500;font-size:30px;line-height:1.12;letter-spacing:-.01em;margin:0 0 14px}
+.cover p{margin:0 0 8px;font-size:15px;color:var(--ink-2)}
+.cover p.memo{font-family:'Newsreader',Georgia,serif;font-size:16.5px;color:var(--ink)}
+.cover p:last-child{margin:12px 0 0;font-size:13px;color:var(--muted)}
+
+.row{display:flex;margin:5px 0}
+.row.in{justify-content:flex-start}
+.row.out{justify-content:flex-end}
+.bubble{max-width:82%;padding:9px 13px;border-radius:18px;font-size:15.5px;line-height:1.4;overflow-wrap:anywhere}
+.in .bubble{background:var(--surface);color:var(--ink);border-bottom-left-radius:6px}
+.out .bubble{background:var(--out);color:var(--out-ink);border-bottom-right-radius:6px}
+.from{display:block;font-size:12.5px;font-weight:600;color:var(--accent-ink);margin-bottom:2px}
+.attach{display:block;font-size:12.5px;opacity:.75;margin-bottom:3px}
+.dots{display:inline-flex;gap:4px;padding:5px 2px 3px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.2s}
+.dots i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.dots i{animation:none;opacity:.6}}
+
+.nar{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-size:17.5px;line-height:1.6;color:var(--ink-2);padding:12px 18px;margin:12px 0}
+.nar p{margin:0}
+.pill{display:flex;justify-content:center;margin:12px 0}
+.pill span{background:var(--surface-2);color:var(--muted);font-size:12.5px;padding:5px 12px;border-radius:999px}
+
+.shot{border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-top:2px;background:var(--screen);min-width:230px}
+.shot .cap{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+.shot .cap svg{width:15px;height:15px;flex:none}
+.shot .closed{margin-top:8px;height:66px;border-radius:8px;background:var(--surface-2);display:grid;place-items:center;font-size:12.5px;color:var(--muted)}
+.shot .cut{margin-top:8px;border-top:1.5px dashed var(--line);text-align:center;font-size:11.5px;color:var(--muted);padding-top:4px}
+.shot .mini{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.shot .mini span{font-size:13.5px;line-height:1.35;padding:6px 10px;border-radius:12px;max-width:92%}
+.shot .mini .b{background:var(--surface);align-self:flex-start;border-bottom-left-radius:4px}
+.shot .mini .n{background:var(--out);color:var(--out-ink);align-self:flex-end;border-bottom-right-radius:4px}
+.shot .cmt{margin-top:8px;background:var(--surface);border-radius:8px;padding:8px 10px;font-size:13.5px;line-height:1.4}
+.shot .cmt b{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-bottom:2px}
+
+.notif{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;display:flex;gap:12px;align-items:flex-start}
+.notif .app{width:34px;height:34px;border-radius:9px;background:var(--surface-2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted);flex:none}
+.notif b{display:block;font-size:14px;font-weight:600}
+.notif span{font-size:13.5px;color:var(--ink-2)}
+.notif time{margin-left:auto;font-size:12px;color:var(--muted);flex:none}
+.bank{background:var(--bank);color:var(--bank-ink);border-radius:14px;padding:14px 16px;margin:10px 0}
+.bank small{display:block;font-size:12px;opacity:.75;margin-bottom:6px}
+.bank b{display:block;font-size:24px;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.bank span{display:block;font-size:13px;margin-top:6px;opacity:.9}
+
+.choices{margin:16px 0 6px}
+.choices .label{font-size:12.5px;color:var(--muted);margin:0 0 8px 4px}
+.choice{display:block;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;font:inherit;font-size:15.5px;line-height:1.35;margin:0 0 8px;cursor:pointer}
+.choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.choice.picked{border-color:var(--accent);background:var(--out);color:var(--out-ink)}
+.choice[disabled]{opacity:.5;cursor:default}
+.choice.picked[disabled]{opacity:1}
+
+.hint{display:block;width:100%;background:transparent;border:0;color:var(--muted);font:inherit;font-size:13px;padding:12px;margin-top:6px;cursor:pointer;border-radius:10px}
+.hint:focus-visible{outline:2px solid var(--accent)}
+.hint[hidden]{display:none}
+
+.card{background:var(--surface);border-radius:16px;padding:18px;margin:14px 0}
+.card h3{margin:0 0 8px;font-size:16px;font-weight:600}
+.card p{margin:0 0 10px;font-size:15px;color:var(--ink-2)}
+.card p.q{font-family:'Newsreader',Georgia,serif;font-size:18.5px;line-height:1.5;color:var(--ink);margin:0 0 12px}
+textarea{width:100%;min-height:96px;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;font-size:15.5px;line-height:1.45;background:var(--screen);color:var(--ink);resize:vertical}
+textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn{display:inline-block;background:var(--accent);color:var(--on-accent);border:0;border-radius:12px;padding:12px 16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;margin:4px 8px 4px 0}
+.btn.ghost{background:transparent;color:var(--accent-ink);border:1.5px solid var(--line)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+.paper{background:var(--paper);color:var(--paper-ink);border-radius:16px;padding:22px 20px 18px;margin:18px 0;font-family:'Newsreader',Georgia,'Times New Roman',serif}
+.paper h2{font-size:22px;font-weight:500;line-height:1.25;margin:0 0 16px}
+.paper h4{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--paper-muted);margin:0 0 6px}
+.ar{font-family:'Amiri','Scheherazade New','Noto Naskh Arabic',serif;font-size:25px;line-height:1.95;direction:rtl;text-align:right;margin:4px 0 8px}
+.paper p{margin:0 0 10px;font-size:16.5px;line-height:1.6}
+.paper .ref{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12.5px;color:var(--paper-muted);margin:0 0 6px}
+.paper hr{border:0;border-top:1px solid var(--paper-rule);margin:16px 0}
+.badge{display:inline-block;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;color:var(--paper-muted);border:1px solid var(--paper-rule);padding:4px 10px;border-radius:999px;margin-top:4px}
+
+footer{max-width:440px;margin:0 auto;padding:12px 16px 28px;font-size:12.5px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="avatar" id="hAvatar">Q</div>
+    <div class="who">
+      <div class="name" id="hName">Qissa</div>
+      <div class="status" id="hStatus">Dua episode</div>
+    </div>
+    <button class="ep" id="hEp" type="button">Prototipe</button>
+  </div>
+</header>
+
+<main>
+  <div id="log" aria-live="polite"></div>
+  <button id="next" class="hint" type="button" hidden>Ketuk untuk mulai</button>
+</main>
+
+<footer>Qissa adalah prototipe untuk pembaca 17 tahun ke atas. Cerita ini fiksi; nama dan peristiwa tidak merujuk pada orang sungguhan. Jawaban refleksi tersimpan hanya di HP ini. Statistik kunjungan dihitung tanpa cookie dan tanpa data pribadi.</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- KONFIGURASI: isi tiga baris ini ---------- */
+  var CONFIG = {
+    siteUrl: 'https://qissa.id',
+    umamiScript: '',        /* contoh: 'https://umami.qissa.id/script.js' */
+    umamiWebsiteId: '',     /* ID website dari dasbor Umami */
+    waChannel: ''           /* contoh: 'https://whatsapp.com/channel/XXXXXXXX' */
+  };
+  var SHARE_URL = CONFIG.siteUrl;
+
+  if (CONFIG.umamiScript && CONFIG.umamiWebsiteId) {
+    var us = document.createElement('script');
+    us.defer = true; us.src = CONFIG.umamiScript;
+    us.setAttribute('data-website-id', CONFIG.umamiWebsiteId);
+    document.head.appendChild(us);
+  }
+  function track(name, data) {
+    try { if (window.umami && typeof window.umami.track === 'function') window.umami.track(name, data || {}); } catch (e) {}
+  }
+
+  var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>';
+
+  var EPISODES = {
+    ep1: {
+      id: 'ep1', num: 1, title: 'Tangkapan Layar',
+      teaser: 'Seorang teman mengirimkan tangkapan layar chat pribadi Nadia. Kamu belum membukanya. Tapi ibu jarimu sudah di atasnya.',
+      cover: 'Kamu adalah Raka, 23 tahun, ngekos di Depok. Malam ini seorang teman mengirimkan sesuatu yang bukan untukmu.',
+      length: 'Lima menit. Dua pilihan.',
+      question: 'Kapan terakhir kali kamu melihat sesuatu yang bukan untukmu, dan apa yang kamu lakukan setelahnya?',
+      share: 'Temen lu ngirim screenshot chat pribadi orang yang lu kenal. Caption-nya: \u201canak hijrah ternyata gitu ya\u201d.\n\nLu bakal gimana?\nBuka \u00b7 Tutup \u00b7 Tegur\n\nQissa, Episode 1: Tangkapan Layar',
+      next: 'ep2',
+      start: 'pembuka',
+      knots: {
+        pembuka: [
+          { t: 'view', name: 'Gilang', initial: 'G', sub: 'online', pill: 'Chat dengan Gilang' },
+          { t: 'nar', text: 'Selasa, 22.41. Kos Kukusan, Depok. Laptop masih menyala, pesanan sepatu belum dibungkus.' },
+          { t: 'in', text: 'rak' },
+          { t: 'in', text: 'lu masih temenan sama nadia?' },
+          { t: 'out', text: 'masih lah. knp' },
+          { t: 'in', text: 'jangan kaget ya' },
+          { t: 'shot', state: 'closed' },
+          { t: 'in', text: 'anak hijrah ternyata gitu ya wkwk' },
+          { t: 'nar', text: 'Kamu belum membukanya. Tapi ibu jarimu sudah di atasnya.' },
+          { t: 'in', text: 'buka dulu baru komen' },
+          { t: 'choice', key: 'p1', label: 'Pilihan 1 dari 2', options: [
+            { text: 'Buka dan baca semuanya', go: 'baca', name: 'Buka' },
+            { text: 'Tutup, jangan dibuka', go: 'tutup', name: 'Tutup' },
+            { text: 'Balas: \u201cKenapa lu kirim ke gue?\u201d', go: 'tegur', name: 'Tegur' }
+          ] }
+        ],
+        baca: [
+          { t: 'set', v: 'dibaca' },
+          { t: 'nar', text: 'Empat gelembung. Dipotong rapi di bagian atas, seperti disengaja.' },
+          { t: 'shot', state: 'open' },
+          { t: 'in', text: 'udah liat kan' },
+          { t: 'in', text: 'NGINEP anjir' },
+          { t: 'in', text: 'gue sih ga nyangka. dia yang paling rajin ngingetin orang salat' },
+          { t: 'nar', text: 'Kamu membacanya tiga kali. Yang ketiga, kamu sadar kamu sedang mencari alasan untuk percaya.' },
+          { t: 'in', text: 'gue kirim ke grup sisa UI ga?' },
+          { t: 'nar', text: 'Kamu mengetik \u201cjangan\u201d. Menghapusnya. Mengetik \u201cterserah\u201d. Menghapusnya juga.' },
+          { t: 'in', text: 'ya udah gue pikir2 dulu' },
+          { t: 'nar', text: 'Kamu tidak menjawab. Dan kamu tidak bilang jangan.' },
+          { t: 'go', to: 'pagi' }
+        ],
+        tutup: [
+          { t: 'nar', text: 'Kamu menaruh HP menghadap ke bawah. Layar laptop jadi satu-satunya cahaya di kamar.' },
+          { t: 'in', text: 'lah' },
+          { t: 'in', text: 'kok ga dibuka?' },
+          { t: 'in', text: 'penting ini woy' },
+          { t: 'in', text: 'lu takut ya wkwk' },
+          { t: 'in', text: 'ya udah gue kirim ke yang lain aja' },
+          { t: 'nar', text: 'Rasa penasaran itu tidak hilang. Tapi malam ini, bukan kamu yang membawanya. Besok, orang lain yang akan membawanya ke mana-mana.' },
+          { t: 'view', name: 'Dimas', initial: 'D', sub: 'online', pill: 'Chat dengan Dimas' },
+          { t: 'in', text: 'lu dikirimin gilang jg?' },
+          { t: 'out', text: 'iya. ga gue buka' },
+          { t: 'in', text: 'sama. udah gue hapus' },
+          { t: 'in', text: 'tp gilang ga akan berhenti di kita' },
+          { t: 'go', to: 'pagi' }
+        ],
+        tegur: [
+          { t: 'set', v: 'menegur' },
+          { t: 'out', text: 'Kenapa lu kirim ke gue?' },
+          { t: 'in', text: 'ya biar lu tau aja orangnya kayak gimana' },
+          { t: 'in', text: 'lu kan deket sama dia' },
+          { t: 'in', text: 'atau lu masih suka? wkwk' },
+          { t: 'out', text: 'Gue ga nanya dia gimana. Gue nanya lu ngapain nyebarin.' },
+          { t: 'typing' },
+          { t: 'in', text: 'santai' },
+          { t: 'in', text: 'gue cuma kirim ke lu doang' },
+          { t: 'in', text: 'ya udah gue hapus deh' },
+          { t: 'nar', text: 'Kamu tidak tahu apakah dia benar-benar menghapusnya. Kamu juga tidak membukanya. Malam itu kamu tidur, tapi tidak nyenyak.' },
+          { t: 'go', to: 'pagi' }
+        ],
+        pagi: [
+          { t: 'nar', text: 'Rabu, 07.52. KRL Depok\u2013Sudirman, gerbong tengah, berdiri. Grup \u201cSisa UI 2021\u201d sudah 46 pesan sejak subuh.' },
+          { t: 'view', name: 'Sisa UI 2021', initial: 'S', sub: '12 anggota', pill: 'Grup Sisa UI 2021' },
+          { t: 'in', from: 'Tika', text: 'ada yang mau cerita ga nih' },
+          { t: 'in', from: 'Gilang', text: 'cerita apaan' },
+          { t: 'in', from: 'Tika', text: 'lu kan yang paling tau' },
+          { t: 'in', from: 'Dimas', text: 'udah woy' },
+          { t: 'in', from: 'Tika', text: 'kenapa dim. gue salah nanya?' },
+          { t: 'nar', text: 'Nadia ada di grup itu. Nadia belum menulis apa-apa.' },
+          { t: 'view', name: 'Nadia', initial: 'N', sub: 'online', pill: 'Chat dengan Nadia' },
+          { t: 'in', text: 'Rak.' },
+          { t: 'in', text: 'Lu di grup, kan. Dari tadi gue kayak lagi diomongin, tapi ga ada yang ngomong langsung.' },
+          { t: 'in', text: 'Lu tau sesuatu ga?' },
+          { t: 'nar', cases: [ { cond: 'dibaca', text: 'Kamu tahu persis apa yang mereka omongkan. Kamu bahkan hafal kalimatnya.' }, { text: 'Kamu tahu ada sesuatu. Kamu hanya belum tahu isinya, dan sekarang itu terasa seperti keberuntungan.' } ] },
+          { t: 'choice', key: 'p2', label: 'Pilihan 2 dari 2', options: [
+            { text: 'Bilang ga tau', go: 'akhir_gatau', name: 'Ga tau' },
+            { text: 'Cerita semuanya', go: 'akhir_cerita', name: 'Cerita semuanya' },
+            { text: '\u201cKetemu dulu yuk. Jangan di chat.\u201d', go: 'akhir_ketemu', name: 'Ketemu dulu' }
+          ] }
+        ],
+        akhir_gatau: [
+          { t: 'out', text: 'Ga tau, Nad. Gue juga baru bangun' },
+          { t: 'in', text: 'Oke.' },
+          { t: 'in', text: 'Makasih ya.' },
+          { t: 'nar', text: 'Dibaca 07.58. \u201cMakasih ya\u201d dari Nadia selalu berarti dua hal. Kamu tidak yakin yang mana.' },
+          { t: 'nar', text: 'Kamis malam. Dua hari kemudian.' },
+          { t: 'view', name: 'Sisa UI 2021', initial: 'S', sub: '11 anggota', pill: 'Grup Sisa UI 2021' },
+          { t: 'sys', text: 'Nadia keluar dari grup' },
+          { t: 'view', name: 'Nadia', initial: 'N', sub: 'terakhir dilihat hari ini', pill: 'Chat dengan Nadia' },
+          { t: 'in', text: 'Tika bilang lu udah tau dari Selasa.' },
+          { t: 'in', text: 'Lu tau, kan.' },
+          { t: 'in', cond: 'dibaca', text: 'Dan lu baca.' },
+          { t: 'nar', text: 'Kamu mengetik. Menghapus. Mengetik lagi. Layar HP padam sendiri sebelum kamu selesai.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        akhir_cerita: [
+          { t: 'out', text: 'Ada screenshot chat lu sama Bram. Gilang yang nyebarin. Dari Selasa malem.' },
+          { t: 'typing' },
+          { t: 'in', text: 'Lu baca?' },
+          { t: 'branch', cases: [ { cond: 'dibaca', to: 'cerita_dibaca' }, { cond: 'menegur', to: 'cerita_tegur' }, { to: 'cerita_tutup' } ] }
+        ],
+        cerita_dibaca: [
+          { t: 'out', text: 'Iya.' },
+          { t: 'in', text: 'Oke.' },
+          { t: 'in', text: 'Gue ga akan jelasin, Rak. Lu temen gue lima tahun. Kalau lu butuh penjelasan, berarti lu udah milih percaya yang mana.' },
+          { t: 'nar', text: 'Dia tidak marah. Itu yang paling berat.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        cerita_tutup: [
+          { t: 'out', text: 'Enggak. Gue tutup.' },
+          { t: 'in', text: 'Makasih.' },
+          { t: 'in', text: 'Tapi orang lain baca.' },
+          { t: 'out', text: 'Iya.' },
+          { t: 'in', text: 'Gue harus ngomong sama Bram dulu.' },
+          { t: 'nar', text: 'Kamu tidak tahu apa yang akan dia katakan ke Bram. Kamu hanya tahu malam ini dia tidak menghadapinya sendirian. Dan itu bukan karena kamu.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        cerita_tegur: [
+          { t: 'out', text: 'Enggak, ga gue buka. Gue tanya Gilang ngapain nyebar.' },
+          { t: 'in', text: 'Dan dia bilang apa?' },
+          { t: 'out', text: 'Katanya cuma dikirim ke gue.' },
+          { t: 'in', text: 'Dia bohong. Tika nanya gue tadi subuh.' },
+          { t: 'in', text: 'Tapi makasih udah nanya dia. Lu satu-satunya yang nanya.' },
+          { t: 'nar', text: 'Satu-satunya. Kamu tidak tahu harus bangga atau sedih.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        akhir_ketemu: [
+          { t: 'out', text: 'Ketemu dulu yuk. Jangan di chat.' },
+          { t: 'in', text: 'Stasiun Depok Baru, jam 6?' },
+          { t: 'out', text: 'Oke' },
+          { t: 'nar', text: 'Sore. Bangku di ujung peron, dekat warung kopi sachet. Kamu menceritakan semuanya dalam dua menit. Dia tidak menangis. Dia hanya bertanya satu hal.' },
+          { t: 'in', text: 'Lu baca?' },
+          { t: 'nar', cases: [ { cond: 'dibaca', text: 'Kamu bilang iya. Dia mengangguk, seperti sudah tahu sejak kamu duduk.' }, { text: 'Kamu bilang enggak. Dia menatapmu lama, mencari kebohongan, dan tidak menemukannya.' } ] },
+          { t: 'in', text: 'Jangan bela gue di grup.' },
+          { t: 'in', text: 'Gue ga butuh dibela. Gue cuma butuh satu orang yang ga ikut.' },
+          { t: 'nar', text: 'KRL ke arah Bogor lewat. Dia pulang lebih dulu. Kamu duduk sampai warung kopinya tutup.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        penutup: [
+          { t: 'nar', text: 'Malam itu, 23.58. Kamar kos. Layar HP-mu menyala sendiri.' },
+          { t: 'notif', app: 'Gacor Family', text: '14 pesan baru', time: '23.58' },
+          { t: 'nar', text: 'Kamu menggesernya hilang. Seperti biasa.' },
+          { t: 'end' }
+        ]
+      },
+      dalil: '<h2>Apa kata Al-Qur\u2019an dan Sunnah</h2>' +
+        '<h4>QS Al-Hujurat 49:12</h4>' +
+        '<p class="ar">\u064A\u064E\u0627 \u0623\u064E\u064A\u064F\u0651\u0647\u064E\u0627 \u0627\u0644\u064E\u0651\u0630\u0650\u064A\u0646\u064E \u0622\u0645\u064E\u0646\u064F\u0648\u0627 \u0627\u062C\u0652\u062A\u064E\u0646\u0650\u0628\u064F\u0648\u0627 \u0643\u064E\u062B\u0650\u064A\u0631\u064B\u0627 \u0645\u0650\u0651\u0646\u064E \u0627\u0644\u0638\u064E\u0651\u0646\u0650\u0651 \u0625\u0650\u0646\u064E\u0651 \u0628\u064E\u0639\u0652\u0636\u064E \u0627\u0644\u0638\u064E\u0651\u0646\u0650\u0651 \u0625\u0650\u062B\u0652\u0645\u064C \u06D6 \u0648\u064E\u0644\u064E\u0627 \u062A\u064E\u062C\u064E\u0633\u064E\u0651\u0633\u064F\u0648\u0627 \u0648\u064E\u0644\u064E\u0627 \u064A\u064E\u063A\u0652\u062A\u064E\u0628 \u0628\u064E\u0651\u0639\u0652\u0636\u064F\u0643\u064F\u0645 \u0628\u064E\u0639\u0652\u0636\u064B\u0627 \u06DA \u0623\u064E\u064A\u064F\u062D\u0650\u0628\u064F\u0651 \u0623\u064E\u062D\u064E\u062F\u064F\u0643\u064F\u0645\u0652 \u0623\u064E\u0646 \u064A\u064E\u0623\u0652\u0643\u064F\u0644\u064E \u0644\u064E\u062D\u0652\u0645\u064E \u0623\u064E\u062E\u0650\u064A\u0647\u0650 \u0645\u064E\u064A\u0652\u062A\u064B\u0627 \u0641\u064E\u0643\u064E\u0631\u0650\u0647\u0652\u062A\u064F\u0645\u064F\u0648\u0647\u064F \u06DA \u0648\u064E\u0627\u062A\u064E\u0651\u0642\u064F\u0648\u0627 \u0627\u0644\u0644\u064E\u0651\u0647\u064E \u06DA \u0625\u0650\u0646\u064E\u0651 \u0627\u0644\u0644\u064E\u0651\u0647\u064E \u062A\u064E\u0648\u064E\u0651\u0627\u0628\u064C \u0631\u064E\u0651\u062D\u0650\u064A\u0645\u064C</p>' +
+        '<p>\u201cWahai orang-orang yang beriman! Jauhilah banyak dari prasangka, sesungguhnya sebagian prasangka itu dosa, dan janganlah kamu mencari-cari kesalahan orang lain, dan janganlah ada di antara kamu yang menggunjing sebagian yang lain. Apakah ada di antara kamu yang suka memakan daging saudaranya yang sudah mati? Tentu kamu merasa jijik. Dan bertakwalah kepada Allah, sesungguhnya Allah Maha Penerima tobat, Maha Penyayang.\u201d</p>' +
+        '<p class="ref">Terjemahan Kemenag</p><hr>' +
+        '<h4>QS An-Nur 24:16</h4>' +
+        '<p class="ar">\u0648\u064E\u0644\u064E\u0648\u0652\u0644\u064E\u0627 \u0625\u0650\u0630\u0652 \u0633\u064E\u0645\u0650\u0639\u0652\u062A\u064F\u0645\u064F\u0648\u0647\u064F \u0642\u064F\u0644\u0652\u062A\u064F\u0645 \u0645\u064E\u0651\u0627 \u064A\u064E\u0643\u064F\u0648\u0646\u064F \u0644\u064E\u0646\u064E\u0627 \u0623\u064E\u0646 \u0646\u064E\u0651\u062A\u064E\u0643\u064E\u0644\u064E\u0651\u0645\u064E \u0628\u0650\u0647\u064E\u0670\u0630\u064E\u0627 \u0633\u064F\u0628\u0652\u062D\u064E\u0627\u0646\u064E\u0643\u064E \u0647\u064E\u0670\u0630\u064E\u0627 \u0628\u064F\u0647\u0652\u062A\u064E\u0627\u0646\u064C \u0639\u064E\u0638\u0650\u064A\u0645\u064C</p>' +
+        '<p>\u201cDan mengapa kamu tidak berkata, ketika mendengarnya, \u2018Tidak pantas bagi kita membicarakan ini. Mahasuci Engkau, ini adalah kebohongan yang besar.\u2019\u201d</p>' +
+        '<p class="ref">Terjemahan Kemenag. Konteks ayat: peristiwa tuduhan terhadap Aisyah, ayat 11\u201320.</p><hr>' +
+        '<h4>Hadis</h4>' +
+        '<p>Rasulullah bertanya, \u201cTahukah kalian apa itu ghibah?\u201d Para sahabat menjawab, \u201cAllah dan Rasul-Nya lebih tahu.\u201d Beliau bersabda, \u201cEngkau menyebut saudaramu dengan sesuatu yang tidak ia sukai.\u201d Ditanyakan, \u201cBagaimana jika yang kukatakan memang ada padanya?\u201d Beliau menjawab, \u201cJika memang ada padanya, engkau telah mengghibahnya; jika tidak ada, engkau telah memfitnahnya.\u201d</p>' +
+        '<p class="ref">HR Muslim no. 2589, sahih</p>' +
+        '<p>\u201cBarangsiapa menutupi aib seorang muslim, Allah akan menutupi aibnya di dunia dan akhirat.\u201d</p>' +
+        '<p class="ref">HR Muslim no. 2699, sahih</p><hr>' +
+        '<h4>Catatan</h4>' +
+        '<p>Ayat 24:16 memberi kalimat yang bisa langsung diketik saat sebuah tangkapan layar datang. Menutup layar menjaga diri sendiri; menegur pengirim menjaga orang lain. Keduanya tidak mengembalikan apa yang sudah tersebar, tetapi keduanya menentukan siapa yang ikut menyebarkannya.</p>' +
+        '<span class="badge">Belum direview ulama</span>'
+    },
+
+    ep2: {
+      id: 'ep2', num: 2, title: 'Transferan Nyasar',
+      teaser: 'Pembeli yang kasar salah transfer Rp2,5 juta untuk sepatu Rp250 ribu. Dia tidak sadar. Kos jatuh tempo malam ini.',
+      cover: 'Seminggu setelah tangkapan layar itu. Bu Kos menagih, saldo tinggal Rp380.000, dan seorang pembeli yang menyebalkan baru saja salah ketik satu nol.',
+      length: 'Tujuh menit. Dua pilihan.',
+      question: 'Kapan terakhir kali kamu mendapat sesuatu yang bukan hakmu, dan tidak ada yang tahu?',
+      share: 'Pembeli yang kasar salah transfer Rp2,5 juta buat sepatu Rp250 ribu. Dia ga sadar. Kos lu jatuh tempo malam ini.\n\nLu bakal gimana?\nPakai dulu \u00b7 Balikin semua \u00b7 Balikin sebagian\n\nQissa, Episode 2: Transferan Nyasar',
+      next: null,
+      start: 'pembuka',
+      knots: {
+        pembuka: [
+          { t: 'view', name: 'Bu Kos', initial: 'B', sub: 'online', pill: 'Chat dengan Bu Kos' },
+          { t: 'nar', text: 'Senin, 19.20. Seminggu setelah tangkapan layar itu. Kamar kos, kardus sepatu belum dibungkus.' },
+          { t: 'in', text: 'Mas Raka, kos bulan ini ya. Sudah tanggal 5.' },
+          { t: 'in', text: '1.200.000 seperti biasa. Transfer saja.' },
+          { t: 'out', text: 'Siap Bu, malam ini saya usahakan' },
+          { t: 'nar', text: 'Saldo: Rp380.000. Uang jualan minggu lalu seharusnya cukup. Seharusnya.' },
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'pembeli dari Instagram', pill: 'Chat dengan Dion' },
+          { t: 'in', text: 'bro udah gue tf' },
+          { t: 'in', text: 'kirim hari ini ya. lama bgt lu dari kemarin' },
+          { t: 'in', text: 'resi malam ini atau refund' },
+          { t: 'nar', text: 'Sepatu thrift ukuran 42. Harga Rp250.000. Dion menawar sampai tiga kali dan tetap mengeluh.' },
+          { t: 'bank', amount: 'Rp2.500.000', from: 'DION PRATAMA' },
+          { t: 'nar', text: 'Kamu membacanya dua kali. Nol-nya kelebihan satu.' },
+          { t: 'in', text: 'udah masuk kan? jangan bilang belum' },
+          { t: 'nar', text: 'Dia tidak sadar. Kos jatuh tempo malam ini. Dan dia menyebalkan.' },
+          { t: 'choice', key: 'p1', label: 'Pilihan 1 dari 2', options: [
+            { text: 'Pakai dulu buat kos, ganti nanti', go: 'pakai', name: 'Pakai dulu' },
+            { text: 'Kembalikan semuanya sekarang', go: 'balikin', name: 'Balikin semua' },
+            { text: 'Kembalikan sebagian, sisanya nanti', go: 'sebagian', name: 'Balikin sebagian' }
+          ] }
+        ],
+        pakai: [
+          { t: 'set', v: 'dipakai' },
+          { t: 'nar', text: 'Kamu mentransfer Rp1.200.000 ke Bu Kos dari uang yang bukan milikmu. Butuh empat detik.' },
+          { t: 'view', name: 'Bu Kos', initial: 'B', sub: 'online', pill: 'Chat dengan Bu Kos' },
+          { t: 'in', text: 'Sudah masuk. Terima kasih Mas Raka, sehat selalu.' },
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'online', pill: 'Chat dengan Dion' },
+          { t: 'in', text: 'resi mana' },
+          { t: 'out', attach: 'Foto: resi pengiriman', text: 'Udah dikirim ya bro' },
+          { t: 'in', text: 'ok' },
+          { t: 'nar', text: 'Tidak ada yang sadar. Angka di rekeningmu kembali normal. Kamu yang tidak.' },
+          { t: 'nar', text: '02.14. Kamu membuka mutasi rekening untuk ketiga kalinya. Angkanya tidak berubah. Kamu juga tidak tidur.' },
+          { t: 'go', to: 'minggu' }
+        ],
+        balikin: [
+          { t: 'nar', text: 'Kamu mentransfer balik Rp2.250.000. Saldo kembali Rp380.000. Rasanya seperti menutup pintu yang anginnya enak.' },
+          { t: 'out', text: 'Bro, lu kelebihan transfer 2,25 juta. Udah gue balikin, cek ya' },
+          { t: 'in', text: 'oh' },
+          { t: 'in', text: 'iya salah ketik' },
+          { t: 'in', text: 'ok' },
+          { t: 'in', text: 'jadi kapan dikirim?' },
+          { t: 'nar', text: 'Tidak ada terima kasih. Kamu tidak tahu kenapa kamu mengharapkannya.' },
+          { t: 'view', name: 'Bu Kos', initial: 'B', sub: 'online', pill: 'Chat dengan Bu Kos' },
+          { t: 'in', text: 'Mas Raka, jadi malam ini? Saya juga ada kebutuhan.' },
+          { t: 'out', text: 'Besok ya Bu. Maaf.' },
+          { t: 'nar', text: 'Kamu punya Rp380.000 dan satu hari.' },
+          { t: 'go', to: 'minggu' }
+        ],
+        sebagian: [
+          { t: 'set', v: 'sebagian' },
+          { t: 'nar', text: 'Kamu mentransfer balik Rp1.000.000. Sisanya, Rp1.250.000, kamu tahan. Kos Rp1.200.000. Hitungannya pas, dan itu yang membuatmu curiga pada dirimu sendiri.' },
+          { t: 'out', text: 'Bro, lu kelebihan transfer. Gue balikin 1 juta dulu ya, sisanya nyusul' },
+          { t: 'in', text: 'sisanya?' },
+          { t: 'in', text: 'kelebihan gue 2,25 jt. lu balikin 1 jt doang?' },
+          { t: 'in', text: 'lu mau nilep 1,25?' },
+          { t: 'out', text: 'Bukan gitu. Kos gue jatuh tempo malam ini, minggu depan gue' },
+          { t: 'in', text: 'bukan urusan gue' },
+          { t: 'in', text: 'balikin malam ini atau gue post' },
+          { t: 'nar', text: 'Kamu membayar kos malam itu juga dengan uangnya. Kalau sudah terlanjur dimarahi, pikirmu, setidaknya kos aman. Logika jam sepuluh malam.' },
+          { t: 'nar', text: 'Selasa pagi. Di kolom komentar akun jualanmu, satu kalimat dengan huruf kapital semua: PENIPU, kelebihan transfer ga dibalikin full. Sudah dibaca 214 orang.' },
+          { t: 'go', to: 'minggu' }
+        ],
+        minggu: [
+          { t: 'view', name: 'Keluarga Yanti', initial: 'K', sub: '4 anggota', pill: 'Grup Keluarga Yanti' },
+          { t: 'in', from: 'Ibu', text: 'Nak jadi dateng kan ibu masak sayur asem sama ikan asin kesukaan kamu jangan telat' },
+          { t: 'out', text: 'Jadi Bu, otw' },
+          { t: 'in', from: 'Fajar', text: 'Mas sudah di jalan. Sarah dan Alya ikut.' },
+          { t: 'nar', text: 'Minggu, 12.40. Rumah Ibu, Jatiasih. Sayur asem, ikan asin, sambal yang terlalu pedas untuk Alya. Ibu tertawa dua kali dalam lima menit. Kamu menghitungnya, karena belakangan jarang.' },
+          { t: 'nar', text: 'Fajar duduk di seberangmu. HP-mu bergetar di paha.' },
+          { t: 'view', name: 'Fajar', initial: 'F', sub: 'online', pill: 'Chat dengan Fajar' },
+          { t: 'in', text: 'Dek.' },
+          { t: 'in', text: 'Kos aman? Jualan gimana?' },
+          { t: 'in', text: 'Jangan jawab keras-keras. Ibu lagi dengerin kita.' },
+          { t: 'nar', cases: [
+            { cond: 'dipakai', text: 'Kos sudah dibayar. Dengan uang yang bukan milikmu. Fajar tidak tahu. Dion tidak tahu. Hanya kamu, dan sayur asem di piring yang tiba-tiba sulit ditelan.' },
+            { cond: 'sebagian', text: 'Kos sudah dibayar. Komentar berhuruf kapital itu sudah dibaca 214 orang, dan Fajar punya Instagram.' },
+            { text: 'Kos belum dibayar. Bu Kos sudah bertanya dua kali. Kamu mengembalikan Rp2.250.000 ke orang yang bahkan tidak bilang terima kasih, dan sekarang kakakmu bertanya apakah semuanya aman.' }
+          ] },
+          { t: 'choice', key: 'p2', label: 'Pilihan 2 dari 2', options: [
+            { text: '\u201cAman, Mas.\u201d', go: 'akhir_aman', name: 'Aman' },
+            { text: '\u201cSebenernya\u2026 boleh ngomong habis makan?\u201d', go: 'akhir_jujur', name: 'Sebenernya' },
+            { text: '\u201cNanti aja, Mas. Ibu lagi seneng.\u201d', go: 'akhir_nanti', name: 'Nanti aja' }
+          ] }
+        ],
+        akhir_aman: [
+          { t: 'out', text: 'Aman, Mas. Jualan lancar.' },
+          { t: 'in', text: 'Syukurlah.' },
+          { t: 'branch', cases: [ { cond: 'dipakai', to: 'aman_dipakai' }, { cond: 'sebagian', to: 'aman_sebagian' }, { to: 'aman_balikin' } ] }
+        ],
+        aman_dipakai: [
+          { t: 'nar', text: 'HP-mu bergetar lagi. Bukan Fajar.' },
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'online', pill: 'Chat dengan Dion' },
+          { t: 'in', text: 'bro gue kayaknya salah tf minggu lalu' },
+          { t: 'in', text: 'lagi cek mutasi. lu nerima 2,5 jt ga?' },
+          { t: 'nar', text: 'Ibu bertanya, \u201cSiapa, Nak?\u201d Kamu bilang, \u201cBukan siapa-siapa, Bu.\u201d' },
+          { t: 'nar', text: 'Dua kebohongan dalam satu menit. Kamu menghitungnya.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        aman_balikin: [
+          { t: 'nar', text: 'Malam itu di kos kamu menghitung Rp380.000 untuk ketiga kalinya. Sayur asem Ibu masih di perutmu; rasanya seperti utang.' },
+          { t: 'view', name: 'Bu Kos', initial: 'B', sub: 'online', pill: 'Chat dengan Bu Kos' },
+          { t: 'in', text: 'Mas Raka?' },
+          { t: 'out', text: 'Besok, Bu.' },
+          { t: 'nar', text: 'Besok adalah kata yang kamu pakai untuk hal yang belum punya jawaban.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        aman_sebagian: [
+          { t: 'nar', text: 'Lima menit kemudian HP-mu bergetar lagi. Masih Fajar.' },
+          { t: 'in', text: 'Dek, ini akun jualan kamu?' },
+          { t: 'shot', state: 'comment' },
+          { t: 'in', text: 'Kita bicara. Sekarang. Di teras.' },
+          { t: 'nar', text: 'Teras rumah Ibu. Kamu pernah dimarahi di sana umur sembilan tahun. Rasanya tidak berubah.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        akhir_jujur: [
+          { t: 'out', text: 'Sebenernya\u2026 boleh ngomong habis makan, Mas? Di teras.' },
+          { t: 'in', text: 'Boleh.' },
+          { t: 'nar', text: 'Teras. Fajar tidak duduk; dia bersandar di pagar, seperti Bapak dulu. Kamu menceritakan semuanya dalam tiga menit. Dia tidak memotong.' },
+          { t: 'branch', cases: [ { cond: 'dipakai', to: 'jujur_dipakai' }, { cond: 'sebagian', to: 'jujur_sebagian' }, { to: 'jujur_balikin' } ] }
+        ],
+        jujur_dipakai: [
+          { t: 'nar', text: 'Dia mengeluarkan HP, mentransfer Rp2.250.000 ke rekeningmu, lalu bilang satu kalimat.' },
+          { t: 'in', text: 'Balikin sekarang. Dari HP kamu. Di depan Mas.' },
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'online', pill: 'Chat dengan Dion' },
+          { t: 'out', text: 'Bro, lu kelebihan transfer minggu lalu 2,25 juta. Baru gue sadar pas cek mutasi. Udah gue balikin, cek ya' },
+          { t: 'in', text: 'oh' },
+          { t: 'in', text: 'ok' },
+          { t: 'nar', text: 'Tidak ada terima kasih. Fajar melihat layarmu, lalu melihatmu.' },
+          { t: 'view', name: 'Fajar', initial: 'F', sub: 'di teras', pill: 'Fajar' },
+          { t: 'in', text: 'Dia nggak bilang makasih?' },
+          { t: 'out', text: 'Enggak.' },
+          { t: 'in', text: 'Bagus.' },
+          { t: 'nar', text: 'Kamu tidak tahu apa yang bagus. Mungkin bukan dia.' },
+          { t: 'in', text: 'Dan kita belum selesai, Dek. Uang jualan kamu ke mana?' },
+          { t: 'out', text: 'Ada kebutuhan, Mas.' },
+          { t: 'nar', text: 'Fajar menunggu. Kamu tidak melanjutkan. Dia tidak memaksa. Itu lebih berat daripada kalau dia memaksa.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        jujur_balikin: [
+          { t: 'in', text: 'Kamu balikin semua? Padahal kos belum bayar?' },
+          { t: 'out', text: 'Iya.' },
+          { t: 'nar', text: 'Dia diam cukup lama untuk membuatmu takut. Lalu HP-mu bergetar: Rp1.200.000 masuk.' },
+          { t: 'in', text: 'Buat kos. Bukan pinjaman.' },
+          { t: 'in', text: 'Mas bangga. Tapi Mas juga bingung. Jualan kamu lancar. Uangnya ke mana?' },
+          { t: 'out', text: 'Ada kebutuhan, Mas.' },
+          { t: 'nar', text: 'Fajar menunggu. Kamu tidak melanjutkan. Dia tidak memaksa. Itu lebih berat daripada kalau dia memaksa.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        jujur_sebagian: [
+          { t: 'in', text: 'Jadi orang itu benar?' },
+          { t: 'out', text: 'Setengah benar.' },
+          { t: 'in', text: 'Setengah benar itu yang bikin orang dipanggil penipu, Dek.' },
+          { t: 'nar', text: 'Dia mentransfer Rp1.250.000 ke rekeningmu tanpa berkata apa-apa lagi. Kamu mengembalikannya ke Dion di depan Fajar.' },
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'online', pill: 'Chat dengan Dion' },
+          { t: 'in', text: 'ok udah masuk' },
+          { t: 'in', text: 'komennya gue hapus. lain kali jangan nilep' },
+          { t: 'nar', text: 'Komentar itu hilang. Yang sudah membacanya tidak.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        akhir_nanti: [
+          { t: 'out', text: 'Nanti aja, Mas. Ibu lagi seneng.' },
+          { t: 'in', text: 'Oke. Tapi nanti itu kapan, Dek?' },
+          { t: 'nar', text: 'Kamu tidak menjawab. Ibu menambahkan ikan asin ke piringmu. Alya tertawa karena sambal. Siang itu sempurna, dan kamu tidak ada di dalamnya.' },
+          { t: 'branch', cases: [ { cond: 'dipakai', to: 'nanti_dipakai' }, { cond: 'sebagian', to: 'nanti_sebagian' }, { to: 'nanti_balikin' } ] }
+        ],
+        nanti_dipakai: [
+          { t: 'nar', text: 'Malam. Kos. Kamu mengetik pesan untuk Dion: \u201cBro, kayaknya lu salah transfer minggu lalu.\u201d Kamu menghapusnya. Mengetik lagi. Menghapus lagi.' },
+          { t: 'nar', text: 'Kamu tidak jadi bicara dengan Fajar. Kamu tidak jadi bicara dengan Dion. Yang kamu ajak bicara malam itu hanya angka di layar.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        nanti_balikin: [
+          { t: 'view', name: 'Bu Kos', initial: 'B', sub: 'online', pill: 'Chat dengan Bu Kos' },
+          { t: 'in', text: 'Mas, saya kasih sampai Rabu ya. Setelah itu saya nggak bisa.' },
+          { t: 'out', text: 'Makasih, Bu. Rabu pasti.' },
+          { t: 'nar', text: 'Rp380.000. Tiga hari. Kamu membuka grup itu. Bukan untuk main, katamu pada dirimu sendiri. Hanya untuk melihat.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        nanti_sebagian: [
+          { t: 'nar', text: 'Malam. Kamu mematikan kolom komentar di akun jualanmu. Butuh dua ketukan.' },
+          { t: 'nar', text: 'Mematikan komentar tidak mematikan orang yang sudah membacanya. Dan Rp1.250.000 itu masih bukan milikmu.' },
+          { t: 'go', to: 'penutup' }
+        ],
+        penutup: [
+          { t: 'nar', text: 'Senin, 03.10. Gelap. Lalu layar HP-mu menyala.' },
+          { t: 'notif', app: 'Gacor Family', text: '27 pesan baru', time: '03.10' },
+          { t: 'nar', text: 'Minggu lalu kamu menggesernya hilang. Kali ini jempolmu berhenti di atasnya.' },
+          { t: 'end' }
+        ]
+      },
+      dalil: '<h2>Apa kata Al-Qur\u2019an dan Sunnah</h2>' +
+        '<h4>Riwayat sejarah: Umar dan anak penjual susu</h4>' +
+        '<p>Suatu malam Umar bin Khattab berkeliling Madinah dan mendengar dari balik dinding seorang ibu menyuruh putrinya mencampur susu dagangan dengan air. Putrinya menolak. Ibunya berkata Umar tidak akan melihat. Putrinya menjawab, \u201cKalau Umar tidak melihat, Tuhannya Umar melihat.\u201d Umar lalu menikahkan gadis itu dengan putranya, Ashim; dari keturunan mereka lahir Umar bin Abdul Aziz.</p>' +
+        '<p class="ref">Riwayat sejarah, bukan hadis. Dinukil antara lain oleh Ibnul Jauzi; sanad dicek pereview.</p><hr>' +
+        '<h4>QS Al-Baqarah 2:188</h4>' +
+        '<p class="ar">\u0648\u064E\u0644\u064E\u0627 \u062A\u064E\u0623\u0652\u0643\u064F\u0644\u064F\u0648\u0627 \u0623\u064E\u0645\u0652\u0648\u064E\u0627\u0644\u064E\u0643\u064F\u0645 \u0628\u064E\u064A\u0652\u0646\u064E\u0643\u064F\u0645 \u0628\u0650\u0627\u0644\u0652\u0628\u064E\u0627\u0637\u0650\u0644\u0650 \u0648\u064E\u062A\u064F\u062F\u0652\u0644\u064F\u0648\u0627 \u0628\u0650\u0647\u064E\u0627 \u0625\u0650\u0644\u064E\u0649 \u0627\u0644\u0652\u062D\u064F\u0643\u064E\u0651\u0627\u0645\u0650 \u0644\u0650\u062A\u064E\u0623\u0652\u0643\u064F\u0644\u064F\u0648\u0627 \u0641\u064E\u0631\u0650\u064A\u0642\u064B\u0627 \u0645\u0650\u0651\u0646\u0652 \u0623\u064E\u0645\u0652\u0648\u064E\u0627\u0644\u0650 \u0627\u0644\u0646\u064E\u0651\u0627\u0633\u0650 \u0628\u0650\u0627\u0644\u0652\u0625\u0650\u062B\u0652\u0645\u0650 \u0648\u064E\u0623\u064E\u0646\u062A\u064F\u0645\u0652 \u062A\u064E\u0639\u0652\u0644\u064E\u0645\u064F\u0648\u0646\u064E</p>' +
+        '<p>\u201cDan janganlah kamu makan harta di antara kamu dengan jalan yang batil, dan (janganlah) kamu menyuap dengan harta itu kepada para hakim, dengan maksud agar kamu dapat memakan sebagian harta orang lain itu dengan jalan dosa, padahal kamu mengetahui.\u201d</p>' +
+        '<p class="ref">Terjemahan Kemenag</p><hr>' +
+        '<h4>QS An-Nisa 4:58, bagian awal</h4>' +
+        '<p class="ar">\u0625\u0650\u0646\u064E\u0651 \u0627\u0644\u0644\u064E\u0651\u0647\u064E \u064A\u064E\u0623\u0652\u0645\u064F\u0631\u064F\u0643\u064F\u0645\u0652 \u0623\u064E\u0646 \u062A\u064F\u0624\u064E\u062F\u064F\u0651\u0648\u0627 \u0627\u0644\u0652\u0623\u064E\u0645\u064E\u0627\u0646\u064E\u0627\u062A\u0650 \u0625\u0650\u0644\u064E\u0649\u0670 \u0623\u064E\u0647\u0652\u0644\u0650\u0647\u064E\u0627</p>' +
+        '<p>\u201cSungguh, Allah menyuruhmu menyampaikan amanat kepada yang berhak menerimanya\u2026\u201d</p>' +
+        '<p class="ref">Terjemahan Kemenag</p><hr>' +
+        '<h4>Hadis</h4>' +
+        '<p>\u201cTidak halal harta seorang muslim kecuali dengan kerelaan hatinya.\u201d</p>' +
+        '<p class="ref">HR Ahmad dan ad-Daraquthni; dinilai sahih oleh al-Albani (Irwa\u2019ul Ghalil no. 1459)</p>' +
+        '<p>\u201cTunaikanlah amanah kepada orang yang mempercayaimu, dan janganlah mengkhianati orang yang mengkhianatimu.\u201d</p>' +
+        '<p class="ref">HR Abu Dawud no. 3535 dan at-Tirmidzi no. 1264; hasan</p>' +
+        '<p>\u201cEngkau beribadah kepada Allah seakan-akan engkau melihat-Nya; jika engkau tidak melihat-Nya, sesungguhnya Dia melihatmu.\u201d</p>' +
+        '<p class="ref">Bagian dari hadis Jibril, HR Muslim no. 8, sahih</p><hr>' +
+        '<h4>Catatan</h4>' +
+        '<p>Kejujuran yang paling mahal adalah yang tidak dilihat siapa pun dan tidak dibalas siapa pun. Harta yang masuk karena kekeliruan orang lain adalah amanah, bukan rezeki, berapa pun kasarnya pemiliknya. Dan setengah kejujuran biasanya dibayar dengan harga penuh.</p>' +
+        '<p class="ref">Menguasai dana salah transfer yang diketahui bukan haknya juga diatur dalam UU Transfer Dana (UU No. 3 Tahun 2011). Bukan nasihat hukum.</p>' +
+        '<span class="badge">Belum direview ulama</span>'
+    }
+  };
+
+  var ORDER = ['ep1', 'ep2'];
+
+  var log = document.getElementById('log');
+  var hint = document.getElementById('next');
+  var hAvatar = document.getElementById('hAvatar');
+  var hName = document.getElementById('hName');
+  var hStatus = document.getElementById('hStatus');
+  var hEp = document.getElementById('hEp');
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var EP = null, vars, knot, idx, busy, waiting, ended, path, snaps, header, started;
+
+  function store(key, val) { try { window.localStorage.setItem(key, val); } catch (e) {} }
+  function load(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
+  function loadJson(key, fallback) { try { var v = window.localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; } }
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function append(node) { log.appendChild(node); scrollDown(); }
+  function scrollDown() {
+    try { window.scrollTo({ top: document.body.scrollHeight, behavior: reduced ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, document.body.scrollHeight); }
+  }
+  function setHeader(name, initial, sub) {
+    header = { name: name, initial: initial, sub: sub };
+    hName.textContent = name; hAvatar.textContent = initial; hStatus.textContent = sub;
+  }
+  function setHint(text) { hint.hidden = !text; hint.textContent = text || ''; }
+
+  /* ---------- home ---------- */
+
+  function home() {
+    EP = null; ended = true; waiting = false; busy = false;
+    log.innerHTML = '';
+    setHeader('Qissa', 'Q', 'Dua episode');
+    hEp.textContent = 'Prototipe';
+    setHint('');
+    var h = el('section', 'home');
+    var poll = el('section', 'poll');
+    poll.innerHTML = '<p class="kicker">Qissa, Episode 1</p>' +
+      '<p class="q">Temen lu ngirim screenshot chat pribadi orang yang lu kenal. Caption-nya: \u201canak hijrah ternyata gitu ya\u201d.</p>' +
+      '<p class="ask">Lu bakal gimana?</p>';
+    [['Buka dan baca semuanya', 'Buka'], ['Tutup, jangan dibuka', 'Tutup'], ['Tegur yang ngirim', 'Tegur']].forEach(function (o) {
+      var b = el('button', 'choice', o[0]);
+      b.type = 'button';
+      b.addEventListener('click', function () {
+        store('qissa.ep1.poll', o[1]);
+        track('poll', { pilih: o[1] });
+        open('ep1');
+      });
+      poll.appendChild(b);
+    });
+    h.appendChild(poll);
+    var intro = el('div');
+    intro.innerHTML = '<p class="lead">Qissa adalah cerita pendek dalam bentuk chat. Kamu yang memilih; dalilnya datang setelahnya. Lima sampai tujuh menit per episode, untuk 17 tahun ke atas.</p>';
+    h.appendChild(intro);
+    ORDER.forEach(function (id) {
+      var e = EPISODES[id];
+      var read = loadJson('qissa.' + id + '.akhir', []);
+      var st = read.length ? 'Selesai. Akhir yang sudah dibaca: ' + read.length + ' dari 3' : (e.num === 1 ? 'Mulai dari sini' : 'Baru');
+      var b = el('button', 'epcard');
+      b.type = 'button';
+      b.innerHTML = '<p class="num">Episode ' + e.num + '</p><p class="ttl">' + esc(e.title) + '</p><p class="tz">' + esc(e.teaser) + '</p><p class="st">' + esc(st) + '</p>';
+      b.addEventListener('click', function () { open(id); });
+      h.appendChild(b);
+    });
+    if (CONFIG.waChannel) {
+      var ch = el('section', 'chan');
+      ch.innerHTML = '<p>Episode baru terbit di Saluran WhatsApp Qissa. Tanpa grup, tanpa nomor yang terlihat.</p><a class="btn ghost" id="chanHome" href="' + CONFIG.waChannel + '" target="_blank" rel="noopener">Ikuti saluran</a>';
+      ch.querySelector('#chanHome').addEventListener('click', function () { track('saluran', { dari: 'home' }); });
+      h.appendChild(ch);
+    }
+    log.appendChild(h);
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- episode ---------- */
+
+  function open(id) {
+    EP = EPISODES[id];
+    vars = {}; knot = EP.start; idx = 0; busy = false; waiting = false; ended = false; started = false;
+    path = []; snaps = {};
+    log.innerHTML = '';
+    track('mulai', { ep: id });
+    try { window.location.hash = id; } catch (e) {}
+    setHeader('Qissa', 'Q', 'Episode ' + EP.num + ': ' + EP.title);
+    hEp.textContent = 'Daftar episode';
+    cover();
+    setHint('Ketuk untuk mulai');
+    window.scrollTo(0, 0);
+  }
+
+  function cover() {
+    var c = el('section', 'cover');
+    var memo = '';
+    if (EP.id === 'ep2') {
+      var j = loadJson('qissa.ep1.jalur', null);
+      memo = j && j.length === 2 ? '<p class="memo">Minggu lalu kamu memilih ' + esc(j[0]) + ', lalu ' + esc(j[1]) + '.</p>' : '<p>Episode ini bisa dibaca tanpa Episode 1.</p>';
+    }
+    c.innerHTML = '<p class="kicker">Qissa, Episode ' + EP.num + '</p><h1>' + esc(EP.title) + '</h1><p>' + esc(EP.cover) + '</p>' + memo + '<p>' + esc(EP.length) + ' Ketuk layar untuk melanjutkan.</p>';
+    append(c);
+  }
+
+  function bubbleIn(text, from) {
+    var r = el('div', 'row in');
+    var b = el('div', 'bubble');
+    b.innerHTML = (from ? '<span class="from">' + esc(from) + '</span>' : '') + esc(text);
+    r.appendChild(b); append(r);
+  }
+  function bubbleOut(text, attach) {
+    var r = el('div', 'row out');
+    r.appendChild(el('div', 'bubble', (attach ? '<span class="attach">' + esc(attach) + '</span>' : '') + esc(text))); append(r);
+  }
+  function narration(text) { append(el('div', 'nar', '<p>' + esc(text) + '</p>')); }
+  function pill(text) { append(el('div', 'pill', '<span>' + esc(text) + '</span>')); }
+  function notif(line) {
+    append(el('div', 'notif', '<div class="app">GF</div><div><b>' + esc(line.app) + '</b><span>' + esc(line.text) + '</span></div><time>' + esc(line.time) + '</time>'));
+  }
+  function bank(line) {
+    append(el('div', 'bank', '<small>Dana masuk</small><b>' + esc(line.amount) + '</b><span>dari ' + esc(line.from) + '</span>'));
+  }
+  function shot(state) {
+    var r = el('div', 'row in');
+    var b = el('div', 'bubble');
+    var inner;
+    if (state === 'closed') {
+      inner = '<div class="shot"><div class="cap">' + ICON + 'Tangkapan layar</div><div class="closed">Belum dibuka</div></div>';
+    } else if (state === 'comment') {
+      inner = '<div class="shot"><div class="cap">' + ICON + 'Tangkapan layar, kolom komentar</div><div class="cmt"><b>dion.prtm</b>PENIPU, kelebihan transfer ga dibalikin full</div></div>';
+    } else {
+      inner = '<div class="shot"><div class="cap">' + ICON + 'Tangkapan layar, chat Nadia</div>' +
+        '<div class="cut">dipotong di sini</div>' +
+        '<div class="mini">' +
+        '<span class="b">Bram: Besok jadi ke rumah?</span>' +
+        '<span class="n">InsyaAllah. Jam 7 ya, aku langsung dari kantor.</span>' +
+        '<span class="b">Bram: Nginep aja kalau kemaleman. Kamar atas kosong.</span>' +
+        '<span class="n">Lihat nanti.</span>' +
+        '</div></div>';
+    }
+    b.innerHTML = inner; r.appendChild(b); append(r);
+  }
+
+  function typing(then) {
+    busy = true;
+    var r = el('div', 'row in');
+    r.appendChild(el('div', 'bubble', '<span class="dots"><i></i><i></i><i></i></span>'));
+    append(r);
+    var prev = hStatus.textContent;
+    hStatus.textContent = 'mengetik\u2026';
+    setHint('');
+    window.setTimeout(function () {
+      r.remove(); hStatus.textContent = prev; busy = false; then();
+    }, reduced ? 350 : 950);
+  }
+
+  function choices(line) {
+    waiting = true;
+    snaps[line.key] = { knot: knot, idx: idx - 1, vars: JSON.parse(JSON.stringify(vars)), html: log.innerHTML, path: path.slice(), header: header };
+    var box = el('div', 'choices');
+    box.innerHTML = '<p class="label">' + esc(line.label) + '</p>';
+    line.options.forEach(function (opt) {
+      var btn = el('button', 'choice', esc(opt.text));
+      btn.type = 'button';
+      btn.addEventListener('click', function () {
+        if (!waiting) return;
+        waiting = false;
+        Array.prototype.forEach.call(box.querySelectorAll('.choice'), function (b) { b.disabled = true; });
+        btn.classList.add('picked');
+        path.push(opt.name);
+        track('pilihan', { ep: EP.id, titik: line.key, pilih: opt.name });
+        knot = opt.go; idx = 0;
+        setHint('Ketuk untuk lanjut');
+        window.setTimeout(step, reduced ? 0 : 250);
+      });
+      box.appendChild(btn);
+    });
+    append(box);
+    setHint('');
+  }
+
+  function truthy(cond) { return !!vars[cond]; }
+  function pick(cases) {
+    for (var i = 0; i < cases.length; i++) { if (!cases[i].cond || truthy(cases[i].cond)) return cases[i]; }
+    return null;
+  }
+
+  function step() {
+    if (!EP || busy || waiting || ended) return;
+    var lines = EP.knots[knot];
+    var line = lines[idx];
+    if (!line) return;
+    idx++;
+    switch (line.t) {
+      case 'view':
+        setHeader(line.name, line.initial, line.sub); pill(line.pill); step(); return;
+      case 'set':
+        vars[line.v] = true; step(); return;
+      case 'go':
+        knot = line.to; idx = 0; step(); return;
+      case 'branch':
+        var c = pick(line.cases); if (c) { knot = c.to; idx = 0; } step(); return;
+      case 'nar':
+        if (line.cases) { var n = pick(line.cases); if (n) narration(n.text); else step(); return; }
+        if (line.cond && !truthy(line.cond)) { step(); return; }
+        narration(line.text); return;
+      case 'in':
+        if (line.cond && !truthy(line.cond)) { step(); return; }
+        bubbleIn(line.text, line.from); return;
+      case 'out':
+        bubbleOut(line.text, line.attach); return;
+      case 'typing':
+        typing(function () { setHint('Ketuk untuk lanjut'); step(); }); return;
+      case 'shot':
+        shot(line.state); return;
+      case 'sys':
+        pill(line.text); return;
+      case 'notif':
+        notif(line); return;
+      case 'bank':
+        bank(line); return;
+      case 'choice':
+        choices(line); return;
+      case 'end':
+        ending(); return;
+    }
+  }
+
+  /* ---------- ending ---------- */
+
+  function ending() {
+    ended = true;
+    setHint('');
+    var akhirKey = 'qissa.' + EP.id + '.akhir';
+    var list = loadJson(akhirKey, []);
+    var last = path[path.length - 1];
+    if (list.indexOf(last) < 0) { list.push(last); store(akhirKey, JSON.stringify(list)); }
+    store('qissa.' + EP.id + '.jalur', JSON.stringify(path));
+
+    track('selesai', { ep: EP.id, jalur: path.join('>') });
+
+    var tamat = el('section', 'card');
+    var pollNote = '';
+    if (EP.id === 'ep1') {
+      var pv = load('qissa.ep1.poll');
+      if (pv && path[0]) {
+        pollNote = pv === path[0]
+          ? '<p>Di awal kamu bilang ' + esc(pv) + '. Kamu menepatinya.</p>'
+          : '<p>Di awal kamu bilang ' + esc(pv) + '. Di dalam cerita kamu memilih ' + esc(path[0]) + '.</p>';
+      }
+    }
+    tamat.innerHTML = '<h3>Episode ' + EP.num + ' selesai</h3><p>Jalur kamu: ' + esc(path.join(' \u2192 ')) + '.</p>' + pollNote + '<p>Akhir yang sudah kamu baca: ' + list.length + ' dari 3.</p>';
+    append(tamat);
+
+    append(el('section', 'paper', EP.dalil));
+
+    var ref = el('section', 'card');
+    ref.innerHTML = '<p class="q">' + esc(EP.question) + '</p>' +
+      '<textarea id="refleksi" aria-label="Jawaban refleksi" placeholder="Tulis untuk dirimu sendiri. Tidak dikirim ke mana pun."></textarea>' +
+      '<div><button class="btn" type="button" id="simpan">Simpan di HP ini</button></div><p class="note" id="simpanNote"></p>';
+    append(ref);
+    var ta = ref.querySelector('#refleksi');
+    var rk = 'qissa.' + EP.id + '.refleksi';
+    var saved = load(rk); if (saved) ta.value = saved;
+    ref.querySelector('#simpan').addEventListener('click', function () {
+      var note = ref.querySelector('#simpanNote');
+      try { window.localStorage.setItem(rk, ta.value); note.textContent = 'Tersimpan di HP ini.'; }
+      catch (e) { note.textContent = 'Tidak bisa menyimpan di browser ini. Salin teksnya kalau ingin disimpan.'; }
+    });
+
+    var share = el('section', 'card');
+    share.innerHTML = '<h3>Lu bakal gimana?</h3><p>Bagikan dilemanya ke teman. Pilihanmu tidak ikut terkirim.</p>' +
+      '<div><button class="btn" type="button" id="bagikan">Bagikan dilemanya</button>' +
+      '<button class="btn ghost" type="button" id="masukan">Kirim masukan ke pembuat</button></div><p class="note" id="shareNote"></p>';
+    append(share);
+    share.querySelector('#bagikan').addEventListener('click', function () { track('bagikan', { ep: EP.id }); send(shareText(), share.querySelector('#shareNote')); });
+    share.querySelector('#masukan').addEventListener('click', function () { track('masukan', { ep: EP.id }); send(feedbackText(), share.querySelector('#shareNote')); });
+
+    if (CONFIG.waChannel) {
+      var chan = el('section', 'chan');
+      chan.innerHTML = '<p>' + (EP.next ? 'Episode baru terbit di Saluran WhatsApp Qissa.' : 'Episode 3 terbit di Saluran WhatsApp Qissa. Ikuti supaya tidak terlewat.') + '</p><a class="btn" id="chanEnd" href="' + CONFIG.waChannel + '" target="_blank" rel="noopener">Ikuti saluran</a>';
+      chan.querySelector('#chanEnd').addEventListener('click', function () { track('saluran', { dari: EP.id }); });
+      append(chan);
+    }
+
+    var again = el('section', 'card');
+    var nextBtn = EP.next ? '<button class="btn" type="button" id="lanjut">Lanjut ke Episode ' + EPISODES[EP.next].num + '</button>' : '';
+    again.innerHTML = '<h3>' + (EP.next ? 'Lanjut, atau coba pilihan lain?' : 'Kalau tadi milih yang lain?') + '</h3>' +
+      (EP.next ? '' : '<p>Episode 3, Grup Keluarga, menyusul.</p>') +
+      '<div>' + nextBtn +
+      '<button class="btn ghost" type="button" id="ulang2">Ulang dari Pilihan 2</button>' +
+      '<button class="btn ghost" type="button" id="ulang1">Ulang dari awal</button>' +
+      '<button class="btn ghost" type="button" id="daftar">Daftar episode</button></div>';
+    append(again);
+    if (EP.next) again.querySelector('#lanjut').addEventListener('click', function () { open(EP.next); });
+    again.querySelector('#ulang2').addEventListener('click', function () { restore('p2'); });
+    again.querySelector('#ulang1').addEventListener('click', function () { open(EP.id); });
+    again.querySelector('#daftar').addEventListener('click', home);
+  }
+
+  function shareText() {
+    return EP.share + (SHARE_URL.indexOf('http') === 0 ? '\n' + SHARE_URL + '#' + EP.id : '');
+  }
+  function feedbackText() {
+    return 'Masukan untuk Qissa, Episode ' + EP.num + ' (' + EP.title + ')\nJalur saya: ' + path.join(' \u2192 ') +
+      '\n\n1. Bagian yang saya skip:\n2. Kata atau kalimat yang ketuaan:\n3. Pilihan saya dan kenapa:\n4. Ada momen terasa diceramahin? Di mana:\n5. Kartu bagikannya bakal saya kirim ke:\n';
+  }
+  function send(text, note) {
+    if (navigator.share) {
+      navigator.share({ text: text }).then(function () { note.textContent = ''; }).catch(function () { copy(text, note); });
+    } else { copy(text, note); }
+  }
+  function copy(text, note) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { note.textContent = 'Teks tersalin. Tempel di WhatsApp atau mana saja.'; }, function () { note.textContent = 'Tidak bisa menyalin otomatis di browser ini.'; });
+    } else { note.textContent = 'Tidak bisa menyalin otomatis di browser ini.'; }
+  }
+
+  function restore(key) {
+    var s = snaps[key];
+    if (!s) { open(EP.id); return; }
+    log.innerHTML = s.html;
+    vars = JSON.parse(JSON.stringify(s.vars));
+    knot = s.knot; idx = s.idx; path = s.path.slice();
+    busy = false; waiting = false; ended = false;
+    setHeader(s.header.name, s.header.initial, s.header.sub);
+    step();
+  }
+
+  function advance() {
+    if (!EP || busy || waiting || ended) return;
+    if (!started) { started = true; setHint('Ketuk untuk lanjut'); }
+    step();
+  }
+
+  log.addEventListener('click', function (e) {
+    if (e.target.closest('button, a, textarea, input')) return;
+    advance();
+  });
+  hint.addEventListener('click', advance);
+  hEp.addEventListener('click', function () { if (EP) home(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON')) return;
+    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); advance(); }
+  });
+
+  var h = (window.location.hash || '').replace('#', '');
+  if (EPISODES[h]) { open(h); } else { home(); }
+})();
+</script>
+</body>
+</html>
