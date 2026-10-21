@@ -46,3 +46,28 @@ Konsekuensi: segmen di bawah 17 tahun bukan target; kampanye menyebut batas usia
 Konteks: UI kecil dan sangat spesifik (chat, kartu), dua tema, prioritas ukuran bundel.
 Keputusan: token di `tokens.css`, komponen dengan CSS modul biasa; tidak ada framework CSS.
 Konsekuensi: lebih sedikit dependensi; disiplin penamaan diperlukan.
+
+## ADR-010 Toolchain: Node 22, TypeScript 6.0, ESLint, Prettier, vitest
+Konteks: Node 20 sudah EOL sejak 30 April 2026. pnpm 11 butuh Node 22.13 ke atas dan vitest 5 butuh 22.12 ke atas. TypeScript 7.0 belum didukung typescript-eslint (batasnya di bawah 6.1). BACKLOG A1 mewajibkan ESLint, Prettier, dan vitest. Mesin penulis Windows, sedangkan CI dan Docker Linux.
+Keputusan: Node 22.18 ke atas di lokal dan CI. pnpm 11.17.0 dipin lewat `packageManager`, dengan `shellEmulator: true` supaya skrip sama di Windows dan Linux. Paket: `typescript` 6.0; `eslint` 10 dengan `@eslint/js` dan `typescript-eslint` (preset `strictTypeChecked`); `prettier` 3 hanya untuk kode; `vitest` 5; `vite` 8 dengan `@vitejs/plugin-react`; `react` dan `react-dom` 18.3; `@types/react`, `@types/react-dom`, `@types/node`. CLI `qs` dijalankan langsung dari TypeScript lewat type stripping Node, tanpa tsx dan tanpa langkah build. `apps/web` ditulis tangan, tidak dari create-vite. GitHub Actions dipin ke SHA commit.
+Konsekuensi: impor relatif memakai ekstensi `.ts`; `enum`, `namespace`, dan parameter property dilarang (`erasableSyntaxOnly`). Naik ke TypeScript 7 menunggu dukungan typescript-eslint.
+
+## ADR-011 JSON Schema dihasilkan dari tipe
+Konteks: DATA-CONTRACTS §3 menjadikan `types.ts` sumber kebenaran dan meminta JSON Schema hasil generate untuk validasi di CI. BACKLOG B1 meminta skema yang valid.
+Keputusan: `ts-json-schema-generator` menghasilkan `packages/script/schema/episode.schema.json` dari `types.ts`. `ajv` memvalidasi skema itu terhadap meta-skema dan memvalidasi JSON hasil compile di tes. Keduanya devDependency `packages/script` saja dan tidak ikut ke bundel app. Front matter dibaca parser subset YAML buatan sendiri (QISSA-SCRIPT §1), tanpa paket `yaml`.
+Konsekuensi: tes gagal bila skema yang dikomit basi terhadap `types.ts`. `ts-json-schema-generator` membawa salinan TypeScript-nya sendiri, hanya di devDependency.
+
+## ADR-012 Tahap 0 boleh menayangkan episode draft
+Konteks: DATA-CONTRACTS §2, SRS §7 dan §10, serta PRD §9 hanya mengizinkan episode `reviewed` di produksi. ROADMAP menayangkan ep01–02 di minggu 2, review ulama selesai di minggu 4, dan staging baru ada di minggu 5. Easypanel membangun `main` setiap push tanpa menunggu CI.
+Keputusan: gerbang review dibuat sebagai `qs lint --wajib-review` lengkap dengan tes, tetapi belum dinyalakan di CI. Selama Tahap 0, episode draft tayang dengan badge "Belum direview ulama". Setelah review ep01–02 selesai, gerbang dinyalakan di CI dan di build Docker; hanya build Docker yang bisa benar-benar menahan deploy.
+Konsekuensi: pengecualian sementara atas aturan "hanya reviewed di produksi", dengan tanggal berakhir yang jelas (review ep01–02).
+
+## ADR-013 Nama aplikasi judi disimpan sebagai hash
+Konteks: L5 butuh daftar nama aplikasi judi, sedangkan CLAUDE.md melarang nama itu muncul di kode maupun fixture test.
+Keputusan: `packages/script/src/forbidden.ts` menyimpan SHA-256 dari nama yang dinormalkan (huruf kecil, spasi tunggal). Teks naskah dicocokkan per kata dan per frasa sampai tiga kata. Istilah umum ("deposit", "gacor" di luar "Gacor Family") dan pola (tautan, tag HTML, nominal taruhan) ditulis apa adanya. "slot" dan "withdraw" tidak dilarang karena dipakai story bible sebagai tema. Satu tes memindai berkas repo di luar `content/` dengan pencocok yang sama.
+Konsekuensi: daftar hash dimulai kosong. Menambah nama berarti menambah hash; cara menghitungnya ada di komentar `forbidden.ts`.
+
+## ADR-014 `versi_konten` dihitung lewat berkas kunci
+Konteks: DATA-CONTRACTS §9 meminta `versi_konten` berformat `YYYY-MM-DD.n` dihitung dari tanggal dan hash isi. Itu butuh state yang disimpan, sedangkan `qs compile` tidak boleh mengubah teks di `content/`. Nama berkas berversi dijadwalkan di M3a (minggu 5).
+Keputusan: `qs compile` mengelola `content/versi-konten.lock.json` berisi hash SHA-256 JSON episode yang disajikan (termasuk dalil) dan versinya. Bila hash berubah, versi baru memakai tanggal hari itu (WIB). CI menjalankan `qs compile --check`, yang gagal bila berkas kunci basi. Sampai M3a, URL tetap `/content/epNN.json`.
+Konsekuensi: perubahan naskah dikomit bersama berkas kunci; nilai awal diambil dari `versi_konten` di `content/manifest.json` (`2026-10-21.1`).

@@ -15,6 +15,7 @@ Dokumen yang menjadi sumber kebenaran (baca sesuai kebutuhan tugas):
 - Keputusan arsitektur: `docs/DECISIONS.md`
 - Jadwal: `docs/ROADMAP.md`; tugas minggu 1–2 dengan kriteria terima: `docs/BACKLOG.md`
 - Operasional dan insiden: `docs/RUNBOOK.md`; checklist rilis: `docs/RELEASE.md`
+- Progres tugas, keputusan per sesi, dan pertanyaan terbuka: `docs/PROGRESS.md`
 
 Kalau kode dan dokumen bertentangan, dokumen yang benar; perbaiki kodenya, atau ajukan perubahan dokumen lewat PR.
 
@@ -31,7 +32,7 @@ Kalau kode dan dokumen bertentangan, dokumen yang benar; perbaiki kodenya, atau 
 - `backend/pocketbase`: PocketBase. MVP hanya koleksi `feedback`; akun dan progres di fase 2.
 - `apps/android`: Capacitor (digenerate; hanya konfigurasi yang diedit manual).
 - `infra/`: Dockerfile, nginx.conf, catatan Easypanel, dan `infra/prototype/index.html` sebagai implementasi rujukan satu berkas yang sudah diuji pembaca.
-- Package manager: pnpm workspaces. Node 20 LTS.
+- Package manager: pnpm 11 (workspaces). Node 22 LTS ke atas, minimal 22.18 karena CLI `qs` dijalankan langsung dari TypeScript lewat type stripping Node (ADR-010).
 
 ## Perintah
 - `pnpm install`
@@ -39,8 +40,10 @@ Kalau kode dan dokumen bertentangan, dokumen yang benar; perbaiki kodenya, atau 
 - `pnpm build` — build semua
 - `pnpm test` — vitest semua paket
 - `pnpm lint` dan `pnpm typecheck`
-- `pnpm qs compile` — `content/` menjadi `apps/web/public/content/*.json`
-- `pnpm qs lint` — aturan konten (lihat docs/QISSA-SCRIPT.md §6)
+- `pnpm verify` — typecheck, lint, test, dan `qs lint` sekaligus; jalankan sebelum commit
+- `pnpm qs compile` — `content/` menjadi `apps/web/public/content/*.json`; `--check` hanya memeriksa `content/versi-konten.lock.json`
+- `pnpm qs lint` — aturan konten (lihat docs/QISSA-SCRIPT.md §6); `--wajib-review` menolak episode yang belum direview
+- `pnpm qs walk epNN` — cetak semua jalur episode beserta panjangnya
 - `pnpm cap:sync` dan `pnpm cap:open` — Android
 
 ## Peta repo
@@ -60,7 +63,8 @@ qissa/
 ```
 
 ## Konvensi kode
-- TypeScript strict, tanpa `any`. Tipe JSON episode didefinisikan satu kali di `packages/script/src/types.ts` dan dipakai engine dan web.
+- TypeScript strict, tanpa `any` (ESLint `strictTypeChecked`). Tipe JSON episode didefinisikan satu kali di `packages/script/src/types.ts` dan dipakai engine dan web.
+- Impor relatif memakai ekstensi berkas (`./parse.ts`); tanpa `enum`, `namespace`, dan parameter property, karena Node menjalankan `.ts` dengan type stripping.
 - Komponen fungsional dengan hooks. State cerita hanya di engine; React hanya me-render hasilnya.
 - Nama berkas kebab-case, komponen PascalCase, satu komponen per berkas.
 - Semua string UI di `apps/web/src/i18n/id.json` (Indonesia dulu; en dan ms menyusul). Jangan hardcode string UI di komponen.
@@ -80,7 +84,8 @@ qissa/
 Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `saluran`. Definisi dan data tiap event ada di `docs/SRS.md` §8. Jangan menambah event tanpa memperbarui SRS. Tidak ada data pribadi di event.
 
 ## Alur kerja
-- Satu branch per fitur. Commit mengikuti Conventional Commits: `feat:`, `fix:`, `content:`, `docs:`, `chore:`, `test:`.
+- Satu tugas BACKLOG = satu branch = satu commit = satu PR ke `main`; merge dengan rebase setelah CI hijau. Commit mengikuti Conventional Commits: `feat:`, `fix:`, `content:`, `docs:`, `chore:`, `test:`.
+- Setiap commit tugas memperbarui barisnya di `docs/PROGRESS.md`.
 - Perubahan naskah lewat PR berlabel `content` dan harus lolos `pnpm qs lint`.
 - Definisi selesai: typecheck, lint, test hijau; diuji manual di Android Chrome 360px; tidak ada string UI hardcode; tidak ada console.error.
 - Sebelum menambah fitur: cek `docs/PRD.md` §7 apakah masuk MVP. Kalau tidak, catat di `docs/ROADMAP.md` bagian "Setelah Ramadan", jangan dibangun.

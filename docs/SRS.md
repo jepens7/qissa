@@ -104,7 +104,7 @@ Lihat §8. Semua event dikirim lewat `umami.track` bila skrip Umami termuat; bil
 - NFR-2 Offline: episode yang pernah dibuka bisa dibaca penuh tanpa jaringan, termasuk kartu dalil dan refleksi.
 - NFR-3 Aksesibilitas: WCAG 2.1 AA untuk kontras dan fokus; semua interaksi bisa dengan keyboard; `aria-live` untuk baris baru; `prefers-reduced-motion` dihormati.
 - NFR-4 Privasi: tidak ada cookie, tidak ada fingerprinting, tidak ada data pribadi di event; refleksi tidak pernah meninggalkan perangkat; kebijakan privasi berbahasa Indonesia; mematuhi UU PDP untuk data minimal yang ada (feedback opsional).
-- NFR-5 Keamanan: konten dirender lewat escaping (tidak ada `innerHTML` dengan teks naskah mentah kecuali hasil render markdown dalil yang disanitasi); CSP dasar; dependensi dipindai di CI.
+- NFR-5 Keamanan: konten dirender lewat escaping (tidak ada `innerHTML` dengan teks naskah; kartu dalil dirender dari struktur `Dalil` hasil compile, bukan dari HTML); CSP dasar; dependensi dipindai di CI.
 - NFR-6 Kompatibilitas: Android Chrome 90+, Samsung Internet 15+, Safari iOS 15+ (web saja), desktop Chrome, Firefox, Safari terbaru.
 - NFR-7 Internasionalisasi: semua string UI lewat i18n (`id` dulu); konten per bahasa di folder terpisah nanti; tanggal dan angka memakai format Indonesia.
 - NFR-8 Tema: terang dan gelap lewat token; kontras tiap pasangan warna diuji.
@@ -119,7 +119,7 @@ Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ id, nomor, judul, po
 ### 5.2 Manifest
 ```json
 {
-  "versi": 3,
+  "versi": 1,
   "episodes": [
     { "id": "ep01", "nomor": 1, "judul": "Tangkapan Layar", "teaser": "…", "durasi_menit": 5,
       "url": "/content/ep01.json", "versi_konten": "2026-11-01.1",
@@ -159,7 +159,7 @@ Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pert
 5. `pnpm qs lint` dan `pnpm qs compile` hijau di CI.
 6. Tambah ke manifest dengan tanggal rilis; deploy.
 
-Episode dengan `status: draft` boleh ada di manifest hanya di lingkungan staging.
+Episode dengan `status: draft` boleh ada di manifest hanya di lingkungan staging. Pengecualian sementara selama Tahap 0: lihat ADR-012.
 
 ## 8. Spesifikasi analitik
 
@@ -184,7 +184,7 @@ Metrik turunan: completion = selesai ÷ mulai; share rate = bagikan ÷ selesai; 
 ## 10. Deployment dan rilis
 - Build: GitHub Actions menjalankan typecheck, lint, test, `qs lint`, `qs compile`, `vite build`, lalu Easypanel membangun image dari `infra/nginx/Dockerfile` (konten dan app shell dalam satu image).
 - Staging: `staging.qissa.id` dari branch `staging` dengan manifest yang memuat episode draft.
-- Produksi: branch `main`; manifest hanya episode `reviewed`.
+- Produksi: branch `main`; manifest hanya episode `reviewed` (gerbang `qs lint --wajib-review` dinyalakan setelah review ep01–02; ADR-012).
 - Versi: app shell `MAJOR.MINOR.PATCH`; konten `YYYY-MM-DD.n` per episode.
 - Android: build lokal `pnpm cap:sync` lalu Android Studio; internal testing → closed testing → production. Pendaftaran PSE Komdigi sebelum production.
 - Rollback: Easypanel menyimpan image sebelumnya; manifest bisa diubah tanpa build.

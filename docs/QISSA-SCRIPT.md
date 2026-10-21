@@ -31,7 +31,18 @@ vars: [dibaca, menegur]
 …baris…
 ```
 
-Front matter YAML wajib memuat `id`, `nomor`, `judul`, `pov`, `vars`. Knot pertama dalam berkas adalah knot awal. Nama knot: huruf kecil, angka, garis bawah.
+Semua key pada contoh di atas wajib ada (L6). `id` berbentuk `epNN` dan sama dengan awalan nama folder (`content/episodes/epNN-slug/`). Hanya `berikutnya` yang boleh kosong; kosong berarti episode terakhir (`null`). Knot pertama dalam berkas adalah knot awal.
+
+Front matter ditulis dalam subset YAML yang dibaca sama oleh YAML 1.2:
+- satu `key: nilai` per baris; key harus salah satu key di atas dan tidak boleh ganda; tab tidak boleh dipakai;
+- blok `|` untuk teks beberapa baris; newline di akhir blok dipangkas;
+- list `[a, b]` untuk `vars`;
+- komentar `#` di awal baris atau setelah spasi;
+- `nomor` dan `durasi_menit` bilangan bulat positif; nilai lain dibaca sebagai teks.
+
+Nilai teks yang memuat `: ` atau ` #`, berakhir dengan `:`, atau diawali salah satu dari `- ? : , [ ] { } # & * ! | > ' " % @` atau backtick, wajib ditulis sebagai blok `|`. Compiler menolaknya dengan nomor baris (S1), bukan memotongnya diam-diam seperti YAML.
+
+Nama knot dan variabel: huruf kecil, angka, garis bawah, diawali huruf (`^[a-z][a-z0-9_]*$`). Nama shot boleh juga memakai `-`. Nama `constructor`, `prototype`, dan `__proto__` tidak boleh dipakai; `closed` dicadangkan untuk `@shot closed`, dan `else` serta `end` untuk blok `??`.
 
 ## 2. Jenis baris
 
@@ -61,6 +72,17 @@ Satu pernyataan per baris. Baris kosong diabaikan. Baris yang diawali `//` adala
 
 Kondisi (`cond`) hanya berupa nama variabel atau `!nama`. Tidak ada operator lain; kalau butuh logika lebih, itu tanda naskahnya terlalu rumit.
 
+### Aturan pembacaan baris
+
+- Spasi di awal dan akhir baris diabaikan; CRLF dibaca sama dengan LF. `//` hanya berarti komentar bila berada di awal baris.
+- Jenis baris dikenali dari awalannya. Baris yang tidak cocok dengan awalan mana pun adalah `Nama: teks`, dipotong di `: ` yang pertama; nama dan teks tidak boleh kosong. Karena itu `Raka: [Foto: resi pengiriman] Udah dikirim ya bro` terbaca benar. Label lampiran `[…]` hanya dikenali di awal teks.
+- `@view` punya tepat empat field, `@notif` tiga, `@bank` dua, dipisah `|`. Direktif `@` lain ditolak.
+- Blok pilihan: baris label langsung diikuti tepat tiga opsi. `#NamaPendek` berlaku sampai akhir baris, jadi boleh berspasi (`#Ga tau`), dan unik dalam satu blok. Kunci (`#p1`, `#p2`, …) unik dalam satu episode.
+- Setiap knot diakhiri satu penutup: `-> knot`, `=> …`, blok pilihan, atau `-> END`. Knot tanpa penutup dan baris setelah penutup ditolak (L2).
+- `? cond:` dan `??` hanya boleh membungkus narasi, gelembung, atau `@sys`, karena hanya jenis itu yang punya `cond` di §4. Untuk berpindah knot secara bersyarat, pakai `=>`. Keduanya tidak boleh bersarang.
+- Blok `??` dengan lebih dari satu kondisi (tidak termasuk `?? else`) hanya boleh berisi tepat satu kartu narasi per cabang, karena `cond` tidak bisa menggabungkan dua kondisi.
+- Tampilan aktif menentukan apakah gelembung masuk menampilkan nama pengirim. Gelembung masuk tidak boleh muncul sebelum `@view` pertama di episode, dan knot yang memuat gelembung masuk sebelum `@view`-nya sendiri harus selalu dimasuki dari tampilan yang sama jenisnya, grup atau bukan grup (S1).
+
 ## 3. Blok tangkapan layar
 
 ```
@@ -87,15 +109,16 @@ type Episode = {
   start: string;
   knots: Record<string, Line[]>;
   shots: Record<string, Shot>;
+  dalil: Dalil;                           // hasil compileDalil, struktur di DATA-CONTRACTS §4
 };
 
 type Cond = string;                       // "dibaca" atau "!dibaca"
 
 type Line =
-  | { t: 'view'; name: string; initial: string; sub: string; pill: string; group: boolean }
+  | { t: 'view'; name: string; initial: string; sub: string; pill: string; group: boolean }  // group: label pil diawali "Grup"
   | { t: 'nar'; text: string; cond?: Cond }
   | { t: 'nar'; cases: { cond?: Cond; text: string }[] }
-  | { t: 'in'; text: string; from?: string; cond?: Cond; attach?: string }
+  | { t: 'in'; text: string; from?: string; cond?: Cond; attach?: string }  // from hanya di tampilan grup
   | { t: 'out'; text: string; cond?: Cond; attach?: string }
   | { t: 'typing' }
   | { t: 'shot'; state: 'closed' | string }
@@ -115,9 +138,11 @@ type Shot = {
 };
 ```
 
-Blok `??` dikompilasi menjadi `nar` dengan `cases` bila seluruh cabang berisi satu kartu narasi; selain itu menjadi beberapa baris dengan `cond` masing-masing. `? cond: Nama: teks` menjadi baris `in`/`out` dengan `cond`.
+Blok `??` dikompilasi menjadi `nar` dengan `cases` bila seluruh cabang berisi satu kartu narasi, juga bila hanya ada satu cabang; selain itu menjadi beberapa baris dengan `cond` masing-masing. `? cond: Nama: teks` menjadi baris `in`/`out` dengan `cond`.
 
-Kompiler menjaga urutan baris persis seperti di naskah. Teks dikompilasi apa adanya; tanda kutip tipografis ditulis langsung di naskah.
+`from` hanya ditulis pada gelembung masuk yang tampil di tampilan grup, sama seperti objek `EPISODES` di prototipe; UI menampilkan `from` apa adanya. Compiler melacak tampilan aktif lintas knot (§2).
+
+Kompiler menjaga urutan baris persis seperti di naskah. Teks dikompilasi apa adanya; tanda kutip tipografis ditulis langsung di naskah. Urutan key mengikuti urutan pada tipe di atas, key opsional yang tidak berlaku tidak ditulis, dan JSON berindentasi dua spasi diakhiri newline. JSON tidak memuat nomor baris; diagnostik memakai tabel posisi internal compiler.
 
 ## 5. `dalil.md`
 
@@ -150,24 +175,29 @@ HR Muslim no. 2589, sahih
 …
 ```
 
-Judul bagian (`## Riwayat`, `## Ayat`, `## Hadis`, `## Catatan`, `## Hukum negara`) tetap; yang kosong dihilangkan. Baris Arab dideteksi dari karakter Arab dan dirender RTL. Baris terakhir tiap entri yang diawali "HR", "Terjemahan", atau "Sumber" dirender sebagai rujukan.
+Judul bagian (`## Riwayat`, `## Ayat`, `## Hadis`, `## Catatan`, `## Hukum negara`) tetap; yang kosong dihilangkan. Judul lain atau judul ganda ditolak (S1). Baris Arab adalah baris yang memuat huruf Arab (blok Unicode Arab, termasuk harakat dan tanda waqaf) dan tidak memuat huruf Latin; dirender RTL. Baris terakhir tiap entri yang diawali "HR", "Terjemahan", atau "Sumber", atau yang memuat kata "HR", dirender sebagai rujukan (contoh: "Bagian dari hadis Jibril, HR Muslim no. 8, sahih").
+
+`dalil.md` dibaca per baris, bukan sebagai Markdown: satu paragraf ditulis dalam satu baris, baris kosong diabaikan, dan teks diambil apa adanya. `###` memulai entri baru; bagian tanpa `###` (biasanya Catatan dan Hukum negara) menjadi satu entri tanpa judul. Front matter memakai subset YAML yang sama dengan §1: `status` hanya `draft` atau `reviewed`, `reviewed_at` berformat `YYYY-MM-DD`, dan nilai kosong berarti `null`. Hasil `compileDalil` ikut dalam JSON episode sebagai `dalil`.
 
 ## 6. Aturan linter (`qs lint`)
 
+Setiap diagnostik punya kode, nama berkas (path relatif dari akar repo, pemisah `/`), nomor baris, dan pesan berbahasa Indonesia. Aturan per jalur (L2, L4, W1, W3) dihitung dengan menjelajahi semua kombinasi pilihan beserta nilai variabelnya. `qs lint` keluar dengan kode 1 bila ada error. Peringatan tidak menggagalkan CI; di GitHub Actions peringatan tampil sebagai anotasi.
+
 Gagal (CI merah):
-- L1 Tepat tiga opsi per blok pilihan; setiap opsi punya `#NamaPendek`; teks opsi maksimal 8 kata.
-- L2 Setiap `->`, `=>`, dan opsi merujuk ke knot yang ada; setiap knot bisa dicapai; setiap jalur berakhir di `-> END`.
+- S1 Sintaks dan struktur: baris atau direktif `@` tak dikenal; jumlah field `|` salah; baris sebelum knot pertama; knot, shot, atau judul bagian dalil ganda; blok `:::`, `??`, atau front matter yang tidak ditutup; front matter di luar subset §1; `=>` tanpa default; shot tanpa `cap`; isi `?` atau `??` yang tidak didukung; nama terlarang; tampilan aktif yang tidak pasti (§2).
+- L1 Tepat tiga opsi per blok pilihan; setiap opsi punya `#NamaPendek` yang unik dalam bloknya; teks opsi maksimal 8 kata (token yang dipisah spasi).
+- L2 Setiap `->`, `=>`, opsi, `@shot`, dan `berikutnya` merujuk ke knot, shot, atau episode yang ada; setiap knot bisa dicapai; setiap knot punya penutup tanpa baris sesudahnya; setiap jalur berakhir di `-> END` dalam 300 baris terlihat.
 - L3 Setiap variabel yang dipakai dideklarasikan di `vars`; setiap variabel yang dideklarasikan di-`@set` setidaknya sekali.
 - L4 `@typing` maksimal dua kali per jalur.
-- L5 Kata terlarang (daftar di `packages/script/src/forbidden.ts`): nama aplikasi judi, "deposit", "gacor" di luar nama grup "Gacor Family", nominal taruhan, tautan.
-- L6 Front matter lengkap; `refleksi` satu kalimat tanya; `bagikan` tidak memuat kata "pilih" atau "jalur".
-- L7 `dalil.md` memiliki minimal satu ayat atau hadis dengan rujukan; bila `status: reviewed`, `reviewed_by` dan `reviewed_at` tidak kosong.
+- L5 Kata terlarang (daftar di `packages/script/src/forbidden.ts`): nama aplikasi judi (disimpan hanya sebagai hash SHA-256, ADR-013), "deposit", "gacor" di luar nama grup "Gacor Family", nominal taruhan (angka uang dalam jarak tiga kata dari "deposit", "depo", "taruhan", atau "bet"), tautan, dan tag HTML. Diperiksa di seluruh naskah, front matter, dan `dalil.md`, tanpa membedakan huruf besar-kecil.
+- L6 Front matter lengkap (§1) dan `id` sama dengan awalan folder; `refleksi` tepat satu kalimat yang berakhir dengan "?"; `bagikan` tidak memuat "pilih" atau "jalur", termasuk di dalam kata lain seperti "pilihan"; `nomor`, `judul`, `teaser`, dan `durasi_menit` di `content/manifest.json` sama dengan front matter.
+- L7 `dalil.md` ada dan memiliki minimal satu entri ayat atau hadis dengan rujukan; bila `status: reviewed`, `reviewed_by` dan `reviewed_at` tidak kosong; `review` di `content/manifest.json` sama dengan front matter `dalil.md`. Dengan `qs lint --wajib-review`, episode yang belum `reviewed` juga error (gerbang produksi, ADR-012).
 
 Peringatan (CI kuning):
-- W1 Lebih dari dua kartu narasi berturut-turut.
-- W2 Gelembung lebih dari 160 karakter.
-- W3 Episode lebih dari 220 baris yang dirender di jalur terpanjang.
-- W4 Kata yang masuk daftar "ketuaan" (`packages/script/src/dated-words.ts`, diisi dari masukan pembaca Gen Z).
+- W1 Lebih dari dua kartu narasi berturut-turut di satu jalur, termasuk melintasi knot. Baris terlihat lain apa pun, termasuk pil dan notifikasi, memutus rangkaian.
+- W2 Gelembung (in/out) dengan teks lebih dari 160 karakter; label lampiran tidak dihitung.
+- W3 Lebih dari 220 baris terlihat di jalur terpanjang. Baris terlihat: pil `@view`, narasi, gelembung, shot, `@sys`, notifikasi, kartu bank, dan blok pilihan (dihitung satu); `@typing` tidak dihitung.
+- W4 Kata yang masuk daftar "ketuaan" (`packages/script/src/dated-words.ts`, diisi dari masukan pembaca Gen Z), dicocokkan per kata tanpa membedakan huruf besar-kecil.
 
 ## 7. Contoh singkat
 

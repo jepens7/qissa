@@ -85,7 +85,7 @@ Season 1: 12 episode sesuai story bible (Tangkapan Layar, Transferan Nyasar, Gru
 
 Ramadan "30 Malam": keputusan format diambil paling lambat 1 Desember 2026 berdasarkan kapasitas produksi: 30 mikro-episode (3 menit, satu pilihan) atau 15 episode penuh dua hari sekali. Campuran genre mengikuti bible (dilema, kisah, misteri berantai, komedi, satu refleksi di malam ke-27).
 
-Semua episode melewati pipeline: kartu dilema, draf, baca Gen Z, review ulama, lint, rilis. Tidak ada episode yang rilis publik dengan badge "Belum direview".
+Semua episode melewati pipeline: kartu dilema, draf, baca Gen Z, review ulama, lint, rilis. Tidak ada episode yang rilis publik dengan badge "Belum direview" (pengecualian sementara selama Tahap 0: ADR-012).
 
 ## 10. Platform dan distribusi
 
