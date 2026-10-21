@@ -1,0 +1,690 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Episode",
+  "definitions": {
+    "Episode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nomor": {
+          "type": "number"
+        },
+        "judul": {
+          "type": "string"
+        },
+        "pov": {
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/EpisodeMeta"
+        },
+        "vars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "start": {
+          "type": "string"
+        },
+        "knots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Line"
+            }
+          }
+        },
+        "shots": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Shot"
+          }
+        },
+        "dalil": {
+          "$ref": "#/definitions/Dalil"
+        }
+      },
+      "required": [
+        "id",
+        "nomor",
+        "judul",
+        "pov",
+        "meta",
+        "vars",
+        "start",
+        "knots",
+        "shots",
+        "dalil"
+      ],
+      "additionalProperties": false
+    },
+    "EpisodeMeta": {
+      "type": "object",
+      "properties": {
+        "teaser": {
+          "type": "string"
+        },
+        "sampul": {
+          "type": "string"
+        },
+        "durasi_menit": {
+          "type": "number"
+        },
+        "rating": {
+          "type": "string"
+        },
+        "refleksi": {
+          "type": "string"
+        },
+        "bagikan": {
+          "type": "string"
+        },
+        "berikutnya": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "teaser",
+        "sampul",
+        "durasi_menit",
+        "rating",
+        "refleksi",
+        "bagikan",
+        "berikutnya"
+      ],
+      "additionalProperties": false
+    },
+    "Line": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ViewLine"
+        },
+        {
+          "$ref": "#/definitions/NarLine"
+        },
+        {
+          "$ref": "#/definitions/NarCasesLine"
+        },
+        {
+          "$ref": "#/definitions/InLine"
+        },
+        {
+          "$ref": "#/definitions/OutLine"
+        },
+        {
+          "$ref": "#/definitions/TypingLine"
+        },
+        {
+          "$ref": "#/definitions/ShotLine"
+        },
+        {
+          "$ref": "#/definitions/SysLine"
+        },
+        {
+          "$ref": "#/definitions/NotifLine"
+        },
+        {
+          "$ref": "#/definitions/BankLine"
+        },
+        {
+          "$ref": "#/definitions/SetLine"
+        },
+        {
+          "$ref": "#/definitions/GoLine"
+        },
+        {
+          "$ref": "#/definitions/BranchLine"
+        },
+        {
+          "$ref": "#/definitions/ChoiceLine"
+        },
+        {
+          "$ref": "#/definitions/EndLine"
+        }
+      ]
+    },
+    "ViewLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "view"
+        },
+        "name": {
+          "type": "string"
+        },
+        "initial": {
+          "type": "string"
+        },
+        "sub": {
+          "type": "string"
+        },
+        "pill": {
+          "type": "string"
+        },
+        "group": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "t",
+        "name",
+        "initial",
+        "sub",
+        "pill",
+        "group"
+      ],
+      "additionalProperties": false
+    },
+    "NarLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "nar"
+        },
+        "text": {
+          "type": "string"
+        },
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        }
+      },
+      "required": [
+        "t",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "Cond": {
+      "type": "string"
+    },
+    "NarCasesLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "nar"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NarCase"
+          }
+        }
+      },
+      "required": [
+        "t",
+        "cases"
+      ],
+      "additionalProperties": false
+    },
+    "NarCase": {
+      "type": "object",
+      "properties": {
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "InLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "in"
+        },
+        "text": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        },
+        "attach": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "OutLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "out"
+        },
+        "text": {
+          "type": "string"
+        },
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        },
+        "attach": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "TypingLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "typing"
+        }
+      },
+      "required": [
+        "t"
+      ],
+      "additionalProperties": false
+    },
+    "ShotLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "shot"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "SysLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "sys"
+        },
+        "text": {
+          "type": "string"
+        },
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        }
+      },
+      "required": [
+        "t",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "NotifLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "notif"
+        },
+        "app": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "app",
+        "text",
+        "time"
+      ],
+      "additionalProperties": false
+    },
+    "BankLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "bank"
+        },
+        "amount": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "amount",
+        "from"
+      ],
+      "additionalProperties": false
+    },
+    "SetLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "set"
+        },
+        "v": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "GoLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "go"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "to"
+      ],
+      "additionalProperties": false
+    },
+    "BranchLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "branch"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BranchCase"
+          }
+        }
+      },
+      "required": [
+        "t",
+        "cases"
+      ],
+      "additionalProperties": false
+    },
+    "BranchCase": {
+      "type": "object",
+      "properties": {
+        "cond": {
+          "$ref": "#/definitions/Cond"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "to"
+      ],
+      "additionalProperties": false
+    },
+    "ChoiceLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "choice"
+        },
+        "key": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChoiceOption"
+          }
+        }
+      },
+      "required": [
+        "t",
+        "key",
+        "label",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "ChoiceOption": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "go": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "go",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "EndLine": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "string",
+          "const": "end"
+        }
+      },
+      "required": [
+        "t"
+      ],
+      "additionalProperties": false
+    },
+    "Shot": {
+      "type": "object",
+      "properties": {
+        "cap": {
+          "type": "string"
+        },
+        "cut": {
+          "type": "string"
+        },
+        "pov": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShotChatLine"
+          }
+        },
+        "cmt": {
+          "$ref": "#/definitions/ShotComment"
+        }
+      },
+      "required": [
+        "cap"
+      ],
+      "additionalProperties": false
+    },
+    "ShotChatLine": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "ShotComment": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "handle",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "Dalil": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ReviewStatus"
+        },
+        "reviewed_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DalilSection"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "reviewed_by",
+        "reviewed_at",
+        "sections"
+      ],
+      "additionalProperties": false
+    },
+    "ReviewStatus": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed"
+      ]
+    },
+    "DalilSection": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/DalilSectionKind"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DalilEntry"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "DalilSectionKind": {
+      "type": "string",
+      "enum": [
+        "riwayat",
+        "ayat",
+        "hadis",
+        "catatan",
+        "hukum"
+      ]
+    },
+    "DalilEntry": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DalilLine"
+          }
+        }
+      },
+      "required": [
+        "lines"
+      ],
+      "additionalProperties": false
+    },
+    "DalilLine": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/DalilLineKind"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "DalilLineKind": {
+      "type": "string",
+      "enum": [
+        "arab",
+        "teks",
+        "rujukan"
+      ]
+    }
+  }
+}

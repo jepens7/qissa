@@ -4,13 +4,16 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
+    "ajv": "^8.20.0",
+    "ts-json-schema-generator": "^2.9.0",
     "typescript": "~6.0.3"
   }
 }
