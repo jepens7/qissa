@@ -31,6 +31,18 @@ export function adaError(daftar: readonly Diagnostic[]): boolean {
   return daftar.some((d) => d.level === 'error');
 }
 
+/**
+ * Anotasi GitHub Actions untuk satu diagnostik; peringatan tampil kuning tanpa memerahkan job. Pesan
+ * dan properti di-escape sesuai format workflow command, supaya newline tidak memotong anotasi.
+ */
+export function anotasiGithub(d: Diagnostic): string {
+  const data = (s: string) =>
+    s.replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
+  const properti = (s: string) => data(s).replaceAll(':', '%3A').replaceAll(',', '%2C');
+  const jenis = d.level === 'error' ? 'error' : 'warning';
+  return `::${jenis} file=${properti(d.file)},line=${String(d.line)},title=${properti(d.code)}::${data(d.message)}`;
+}
+
 /** Urutan stabil untuk keluaran: berkas, baris, lalu kode. */
 export function urutkan(daftar: readonly Diagnostic[]): Diagnostic[] {
   return [...daftar].sort(
