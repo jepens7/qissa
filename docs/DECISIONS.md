@@ -64,7 +64,7 @@ Konsekuensi: pengecualian sementara atas aturan "hanya reviewed di produksi", de
 
 ## ADR-013 Nama aplikasi judi disimpan sebagai hash
 Konteks: L5 butuh daftar nama aplikasi judi, sedangkan CLAUDE.md melarang nama itu muncul di kode maupun fixture test.
-Keputusan: `packages/script/src/forbidden.ts` menyimpan SHA-256 dari nama yang dinormalkan (huruf kecil, spasi tunggal). Teks naskah dicocokkan per kata dan per frasa sampai tiga kata. Istilah umum ("deposit", "gacor" di luar "Gacor Family") dan pola (tautan, tag HTML, nominal taruhan) ditulis apa adanya. "slot" dan "withdraw" tidak dilarang karena dipakai story bible sebagai tema. Satu tes memindai berkas repo di luar `content/` dengan pencocok yang sama.
+Keputusan: `packages/script/src/forbidden.ts` menyimpan SHA-256 dari nama yang dinormalkan sama seperti teks naskah lewat `hashNama`: huruf kecil, tanda baca dan batas huruf-angka menjadi pemisah kata, kata dipisah satu spasi. Teks naskah dicocokkan per kata dan per frasa sampai tiga kata. Istilah umum ("deposit", "gacor" di luar "Gacor Family") dan pola (tautan, tag HTML, nominal taruhan) ditulis apa adanya. "slot" dan "withdraw" tidak dilarang karena dipakai story bible sebagai tema. Satu tes memindai berkas repo di luar `content/` dengan pencocok yang sama.
 Konsekuensi: daftar hash dimulai kosong. Menambah nama berarti menambah hash; cara menghitungnya ada di komentar `forbidden.ts`.
 
 ## ADR-014 `versi_konten` dihitung lewat berkas kunci
