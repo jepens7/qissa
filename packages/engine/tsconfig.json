@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Engine ikut ke browser. ES2021 adalah batas API yang tersedia di Android Chrome 90 (SRS NFR-6);
+    // tanpa lib DOM supaya window dan document tidak bisa dipakai (ARCHITECTURE §3).
+    "lib": ["ES2021"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": ["src", "test"]
+}

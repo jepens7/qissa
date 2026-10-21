@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Skrip dijalankan shell tiruan bash supaya sama di Windows (mesin penulis) dan Linux (CI, Docker).
+shellEmulator: true

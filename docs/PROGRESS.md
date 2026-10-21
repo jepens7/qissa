@@ -7,7 +7,7 @@ Pelacak tugas BACKLOG, keputusan per sesi, dan pertanyaan yang masih terbuka. Se
 | Tugas | Status | Bukti terima |
 | --- | --- | --- |
 | A0 Catat keputusan ke dokumen | selesai | QISSA-SCRIPT, ARCHITECTURE, DATA-CONTRACTS, SRS, PRD, dan CLAUDE.md diperbarui; ADR-010 sampai ADR-014 |
-| A1 Scaffold monorepo | belum | |
+| A1 Scaffold monorepo | selesai | `pnpm install`, `typecheck`, `lint`, `test`, dan `build` hijau pada kode kosong (Node 22.20, pnpm 11.17); aturan batas paket di ESLint diuji dengan pelanggaran sengaja; vite dipin ke 8.3.4 karena 8.3.5 baru berumur beberapa jam (`minimumReleaseAge` pnpm) |
 | A2 CI GitHub Actions | belum | |
 | A3 `.env.example` dan `lib/config.ts` | belum | |
 | B1 `types.ts` dan JSON Schema | belum | |
