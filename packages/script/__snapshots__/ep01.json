@@ -1,0 +1,612 @@
+{
+  "id": "ep01",
+  "nomor": 1,
+  "judul": "Tangkapan Layar",
+  "pov": "Raka",
+  "meta": {
+    "teaser": "Seorang teman mengirimkan tangkapan layar chat pribadi Nadia. Kamu belum membukanya. Tapi ibu jarimu sudah di atasnya.",
+    "sampul": "Kamu adalah Raka, 23 tahun, ngekos di Depok. Malam ini seorang teman mengirimkan sesuatu yang bukan untukmu.",
+    "durasi_menit": 5,
+    "rating": "17+",
+    "refleksi": "Kapan terakhir kali kamu melihat sesuatu yang bukan untukmu, dan apa yang kamu lakukan setelahnya?",
+    "bagikan": "Temen lu ngirim screenshot chat pribadi orang yang lu kenal. Caption-nya: “anak hijrah ternyata gitu ya”.\n\nLu bakal gimana?\nBuka · Tutup · Tegur\n\nQissa, Episode 1: Tangkapan Layar",
+    "berikutnya": "ep02"
+  },
+  "vars": [
+    "dibaca",
+    "menegur"
+  ],
+  "start": "pembuka",
+  "knots": {
+    "pembuka": [
+      {
+        "t": "view",
+        "name": "Gilang",
+        "initial": "G",
+        "sub": "online",
+        "pill": "Chat dengan Gilang",
+        "group": false
+      },
+      {
+        "t": "nar",
+        "text": "Selasa, 22.41. Kos Kukusan, Depok. Laptop masih menyala, pesanan sepatu belum dibungkus."
+      },
+      {
+        "t": "in",
+        "text": "rak"
+      },
+      {
+        "t": "in",
+        "text": "lu masih temenan sama nadia?"
+      },
+      {
+        "t": "out",
+        "text": "masih lah. knp"
+      },
+      {
+        "t": "in",
+        "text": "jangan kaget ya"
+      },
+      {
+        "t": "shot",
+        "state": "closed"
+      },
+      {
+        "t": "in",
+        "text": "anak hijrah ternyata gitu ya wkwk"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu belum membukanya. Tapi ibu jarimu sudah di atasnya."
+      },
+      {
+        "t": "in",
+        "text": "buka dulu baru komen"
+      },
+      {
+        "t": "choice",
+        "key": "p1",
+        "label": "Pilihan 1 dari 2",
+        "options": [
+          {
+            "text": "Buka dan baca semuanya",
+            "go": "baca",
+            "name": "Buka"
+          },
+          {
+            "text": "Tutup, jangan dibuka",
+            "go": "tutup",
+            "name": "Tutup"
+          },
+          {
+            "text": "Balas: “Kenapa lu kirim ke gue?”",
+            "go": "tegur",
+            "name": "Tegur"
+          }
+        ]
+      }
+    ],
+    "baca": [
+      {
+        "t": "set",
+        "v": "dibaca"
+      },
+      {
+        "t": "nar",
+        "text": "Empat gelembung. Dipotong rapi di bagian atas, seperti disengaja."
+      },
+      {
+        "t": "shot",
+        "state": "nadia-bram"
+      },
+      {
+        "t": "in",
+        "text": "udah liat kan"
+      },
+      {
+        "t": "in",
+        "text": "NGINEP anjir"
+      },
+      {
+        "t": "in",
+        "text": "gue sih ga nyangka. dia yang paling rajin ngingetin orang salat"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu membacanya tiga kali. Yang ketiga, kamu sadar kamu sedang mencari alasan untuk percaya."
+      },
+      {
+        "t": "in",
+        "text": "gue kirim ke grup sisa UI ga?"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu mengetik “jangan”. Menghapusnya. Mengetik “terserah”. Menghapusnya juga."
+      },
+      {
+        "t": "in",
+        "text": "ya udah gue pikir2 dulu"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu tidak menjawab. Dan kamu tidak bilang jangan."
+      },
+      {
+        "t": "go",
+        "to": "pagi"
+      }
+    ],
+    "tutup": [
+      {
+        "t": "nar",
+        "text": "Kamu menaruh HP menghadap ke bawah. Layar laptop jadi satu-satunya cahaya di kamar."
+      },
+      {
+        "t": "in",
+        "text": "lah"
+      },
+      {
+        "t": "in",
+        "text": "kok ga dibuka?"
+      },
+      {
+        "t": "in",
+        "text": "penting ini woy"
+      },
+      {
+        "t": "in",
+        "text": "lu takut ya wkwk"
+      },
+      {
+        "t": "in",
+        "text": "ya udah gue kirim ke yang lain aja"
+      },
+      {
+        "t": "nar",
+        "text": "Rasa penasaran itu tidak hilang. Tapi malam ini, bukan kamu yang membawanya. Besok, orang lain yang akan membawanya ke mana-mana."
+      },
+      {
+        "t": "view",
+        "name": "Dimas",
+        "initial": "D",
+        "sub": "online",
+        "pill": "Chat dengan Dimas",
+        "group": false
+      },
+      {
+        "t": "in",
+        "text": "lu dikirimin gilang jg?"
+      },
+      {
+        "t": "out",
+        "text": "iya. ga gue buka"
+      },
+      {
+        "t": "in",
+        "text": "sama. udah gue hapus"
+      },
+      {
+        "t": "in",
+        "text": "tp gilang ga akan berhenti di kita"
+      },
+      {
+        "t": "go",
+        "to": "pagi"
+      }
+    ],
+    "tegur": [
+      {
+        "t": "set",
+        "v": "menegur"
+      },
+      {
+        "t": "out",
+        "text": "Kenapa lu kirim ke gue?"
+      },
+      {
+        "t": "in",
+        "text": "ya biar lu tau aja orangnya kayak gimana"
+      },
+      {
+        "t": "in",
+        "text": "lu kan deket sama dia"
+      },
+      {
+        "t": "in",
+        "text": "atau lu masih suka? wkwk"
+      },
+      {
+        "t": "out",
+        "text": "Gue ga nanya dia gimana. Gue nanya lu ngapain nyebarin."
+      },
+      {
+        "t": "typing"
+      },
+      {
+        "t": "in",
+        "text": "santai"
+      },
+      {
+        "t": "in",
+        "text": "gue cuma kirim ke lu doang"
+      },
+      {
+        "t": "in",
+        "text": "ya udah gue hapus deh"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu tidak tahu apakah dia benar-benar menghapusnya. Kamu juga tidak membukanya. Malam itu kamu tidur, tapi tidak nyenyak."
+      },
+      {
+        "t": "go",
+        "to": "pagi"
+      }
+    ],
+    "pagi": [
+      {
+        "t": "nar",
+        "text": "Rabu, 07.52. KRL Depok–Sudirman, gerbong tengah, berdiri. Grup “Sisa UI 2021” sudah 46 pesan sejak subuh."
+      },
+      {
+        "t": "view",
+        "name": "Sisa UI 2021",
+        "initial": "S",
+        "sub": "12 anggota",
+        "pill": "Grup Sisa UI 2021",
+        "group": true
+      },
+      {
+        "t": "in",
+        "text": "ada yang mau cerita ga nih",
+        "from": "Tika"
+      },
+      {
+        "t": "in",
+        "text": "cerita apaan",
+        "from": "Gilang"
+      },
+      {
+        "t": "in",
+        "text": "lu kan yang paling tau",
+        "from": "Tika"
+      },
+      {
+        "t": "in",
+        "text": "udah woy",
+        "from": "Dimas"
+      },
+      {
+        "t": "in",
+        "text": "kenapa dim. gue salah nanya?",
+        "from": "Tika"
+      },
+      {
+        "t": "nar",
+        "text": "Nadia ada di grup itu. Nadia belum menulis apa-apa."
+      },
+      {
+        "t": "view",
+        "name": "Nadia",
+        "initial": "N",
+        "sub": "online",
+        "pill": "Chat dengan Nadia",
+        "group": false
+      },
+      {
+        "t": "in",
+        "text": "Rak."
+      },
+      {
+        "t": "in",
+        "text": "Lu di grup, kan. Dari tadi gue kayak lagi diomongin, tapi ga ada yang ngomong langsung."
+      },
+      {
+        "t": "in",
+        "text": "Lu tau sesuatu ga?"
+      },
+      {
+        "t": "nar",
+        "cases": [
+          {
+            "cond": "dibaca",
+            "text": "Kamu tahu persis apa yang mereka omongkan. Kamu bahkan hafal kalimatnya."
+          },
+          {
+            "text": "Kamu tahu ada sesuatu. Kamu hanya belum tahu isinya, dan sekarang itu terasa seperti keberuntungan."
+          }
+        ]
+      },
+      {
+        "t": "choice",
+        "key": "p2",
+        "label": "Pilihan 2 dari 2",
+        "options": [
+          {
+            "text": "Bilang ga tau",
+            "go": "akhir_gatau",
+            "name": "Ga tau"
+          },
+          {
+            "text": "Cerita semuanya",
+            "go": "akhir_cerita",
+            "name": "Cerita semuanya"
+          },
+          {
+            "text": "“Ketemu dulu yuk. Jangan di chat.”",
+            "go": "akhir_ketemu",
+            "name": "Ketemu dulu"
+          }
+        ]
+      }
+    ],
+    "akhir_gatau": [
+      {
+        "t": "out",
+        "text": "Ga tau, Nad. Gue juga baru bangun"
+      },
+      {
+        "t": "in",
+        "text": "Oke."
+      },
+      {
+        "t": "in",
+        "text": "Makasih ya."
+      },
+      {
+        "t": "nar",
+        "text": "Dibaca 07.58. “Makasih ya” dari Nadia selalu berarti dua hal. Kamu tidak yakin yang mana."
+      },
+      {
+        "t": "nar",
+        "text": "Kamis malam. Dua hari kemudian."
+      },
+      {
+        "t": "view",
+        "name": "Sisa UI 2021",
+        "initial": "S",
+        "sub": "11 anggota",
+        "pill": "Grup Sisa UI 2021",
+        "group": true
+      },
+      {
+        "t": "sys",
+        "text": "Nadia keluar dari grup"
+      },
+      {
+        "t": "view",
+        "name": "Nadia",
+        "initial": "N",
+        "sub": "terakhir dilihat hari ini",
+        "pill": "Chat dengan Nadia",
+        "group": false
+      },
+      {
+        "t": "in",
+        "text": "Tika bilang lu udah tau dari Selasa."
+      },
+      {
+        "t": "in",
+        "text": "Lu tau, kan."
+      },
+      {
+        "t": "in",
+        "text": "Dan lu baca.",
+        "cond": "dibaca"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu mengetik. Menghapus. Mengetik lagi. Layar HP padam sendiri sebelum kamu selesai."
+      },
+      {
+        "t": "go",
+        "to": "penutup"
+      }
+    ],
+    "akhir_cerita": [
+      {
+        "t": "out",
+        "text": "Ada screenshot chat lu sama Bram. Gilang yang nyebarin. Dari Selasa malem."
+      },
+      {
+        "t": "typing"
+      },
+      {
+        "t": "in",
+        "text": "Lu baca?"
+      },
+      {
+        "t": "branch",
+        "cases": [
+          {
+            "cond": "dibaca",
+            "to": "cerita_dibaca"
+          },
+          {
+            "cond": "menegur",
+            "to": "cerita_tegur"
+          },
+          {
+            "to": "cerita_tutup"
+          }
+        ]
+      }
+    ],
+    "cerita_dibaca": [
+      {
+        "t": "out",
+        "text": "Iya."
+      },
+      {
+        "t": "in",
+        "text": "Oke."
+      },
+      {
+        "t": "in",
+        "text": "Gue ga akan jelasin, Rak. Lu temen gue lima tahun. Kalau lu butuh penjelasan, berarti lu udah milih percaya yang mana."
+      },
+      {
+        "t": "nar",
+        "text": "Dia tidak marah. Itu yang paling berat."
+      },
+      {
+        "t": "go",
+        "to": "penutup"
+      }
+    ],
+    "cerita_tutup": [
+      {
+        "t": "out",
+        "text": "Enggak. Gue tutup."
+      },
+      {
+        "t": "in",
+        "text": "Makasih."
+      },
+      {
+        "t": "in",
+        "text": "Tapi orang lain baca."
+      },
+      {
+        "t": "out",
+        "text": "Iya."
+      },
+      {
+        "t": "in",
+        "text": "Gue harus ngomong sama Bram dulu."
+      },
+      {
+        "t": "nar",
+        "text": "Kamu tidak tahu apa yang akan dia katakan ke Bram. Kamu hanya tahu malam ini dia tidak menghadapinya sendirian. Dan itu bukan karena kamu."
+      },
+      {
+        "t": "go",
+        "to": "penutup"
+      }
+    ],
+    "cerita_tegur": [
+      {
+        "t": "out",
+        "text": "Enggak, ga gue buka. Gue tanya Gilang ngapain nyebar."
+      },
+      {
+        "t": "in",
+        "text": "Dan dia bilang apa?"
+      },
+      {
+        "t": "out",
+        "text": "Katanya cuma dikirim ke gue."
+      },
+      {
+        "t": "in",
+        "text": "Dia bohong. Tika nanya gue tadi subuh."
+      },
+      {
+        "t": "in",
+        "text": "Tapi makasih udah nanya dia. Lu satu-satunya yang nanya."
+      },
+      {
+        "t": "nar",
+        "text": "Satu-satunya. Kamu tidak tahu harus bangga atau sedih."
+      },
+      {
+        "t": "go",
+        "to": "penutup"
+      }
+    ],
+    "akhir_ketemu": [
+      {
+        "t": "out",
+        "text": "Ketemu dulu yuk. Jangan di chat."
+      },
+      {
+        "t": "in",
+        "text": "Stasiun Depok Baru, jam 6?"
+      },
+      {
+        "t": "out",
+        "text": "Oke"
+      },
+      {
+        "t": "nar",
+        "text": "Sore. Bangku di ujung peron, dekat warung kopi sachet. Kamu menceritakan semuanya dalam dua menit. Dia tidak menangis. Dia hanya bertanya satu hal."
+      },
+      {
+        "t": "in",
+        "text": "Lu baca?"
+      },
+      {
+        "t": "nar",
+        "cases": [
+          {
+            "cond": "dibaca",
+            "text": "Kamu bilang iya. Dia mengangguk, seperti sudah tahu sejak kamu duduk."
+          },
+          {
+            "text": "Kamu bilang enggak. Dia menatapmu lama, mencari kebohongan, dan tidak menemukannya."
+          }
+        ]
+      },
+      {
+        "t": "in",
+        "text": "Jangan bela gue di grup."
+      },
+      {
+        "t": "in",
+        "text": "Gue ga butuh dibela. Gue cuma butuh satu orang yang ga ikut."
+      },
+      {
+        "t": "nar",
+        "text": "KRL ke arah Bogor lewat. Dia pulang lebih dulu. Kamu duduk sampai warung kopinya tutup."
+      },
+      {
+        "t": "go",
+        "to": "penutup"
+      }
+    ],
+    "penutup": [
+      {
+        "t": "nar",
+        "text": "Malam itu, 23.58. Kamar kos. Layar HP-mu menyala sendiri."
+      },
+      {
+        "t": "notif",
+        "app": "Gacor Family",
+        "text": "14 pesan baru",
+        "time": "23.58"
+      },
+      {
+        "t": "nar",
+        "text": "Kamu menggesernya hilang. Seperti biasa."
+      },
+      {
+        "t": "end"
+      }
+    ]
+  },
+  "shots": {
+    "nadia-bram": {
+      "cap": "Tangkapan layar, chat Nadia",
+      "cut": "dipotong di sini",
+      "pov": "Nadia",
+      "lines": [
+        {
+          "from": "Bram",
+          "text": "Besok jadi ke rumah?"
+        },
+        {
+          "from": "Nadia",
+          "text": "InsyaAllah. Jam 7 ya, aku langsung dari kantor."
+        },
+        {
+          "from": "Bram",
+          "text": "Nginep aja kalau kemaleman. Kamar atas kosong."
+        },
+        {
+          "from": "Nadia",
+          "text": "Lihat nanti."
+        }
+      ]
+    }
+  }
+}
