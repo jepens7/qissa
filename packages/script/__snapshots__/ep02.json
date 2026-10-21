@@ -768,5 +768,139 @@
         "text": "PENIPU, kelebihan transfer ga dibalikin full"
       }
     }
+  },
+  "dalil": {
+    "status": "draft",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "sections": [
+      {
+        "kind": "riwayat",
+        "entries": [
+          {
+            "title": "Umar dan anak penjual susu",
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "Suatu malam Umar bin Khattab berkeliling Madinah dan mendengar dari balik dinding seorang ibu menyuruh putrinya mencampur susu dagangan dengan air. Putrinya menolak. Ibunya berkata Umar tidak akan melihat. Putrinya menjawab, “Kalau Umar tidak melihat, Tuhannya Umar melihat.” Umar lalu menikahkan gadis itu dengan putranya, Ashim; dari keturunan mereka lahir Umar bin Abdul Aziz."
+              },
+              {
+                "kind": "rujukan",
+                "text": "Sumber: riwayat sejarah, bukan hadis. Dinukil antara lain oleh Ibnul Jauzi; sanad perlu diverifikasi pereview."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ayat",
+        "entries": [
+          {
+            "title": "QS Al-Baqarah 2:188",
+            "lines": [
+              {
+                "kind": "arab",
+                "text": "وَلَا تَأْكُلُوا أَمْوَالَكُم بَيْنَكُم بِالْبَاطِلِ وَتُدْلُوا بِهَا إِلَى الْحُكَّامِ لِتَأْكُلُوا فَرِيقًا مِّنْ أَمْوَالِ النَّاسِ بِالْإِثْمِ وَأَنتُمْ تَعْلَمُونَ"
+              },
+              {
+                "kind": "teks",
+                "text": "“Dan janganlah kamu makan harta di antara kamu dengan jalan yang batil, dan (janganlah) kamu menyuap dengan harta itu kepada para hakim, dengan maksud agar kamu dapat memakan sebagian harta orang lain itu dengan jalan dosa, padahal kamu mengetahui.”"
+              },
+              {
+                "kind": "rujukan",
+                "text": "Terjemahan Kemenag"
+              }
+            ]
+          },
+          {
+            "title": "QS An-Nisa 4:58, bagian awal",
+            "lines": [
+              {
+                "kind": "arab",
+                "text": "إِنَّ اللَّهَ يَأْمُرُكُمْ أَن تُؤَدُّوا الْأَمَانَاتِ إِلَىٰ أَهْلِهَا"
+              },
+              {
+                "kind": "teks",
+                "text": "“Sungguh, Allah menyuruhmu menyampaikan amanat kepada yang berhak menerimanya…”"
+              },
+              {
+                "kind": "rujukan",
+                "text": "Terjemahan Kemenag"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "hadis",
+        "entries": [
+          {
+            "title": "Harta orang lain",
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "“Tidak halal harta seorang muslim kecuali dengan kerelaan hatinya.”"
+              },
+              {
+                "kind": "rujukan",
+                "text": "HR Ahmad dan ad-Daraquthni; dinilai sahih oleh al-Albani dalam Irwa’ul Ghalil no. 1459 (perlu verifikasi pereview)"
+              }
+            ]
+          },
+          {
+            "title": "Amanah kepada orang yang menyebalkan",
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "“Tunaikanlah amanah kepada orang yang mempercayaimu, dan janganlah mengkhianati orang yang mengkhianatimu.”"
+              },
+              {
+                "kind": "rujukan",
+                "text": "HR Abu Dawud no. 3535 dan at-Tirmidzi no. 1264; hasan (perlu verifikasi pereview)"
+              }
+            ]
+          },
+          {
+            "title": "Ihsan",
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "“Engkau beribadah kepada Allah seakan-akan engkau melihat-Nya; jika engkau tidak melihat-Nya, sesungguhnya Dia melihatmu.”"
+              },
+              {
+                "kind": "rujukan",
+                "text": "Bagian dari hadis Jibril, HR Muslim no. 8, sahih"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "catatan",
+        "entries": [
+          {
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "Kejujuran yang paling mahal adalah yang tidak dilihat siapa pun dan tidak dibalas siapa pun. Harta yang masuk karena kekeliruan orang lain adalah amanah, bukan rezeki, berapa pun kasarnya pemiliknya. Dan setengah kejujuran biasanya dibayar dengan harga penuh."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "hukum",
+        "entries": [
+          {
+            "lines": [
+              {
+                "kind": "teks",
+                "text": "Menguasai dana salah transfer yang diketahui bukan haknya diatur dalam UU Transfer Dana (UU No. 3 Tahun 2011, Pasal 85) dengan ancaman pidana. Bukan nasihat hukum; pasal dan redaksinya dicek pereview."
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

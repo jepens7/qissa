@@ -1,10 +1,11 @@
 // Antarmuka publik compiler dan linter (docs/ARCHITECTURE.md §4).
 import type { EpisodeAst } from './ast.ts';
-import { parseDalil, type DalilAst } from './dalil.ts';
-import { pengumpul, urutkan, type Diagnostic } from './diagnostics.ts';
+import { bentukDalil, parseDalil, type DalilAst } from './dalil.ts';
+import { adaError, pengumpul, urutkan, type Diagnostic } from './diagnostics.ts';
 import { emitEpisode, type IsiEpisode, type PetaPosisi } from './emit.ts';
 import type { DaftarKata } from './kata-terlarang.ts';
 import { parseEpisode } from './parse.ts';
+import type { Dalil, Episode } from './types.ts';
 import { validasiDalil, validasiEpisode } from './validate.ts';
 import { walkEpisode } from './walk.ts';
 
@@ -56,4 +57,30 @@ export function lintEpisode(sumber: string, dalil: string, opsi: OpsiLint): Diag
     ...periksaNaskah(sumber, opsi).diagnostik,
     ...periksaDalil(dalil, opsi).diagnostik,
   ]);
+}
+
+/** dalil.md menjadi struktur Dalil; null bila ada error (docs/DATA-CONTRACTS.md §4). */
+export function compileDalil(
+  sumber: string,
+  opsi: { file: string } & Pick<OpsiLint, 'wajibReview' | 'daftar'>,
+): { dalil: Dalil | null; diagnostics: Diagnostic[] } {
+  const { ast, diagnostik } = periksaDalil(sumber, { ...opsi, dalilFile: opsi.file });
+  return { dalil: adaError(diagnostik) ? null : bentukDalil(ast), diagnostics: diagnostik };
+}
+
+/**
+ * episode.qs.md dan dalil.md menjadi JSON episode yang disajikan; null bila ada error.
+ * Peringatan tidak menghalangi kompilasi.
+ */
+export function compileEpisode(
+  sumber: string,
+  opsi: OpsiLint & { dalil: string },
+): { episode: Episode | null; diagnostics: Diagnostic[] } {
+  const naskah = periksaNaskah(sumber, opsi);
+  const dalil = compileDalil(opsi.dalil, { ...opsi, file: opsi.dalilFile });
+  const diagnostics = urutkan([...naskah.diagnostik, ...dalil.diagnostics]);
+  if (adaError(diagnostics) || dalil.dalil === null) {
+    return { episode: null, diagnostics };
+  }
+  return { episode: { ...naskah.isi, dalil: dalil.dalil }, diagnostics };
 }
