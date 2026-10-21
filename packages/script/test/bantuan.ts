@@ -1,6 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { pengumpul, type Diagnostic } from '../src/diagnostics.ts';
 import type { EpisodeAst } from '../src/ast.ts';
+import { emitEpisode, type IsiEpisode, type PetaPosisi } from '../src/emit.ts';
 import { parseEpisode } from '../src/parse.ts';
 
 /** Membaca berkas relatif dari akar repo. */
@@ -18,10 +19,38 @@ export const DALIL = {
   ep02: 'content/episodes/ep02-transferan-nyasar/dalil.md',
 } as const;
 
+/** Setiap folder di content/episodes: id dari awalan folder, beserta path naskah dan dalil.md-nya. */
+export function episodeKonten(): { id: string; naskah: string; dalil: string }[] {
+  return readdirSync(new URL('../../../content/episodes/', import.meta.url), {
+    withFileTypes: true,
+  })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort()
+    .map((folder) => ({
+      id: folder.split('-')[0] ?? folder,
+      naskah: `content/episodes/${folder}/episode.qs.md`,
+      dalil: `content/episodes/${folder}/dalil.md`,
+    }));
+}
+
 export function parse(sumber: string): { ast: EpisodeAst; diagnostik: Diagnostic[] } {
   const { daftar, lapor } = pengumpul('uji.qs.md');
   const ast = parseEpisode(sumber, lapor);
   return { ast, diagnostik: daftar };
+}
+
+/** Parse lalu emit; diagnostik dari keduanya digabung. */
+export function kompilasi(sumber: string): {
+  ast: EpisodeAst;
+  isi: IsiEpisode;
+  posisi: PetaPosisi;
+  diagnostik: Diagnostic[];
+} {
+  const { daftar, lapor } = pengumpul('uji.qs.md');
+  const ast = parseEpisode(sumber, lapor);
+  const { isi, posisi } = emitEpisode(ast, lapor);
+  return { ast, isi, posisi, diagnostik: daftar };
 }
 
 /** Ringkasan diagnostik `kode@baris: pesan` supaya kegagalan tes mudah dibaca. */
