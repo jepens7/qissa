@@ -1,0 +1,15 @@
+# Prettier hanya untuk kode. Naskah Qissa Script terbaca sebagai Markdown oleh Prettier,
+# dan memformatnya mengubah makna: baris chat setelah `>` ikut menjadi narasi.
+content/
+docs/
+infra/prototype/
+*.md
+
+# Hasil generate: harus sama persis dengan keluaran compiler.
+apps/web/public/content/
+packages/script/__snapshots__/
+packages/script/schema/
+
+pnpm-lock.yaml
+dist/
+coverage/
