@@ -1,7 +1,8 @@
 import { Ajv, type SchemaObject } from 'ajv';
 import { describe, expect, test } from 'vitest';
-import type { Episode } from '../src/types.ts';
+import { compileEpisode } from '../src/compile.ts';
 import {
+  DALIL,
   FRONT_MATTER_UJI,
   NASKAH,
   bacaRepo,
@@ -13,28 +14,34 @@ import {
 const skema = JSON.parse(bacaRepo('packages/script/schema/episode.schema.json')) as SchemaObject;
 const validasi = new Ajv({ strict: true, allErrors: true }).compile(skema);
 
-// Dalil baru masuk JSON episode di B5; sampai saat itu skema diuji dengan dalil kosong.
-const DALIL_KOSONG: Episode['dalil'] = {
-  status: 'draft',
-  reviewed_by: null,
-  reviewed_at: null,
-  sections: [],
-};
-
-describe('golden snapshot (BACKLOG B3)', () => {
+describe('golden snapshot: JSON episode lengkap dengan dalil (BACKLOG B3, B5)', () => {
   // Semua folder di content/episodes, supaya episode baru otomatis mendapat snapshot.
   test.each(episodeKonten())(
     '$id sama dengan __snapshots__ dan lolos JSON Schema',
-    async ({ id, naskah }) => {
-      const { isi, diagnostik } = kompilasi(bacaRepo(naskah));
-      expect(ringkas(diagnostik)).toEqual([]);
-      expect(validasi({ ...isi, dalil: DALIL_KOSONG }), JSON.stringify(validasi.errors)).toBe(true);
+    async ({ id, naskah, dalil }) => {
+      const { episode, diagnostics } = compileEpisode(bacaRepo(naskah), {
+        file: naskah,
+        dalil: bacaRepo(dalil),
+        dalilFile: dalil,
+      });
+      expect(diagnostics.filter((d) => d.level === 'error')).toEqual([]);
+      expect(validasi(episode), JSON.stringify(validasi.errors)).toBe(true);
       // Perubahan naskah memperbarui snapshot lewat `pnpm test -u`; tinjau diff-nya di PR.
-      await expect(`${JSON.stringify(isi, null, 2)}\n`).toMatchFileSnapshot(
+      await expect(`${JSON.stringify(episode, null, 2)}\n`).toMatchFileSnapshot(
         `../__snapshots__/${id}.json`,
       );
     },
   );
+
+  test('compileEpisode mengembalikan null bila ada error', () => {
+    const { episode, diagnostics } = compileEpisode(`${FRONT_MATTER_UJI}== a\n-> hilang`, {
+      file: 'uji.qs.md',
+      dalil: bacaRepo(DALIL.ep01),
+      dalilFile: 'dalil.md',
+    });
+    expect(episode).toBeNull();
+    expect(ringkas(diagnostics)).toContain('L2@17: Knot “hilang” tidak ada.');
+  });
 });
 
 const naskah = (isi: string) => `${FRONT_MATTER_UJI}${isi}`;

@@ -2,7 +2,7 @@
 // baris dengan nomor baris. compileDalil membentuk struktur Dalil (docs/DATA-CONTRACTS.md §4) darinya.
 import type { Lapor } from './diagnostics.ts';
 import { bacaFrontMatter, type FieldFrontMatter, type SpesifikasiKey } from './front-matter.ts';
-import type { DalilSectionKind } from './types.ts';
+import type { Dalil, DalilLineKind, DalilSectionKind } from './types.ts';
 
 export const KEY_DALIL: Readonly<Record<string, SpesifikasiKey>> = {
   status: { teksBebas: false },
@@ -37,6 +37,47 @@ const BOM = String.fromCharCode(0xfeff);
  */
 export function adalahRujukan(teks: string): boolean {
   return /^(Terjemahan|Sumber)\b/.test(teks) || /\bHR\b/.test(teks);
+}
+
+/**
+ * Baris Arab: memuat huruf Arab dan tidak memuat huruf Latin. Harakat dan tanda waqaf tidak ikut
+ * menentukan, karena sebagian berskrip Inherited atau Common di Unicode.
+ */
+export function adalahArab(teks: string): boolean {
+  return /\p{Script=Arabic}/u.test(teks) && !/\p{Script=Latin}/u.test(teks);
+}
+
+function jenisBaris(teks: string, terakhir: boolean): DalilLineKind {
+  if (adalahArab(teks)) {
+    return 'arab';
+  }
+  return terakhir && adalahRujukan(teks) ? 'rujukan' : 'teks';
+}
+
+function teksFrontMatter(field: FieldFrontMatter | undefined): string | null {
+  return field?.nilai.kind === 'teks' ? field.nilai.teks : null;
+}
+
+/** Struktur Dalil (docs/DATA-CONTRACTS.md §4) dari AST; bagian tanpa entri dihilangkan. */
+export function bentukDalil(ast: DalilAst): Dalil {
+  const fm = ast.frontMatter;
+  return {
+    status: teksFrontMatter(fm.get('status')) === 'reviewed' ? 'reviewed' : 'draft',
+    reviewed_by: teksFrontMatter(fm.get('reviewed_by')),
+    reviewed_at: teksFrontMatter(fm.get('reviewed_at')),
+    sections: ast.bagian
+      .filter((b) => b.entries.length > 0)
+      .map((b) => ({
+        kind: b.kind,
+        entries: b.entries.map((e) => ({
+          ...(e.title === undefined ? {} : { title: e.title.text }),
+          lines: e.lines.map((l, i) => ({
+            kind: jenisBaris(l.text, i === e.lines.length - 1),
+            text: l.text,
+          })),
+        })),
+      })),
+  };
 }
 
 export function parseDalil(sumber: string, lapor: Lapor): DalilAst {
