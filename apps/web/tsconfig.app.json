@@ -8,5 +8,7 @@
     "jsx": "react-jsx",
     "types": ["vite/client"]
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  // Tes yang memakai API Node (mis. menjalankan vite build) diperiksa lewat tsconfig.node.json.
+  "exclude": ["test/**/*.node.test.ts"]
 }

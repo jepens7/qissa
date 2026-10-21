@@ -3,7 +3,8 @@
   "compilerOptions": {
     "lib": ["ES2023"],
     "module": "NodeNext",
+    "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "src/vite-env.d.ts", "test/**/*.node.test.ts"]
 }
