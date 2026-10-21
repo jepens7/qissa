@@ -32,6 +32,11 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test
+      # Aturan konten (QISSA-SCRIPT §6); peringatan muncul sebagai anotasi tanpa memerahkan job.
+      - run: pnpm qs lint
+      # Gagal bila naskah berubah tanpa memperbarui content/versi-konten.lock.json (ADR-014).
+      - run: pnpm qs compile --check
+      # Build menjalankan qs compile lalu vite build.
       - run: pnpm build
         env:
           # Variabel wajib apps/web (DATA-CONTRACTS §1); VITE_APP_VERSION diambil dari package.json.

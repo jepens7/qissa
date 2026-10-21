@@ -8,12 +8,13 @@
   },
   "scripts": {
     "dev": "pnpm --filter @qissa/web dev",
-    "build": "pnpm -r build",
+    "build": "pnpm qs compile && pnpm -r build",
     "test": "vitest run",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json",
-    "verify": "pnpm typecheck && pnpm lint && pnpm test"
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm qs lint",
+    "qs": "node packages/script/src/cli.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

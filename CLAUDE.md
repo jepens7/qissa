@@ -92,8 +92,8 @@ Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `
 - Perbarui bagian "Status saat ini" di bawah setiap kali milestone berubah.
 
 ## Status saat ini
-- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (job belum berjalan karena billing organisasi; diverifikasi di container Linux), konfigurasi lingkungan apps/web. Rinciannya di `docs/PROGRESS.md`.
-- Sedang: compiler dan linter `packages/script` (Epik B), engine, qissa.id live dengan Umami.
+- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (job belum berjalan karena billing organisasi; diverifikasi di container Linux), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Rinciannya di `docs/PROGRESS.md`.
+- Sedang: engine (Epik C), qissa.id live dengan Umami.
 - Belum: review ulama (badge masih "Belum direview"), Play Store, konten Ramadan, Episode 3.
 
 ## Rujukan eksternal

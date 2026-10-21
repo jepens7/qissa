@@ -1,0 +1,10 @@
+{
+  "ep01": {
+    "hash": "sha256:e97a9371a425955bbee810774017ae6fe20c6dcaa0e1e1d0851fb42dc7708cff",
+    "versi": "2026-10-21.1"
+  },
+  "ep02": {
+    "hash": "sha256:00746016bfc7a21c0c8116966e3e184bcfd436cc76e6730b2abd06ef590e678b",
+    "versi": "2026-10-21.1"
+  }
+}
