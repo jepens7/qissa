@@ -17,8 +17,10 @@ export type Diagnostic = {
 export type Lapor = (code: DiagnosticCode, line: number, message: string) => void;
 
 /** Pengumpul diagnostik untuk satu berkas. */
-export function pengumpul(file: string): { daftar: Diagnostic[]; lapor: Lapor } {
-  const daftar: Diagnostic[] = [];
+export function pengumpul(
+  file: string,
+  daftar: Diagnostic[] = [],
+): { daftar: Diagnostic[]; lapor: Lapor } {
   const lapor: Lapor = (code, line, message) => {
     daftar.push({ level: code.startsWith('W') ? 'warn' : 'error', code, file, line, message });
   };

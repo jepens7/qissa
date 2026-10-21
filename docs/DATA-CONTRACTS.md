@@ -36,7 +36,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 - `url` memuat `versi_konten`; berkas lama tetap disajikan selama 30 hari.
 - `rilis` tanggal ISO, zona waktu Asia/Jakarta; episode tersembunyi sebelum tanggal itu.
 - Produksi hanya memuat `review.status = "reviewed"`; CI menolak selainnya di branch `main`. Gerbang ini tersedia sebagai `qs lint --wajib-review` dan baru dinyalakan setelah review ulama ep01–02 selesai; sampai saat itu episode draft boleh tayang dengan badge "Belum direview ulama" (ADR-012).
-- `content/manifest.json` ditulis tangan: daftar dan urutan episode, `rilis`, dan `review`. `qs compile` menambahkan `rating` dari front matter dan `versi_konten` dari berkas kunci (§9), lalu menolak bila `nomor`, `judul`, `teaser`, `durasi_menit`, atau `review` berbeda dengan front matter dan `dalil.md` (QISSA-SCRIPT §6, L6 dan L7).
+- `content/manifest.json` ditulis tangan: daftar dan urutan episode, `rilis`, dan `review`. `qs compile` menambahkan `rating` dari front matter dan `versi_konten` dari berkas kunci (§9), lalu menolak bila `nomor`, `judul`, `teaser`, `durasi_menit`, atau `review` berbeda dengan front matter dan `dalil.md`, bila satu episode ditulis dua kali, atau bila `url` yang ditulis tangan tidak sama dengan berkas yang ditulis compile (QISSA-SCRIPT §6, S1, L6, dan L7).
 - Sampai M3a (minggu 5), `url` berbentuk `/content/epNN.json`. Nama berkas berversi dan retensi 30 hari menyusul bersama service worker.
 
 ## 3. Episode JSON
