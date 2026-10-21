@@ -8,7 +8,7 @@ Pelacak tugas BACKLOG, keputusan per sesi, dan pertanyaan yang masih terbuka. Se
 | --- | --- | --- |
 | A0 Catat keputusan ke dokumen | selesai | QISSA-SCRIPT, ARCHITECTURE, DATA-CONTRACTS, SRS, PRD, dan CLAUDE.md diperbarui; ADR-010 sampai ADR-014 |
 | A1 Scaffold monorepo | selesai | `pnpm install`, `typecheck`, `lint`, `test`, dan `build` hijau pada kode kosong (Node 22.20, pnpm 11.17); aturan batas paket di ESLint diuji dengan pelanggaran sengaja; vite dipin ke 8.3.4 karena 8.3.5 baru berumur beberapa jam (`minimumReleaseAge` pnpm) |
-| A2 CI GitHub Actions | belum | |
+| A2 CI GitHub Actions | selesai, bukti GitHub tertunda | `.github/workflows/ci.yml`: install `--frozen-lockfile`, typecheck, lint, test, build, `pnpm audit --prod --audit-level=high`, unggah artefak `web-dist`; action dipin ke SHA. GitHub menerima workflow-nya tetapi tidak menjalankan job karena billing organisasi tertahan. Sebagai gantinya, semua langkah `run:` dijalankan dari arsip commit di container `node:22-bookworm-slim` dan hijau. "Badge hijau di PR" dicatat setelah billing beres. Langkah `qs lint` dan `qs compile` ditambahkan di B6 |
 | A3 `.env.example` dan `lib/config.ts` | belum | |
 | B1 `types.ts` dan JSON Schema | belum | |
 | B2 Parser | belum | |
@@ -36,6 +36,7 @@ Default yang dipakai tanpa keberatan (rinciannya di QISSA-SCRIPT §1, §2, §4, 
 - Tes paritas membandingkan 9 jalur × 2 episode dengan `EPISODES` prototipe.
 
 ## Pertanyaan terbuka di luar Epik A dan B
+- GitHub Actions di organisasi `jepens7` tidak menjalankan job karena billing ("recent account payments have failed or your spending limit needs to be increased"). Setelah dibereskan pemilik: jalankan ulang CI di `main` dan catat hasilnya sebagai bukti A2. Sampai saat itu, setiap PR diverifikasi lokal dan di container Linux.
 - Versi format di JSON episode, supaya shell lama bisa menolak episode untuk engine yang lebih baru. Paling murah diputuskan sebelum service worker (M3a) dan APK pertama.
 - Blok "ulama berbeda" yang diwajibkan CONTENT-RULES §7 belum punya `kind` di struktur `Dalil` (DATA-CONTRACTS §4).
 - Tes jelajah engine (C2) perlu mengompilasi `content/`, jadi butuh pengecualian khusus tes atas aturan "engine hanya memakai tipe dari script" (ARCHITECTURE §3).
