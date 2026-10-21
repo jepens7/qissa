@@ -33,26 +33,29 @@ apps/android      → membungkus hasil build apps/web
 backend/pocketbase→ mandiri (migrasi dan hooks)
 ```
 
-Aturan: `engine` dan `script` tidak boleh mengimpor `react`, `window`, atau `document`. ESLint `no-restricted-imports` menegakkannya.
+Aturan: `engine` dan `script` tidak boleh mengimpor `react` atau memakai `window` dan `document`. ESLint (`no-restricted-imports` dan `no-restricted-globals`) serta tsconfig tanpa lib DOM menegakkannya. `apps/web` hanya boleh mengimpor `@qissa/script/types`.
 
 ## 4. packages/script
 
-Pipeline: `episode.qs.md` → `parseFrontMatter` → `tokenize` (per baris) → `parse` (knots, shots, blok kondisional, blok pilihan) → `validate` (aturan L1–L7, W1–W4) → `emit` (JSON `Episode`).
+Pipeline: `episode.qs.md` → `parseFrontMatter` → `tokenize` (per baris) → `parse` (knots, shots, blok kondisional, blok pilihan) → `validate` (aturan S1, L1–L7, W1–W4) → `emit` (JSON `Episode`, termasuk `dalil` dari `compileDalil`).
 
 Antarmuka:
 ```ts
-compileEpisode(source: string, opts: { file: string }): { episode: Episode; diagnostics: Diagnostic[] }
-lintEpisode(source: string, dalil: string, opts): Diagnostic[]
-compileDalil(source: string): Dalil           // front matter + bagian
+compileEpisode(source: string, opts: { file: string; dalil: string; dalilFile: string }): { episode: Episode | null; diagnostics: Diagnostic[] }  // null bila ada error
+lintEpisode(source: string, dalil: string, opts: { file: string; dalilFile: string; wajibReview?: boolean }): Diagnostic[]
+compileDalil(source: string, opts: { file: string }): { dalil: Dalil | null; diagnostics: Diagnostic[] }
+walkEpisode(episode: Episode): Jalur[]        // semua kombinasi pilihan; dipakai linter, tes paritas, qs walk
 type Diagnostic = { level: 'error' | 'warn'; code: string; file: string; line: number; message: string }
 ```
 
-CLI (`packages/script/src/cli.ts`):
-- `qs compile [--in content] [--out apps/web/public/content]`: kompilasi semua episode, tulis `epNN.json` dan `manifest.json` (menggabungkan `content/manifest.json` dengan `versi_konten` hasil hash isi).
-- `qs lint`: hanya diagnostik; keluar dengan kode 1 bila ada error.
-- `qs walk epNN`: cetak semua jalur (kombinasi pilihan) dan panjangnya; dipakai tes jelajah.
+Pemeriksaan lintas berkas (`berikutnya`, `id` dan nama folder, kesesuaian dengan `content/manifest.json`) dijalankan `qs lint` dan `qs compile` atas seluruh `content/`.
 
-Golden test: `content/**/episode.qs.md` dikompilasi dan dibandingkan dengan `packages/script/__snapshots__/epNN.json`. Perubahan naskah memperbarui snapshot lewat `pnpm test -u` dengan review di PR.
+CLI (`packages/script/src/cli.ts`) dijalankan langsung oleh Node lewat type stripping: `pnpm qs …` sama dengan `node packages/script/src/cli.ts …`. Path bawaan dihitung dari akar repo.
+- `qs compile [--in content] [--out apps/web/public/content] [--check]`: kompilasi semua episode. Bila ada error, tidak ada berkas yang ditulis dan keluar dengan kode 1. Menulis `epNN.json` dan `manifest.json`: gabungan `content/manifest.json`, `rating` dari front matter, dan `versi_konten` dari `content/versi-konten.lock.json` (DATA-CONTRACTS §9). `--check` tidak menulis apa pun dan gagal bila berkas kunci basi.
+- `qs lint [--wajib-review]`: hanya diagnostik; keluar dengan kode 1 bila ada error.
+- `qs walk epNN`: cetak semua jalur (nama pendek dipisah ` > `), panjangnya dalam baris terlihat, dan akhirnya; keluar dengan kode 1 bila ada jalur yang tidak sampai END.
+
+Golden test: `content/**/episode.qs.md` dikompilasi dan dibandingkan dengan `packages/script/__snapshots__/epNN.json` (lewat `toMatchFileSnapshot`). Perubahan naskah memperbarui snapshot lewat `pnpm test -u` dengan review di PR. Selama prototipe masih ada, tes paritas membandingkan setiap jalur ep01 dan ep02 dengan objek `EPISODES` di `infra/prototype/index.html`: urutan yang terlihat pembaca, objek baris per jalur, dan meta.
 
 ## 5. packages/engine
 
@@ -123,7 +126,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 7. Konten: pengiriman, versi, cache
 
-- Build menyalin hasil `qs compile` ke `apps/web/public/content/`: `manifest.json`, `ep01.<versi>.json`. Nama berkas memuat versi sehingga bisa `immutable`.
+- Build menyalin hasil `qs compile` ke `apps/web/public/content/`: `manifest.json`, `ep01.<versi>.json`. Nama berkas memuat versi sehingga bisa `immutable`. Sampai M3a (minggu 5), nama berkas belum memuat versi (`ep01.json`) dan app memakai `versi_konten` sebagai kunci cache.
 - `manifest.json` disajikan `Cache-Control: no-cache`; app memuatnya network-first dengan timeout 3 detik, lalu fallback ke salinan di Cache Storage.
 - Episode: cache-first. Bila manifest menunjuk versi baru, URL berubah, sehingga versi baru terunduh saat dibuka; versi lama dihapus oleh service worker saat aktivasi.
 - Penyaringan rilis: app menyembunyikan episode dengan `rilis` di masa depan (zona waktu Asia/Jakarta). JSON-nya tetap bisa diakses langsung; diterima untuk MVP (tidak ada spoiler yang bernilai).
@@ -152,7 +155,7 @@ Fase 2 (dirancang, tidak dibangun): `users` (OAuth Google), `progress`, `circles
 
 ## 12. Build, CI, deploy
 
-GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `test`, `qs lint`, `qs compile`, `vite build`, unggah artefak. Easypanel membangun image dari `infra/nginx/Dockerfile` setelah push ke `main` (produksi) atau `staging`. Tidak ada rahasia yang dibutuhkan untuk build web; konfigurasi runtime lewat `VITE_*` di `.env` per lingkungan.
+GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `test`, `qs lint`, `qs compile --check`, `qs compile`, `vite build`, `pnpm audit --prod --audit-level=high`, unggah artefak. Action pihak ketiga dipin ke SHA commit. Easypanel membangun image dari `infra/nginx/Dockerfile` setelah push ke `main` (produksi) atau `staging`. Tidak ada rahasia yang dibutuhkan untuk build web; konfigurasi runtime lewat `VITE_*` di `.env` per lingkungan.
 
 ## 13. Penanganan error dan observabilitas
 

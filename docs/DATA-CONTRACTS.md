@@ -12,9 +12,9 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 | `VITE_UMAMI_ID` | UUID | tidak |
 | `VITE_WA_CHANNEL` | `https://whatsapp.com/channel/…` | tidak |
 | `VITE_PB_URL` | `https://api.qissa.id` | tidak |
-| `VITE_APP_VERSION` | diisi CI dari tag | ya |
+| `VITE_APP_VERSION` | `1.2.0`; bila kosong diambil dari `version` di `apps/web/package.json` (tag `web-vX.Y.Z` mengikutinya) | tidak |
 
-`.env.example` dikomit; `.env` tidak.
+`.env.example` dikomit; `.env` tidak. `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia.
 
 ## 2. `manifest.json`
 
@@ -35,10 +35,12 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 - `versi`: naik bila bentuk manifest berubah; app menolak versi yang tidak dikenal dan memakai cache.
 - `url` memuat `versi_konten`; berkas lama tetap disajikan selama 30 hari.
 - `rilis` tanggal ISO, zona waktu Asia/Jakarta; episode tersembunyi sebelum tanggal itu.
-- Produksi hanya memuat `review.status = "reviewed"`; CI menolak selainnya di branch `main`.
+- Produksi hanya memuat `review.status = "reviewed"`; CI menolak selainnya di branch `main`. Gerbang ini tersedia sebagai `qs lint --wajib-review` dan baru dinyalakan setelah review ulama ep01–02 selesai; sampai saat itu episode draft boleh tayang dengan badge "Belum direview ulama" (ADR-012).
+- `content/manifest.json` ditulis tangan: daftar dan urutan episode, `rilis`, dan `review`. `qs compile` menambahkan `rating` dari front matter dan `versi_konten` dari berkas kunci (§9), lalu menolak bila `nomor`, `judul`, `teaser`, `durasi_menit`, atau `review` berbeda dengan front matter dan `dalil.md` (QISSA-SCRIPT §6, L6 dan L7).
+- Sampai M3a (minggu 5), `url` berbentuk `/content/epNN.json`. Nama berkas berversi dan retensi 30 hari menyusul bersama service worker.
 
 ## 3. Episode JSON
-Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/types.ts` adalah sumber kebenaran; JSON Schema dihasilkan darinya ke `packages/script/schema/episode.schema.json` untuk validasi di CI.
+Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/types.ts` adalah sumber kebenaran; JSON Schema dihasilkan darinya ke `packages/script/schema/episode.schema.json` untuk validasi di CI (ADR-011). JSON episode memuat `dalil` dengan struktur §4 di bawah, supaya kartu dalil ikut tersimpan offline bersama episodenya.
 
 ## 4. Dalil (hasil `compileDalil`)
 ```ts
@@ -83,5 +85,5 @@ API rules: create = siapa pun; list, view, update, delete = admin. Hook: batas 5
 
 ## 9. Versi
 - App shell: semver di `package.json` dan tag git `web-v1.2.0`; Android `versionName` sama, `versionCode` naik tiap rilis.
-- Konten: `versi_konten` per episode `YYYY-MM-DD.n` dihitung `qs compile` dari tanggal dan hash isi.
+- Konten: `versi_konten` per episode `YYYY-MM-DD.n`. `qs compile` menghitung SHA-256 dari JSON episode yang disajikan (termasuk `dalil`) dan mencatat hash serta versinya di `content/versi-konten.lock.json`. Bila hash berubah, versi baru memakai tanggal hari itu (WIB), dan `n` naik bila tanggalnya sama dengan versi sebelumnya. Berkas kunci dikomit bersama perubahan naskah; CI menjalankan `qs compile --check` (ADR-014).
 - Manifest `versi` hanya naik bila bentuknya berubah.
