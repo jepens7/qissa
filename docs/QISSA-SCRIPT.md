@@ -40,7 +40,7 @@ Front matter ditulis dalam subset YAML yang dibaca sama oleh YAML 1.2:
 - komentar `#` di awal baris atau setelah spasi;
 - `nomor` dan `durasi_menit` bilangan bulat positif; nilai lain dibaca sebagai teks.
 
-Nilai teks yang memuat `: ` atau ` #`, berakhir dengan `:`, atau diawali salah satu dari `- ? : , [ ] { } # & * ! | > ' " % @` atau backtick, wajib ditulis sebagai blok `|`. Compiler menolaknya dengan nomor baris (S1), bukan memotongnya diam-diam seperti YAML.
+Nilai teks yang memuat `: ` atau ` #`, berakhir dengan `:`, diawali salah satu dari `- ? : , [ ] { } # & * ! | > ' " % @` atau backtick, dibaca YAML sebagai null, boolean, atau angka (mis. `null`, `~`, `true`, `2026`), atau berlanjut ke baris berikutnya, wajib ditulis sebagai blok `|`. Compiler menolaknya dengan nomor baris (S1), bukan memotongnya atau mengubah jenisnya diam-diam seperti YAML. `nomor` dan `durasi_menit` ditulis langsung, bukan sebagai blok. Pembatas `---` harus berada di baris pertama dan boleh diikuti komentar `#`.
 
 Nama knot dan variabel: huruf kecil, angka, garis bawah, diawali huruf (`^[a-z][a-z0-9_]*$`). Nama shot boleh juga memakai `-`. Nama `constructor`, `prototype`, dan `__proto__` tidak boleh dipakai; `closed` dicadangkan untuk `@shot closed`, dan `else` serta `end` untuk blok `??`.
 
@@ -76,7 +76,7 @@ Kondisi (`cond`) hanya berupa nama variabel atau `!nama`. Tidak ada operator lai
 
 - Spasi di awal dan akhir baris diabaikan; CRLF dibaca sama dengan LF. `//` hanya berarti komentar bila berada di awal baris.
 - Jenis baris dikenali dari awalannya. Baris yang tidak cocok dengan awalan mana pun adalah `Nama: teks`, dipotong di `: ` yang pertama; nama dan teks tidak boleh kosong. Karena itu `Raka: [Foto: resi pengiriman] Udah dikirim ya bro` terbaca benar. Label lampiran `[…]` hanya dikenali di awal teks.
-- `@view` punya tepat empat field, `@notif` tiga, `@bank` dua, dipisah `|`. Direktif `@` lain ditolak.
+- `@view` punya tepat empat field, `@notif` tiga, `@bank` dua, dipisah `|`, dan tidak ada yang kosong. Direktif `@` lain ditolak. Kata kunci `?? else` dan `?? end` ditulis dengan huruf kecil.
 - Blok pilihan: baris label langsung diikuti tepat tiga opsi. `#NamaPendek` berlaku sampai akhir baris, jadi boleh berspasi (`#Ga tau`), dan unik dalam satu blok. Kunci (`#p1`, `#p2`, …) unik dalam satu episode.
 - Setiap knot diakhiri satu penutup: `-> knot`, `=> …`, blok pilihan, atau `-> END`. Knot tanpa penutup dan baris setelah penutup ditolak (L2).
 - `? cond:` dan `??` hanya boleh membungkus narasi, gelembung, atau `@sys`, karena hanya jenis itu yang punya `cond` di §4. Untuk berpindah knot secara bersyarat, pakai `=>`. Keduanya tidak boleh bersarang.
