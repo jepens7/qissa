@@ -39,7 +39,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - CNT-5 (wajib) Aplikasi memuat manifest dari server saat dibuka dan memakai cache bila offline; episode JSON diunduh saat dibuka pertama kali dan disimpan untuk offline.
 
 ### 3.2 Mesin cerita (ENG)
-- ENG-1 (wajib) `packages/engine` mengekspos `createStory(episode)` dengan API: `next()`, `choose(optionIndex)`, `snapshot(key)`, `restore(key)`, `state`, dan event `line` untuk setiap baris yang harus dirender. Tanpa ketergantungan DOM.
+- ENG-1 (wajib) `packages/engine` mengekspos `createStory(episode)` dengan API: `next()`, `choose(optionIndex)`, `snapshot(key)`, `restore(key)`, `state`, dan langkah `render` (nilai balik `next()`, ARCHITECTURE §5) untuk setiap baris yang harus dirender. Tanpa ketergantungan DOM.
 - ENG-2 (wajib) Mendukung jenis baris: view, nar (dengan cases), in, out (dengan attach), typing, shot, sys, notif, bank, set, go, branch, choice, end.
 - ENG-3 (wajib) Baris tak terlihat (view, set, go, branch) diproses otomatis sampai bertemu baris yang dirender atau pilihan.
 - ENG-4 (wajib) `typing` memblokir input selama durasi (950 ms; 350 ms bila reduced motion) lalu otomatis merender baris berikutnya.
@@ -70,7 +70,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - DLL-4 (wajib) Tidak ada elemen UI yang menilai pilihan pembaca di kartu dalil.
 
 ### 3.6 Refleksi (REF)
-- REF-1 (wajib) Satu pertanyaan per episode dari front matter naskah; textarea; tombol simpan menyimpan ke `localStorage` kunci `qissa.{ep}.refleksi`; tidak ada pengiriman ke server.
+- REF-1 (wajib) Satu pertanyaan per episode dari front matter naskah; textarea; tombol simpan menyimpan ke `localStorage` kunci `qissa.v1.{ep}.refleksi`; tidak ada pengiriman ke server.
 - REF-2 (wajib) Gagal menyimpan (storage penuh atau diblokir) ditangani dengan pesan, tanpa crash.
 
 ### 3.7 Bagikan dan masukan (SHR)
@@ -130,14 +130,7 @@ Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ id, nomor, judul, po
 ```
 
 ### 5.3 Penyimpanan perangkat (localStorage)
-| Kunci | Isi |
-| --- | --- |
-| `qissa.{ep}.akhir` | array nama akhir yang sudah dibaca |
-| `qissa.{ep}.jalur` | array jalur terakhir |
-| `qissa.{ep}.refleksi` | teks refleksi |
-| `qissa.ep1.poll` | jawaban poll landing |
-| `qissa.manifest` | salinan manifest terakhir |
-| `qissa.versi` | versi app shell yang terpasang |
+Kunci, tipe, dan contohnya ada di DATA-CONTRACTS §5 (awalan `qissa.v1.`): akhir yang sudah dibaca, jalur terakhir, dan refleksi per episode; jawaban poll landing; salinan manifest terakhir; versi app shell.
 
 ### 5.4 PocketBase (MVP)
 Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pertanyaan), `versi_app` (text), `dibuat` (auto). Aturan: create publik dengan rate limit, list dan view hanya admin. Tidak ada kolom identitas.

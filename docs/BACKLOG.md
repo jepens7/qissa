@@ -1,6 +1,6 @@
 # Backlog — Minggu 1 dan 2
 
-Tiap tugas punya kriteria terima. Urutan di dalam epik adalah urutan kerja. Claude Code: kerjakan satu tugas per branch, jalankan tes, lalu perbarui status di `CLAUDE.md` saat epik selesai.
+Tiap tugas punya kriteria terima. Urutan kerja minggu 1–2 mengikuti `docs/PLAN.md` §2. Claude Code: kerjakan satu tugas per branch, jalankan tes, lalu perbarui status di `CLAUDE.md` saat epik selesai.
 
 ## Epik A: Fondasi monorepo
 - A1 Scaffold pnpm workspaces: `apps/web`, `packages/script`, `packages/engine`; TypeScript strict; ESLint + Prettier; vitest. Terima: `pnpm install`, `pnpm typecheck`, `pnpm lint`, `pnpm test` berjalan hijau pada kode kosong.
