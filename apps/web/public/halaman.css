@@ -1,0 +1,72 @@
+/* Halaman statis /privasi dan /tentang (BACKLOG E2). Berkas di public/ tidak melewati bundel Vite, jadi warna
+   disalin dari src/styles/tokens.css (DESIGN-SYSTEM §1); ubah keduanya bersamaan. */
+:root {
+  color-scheme: light;
+  --screen: #f2f4f6;
+  --ink: #141a1f;
+  --ink-2: #4a545d;
+  --muted: #78848d;
+  --accent-ink: #1e3bae;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --screen: #10161c;
+    --ink: #e8edf1;
+    --ink-2: #b9c2cb;
+    --muted: #8e9aa5;
+    --accent-ink: #b4c2ff;
+  }
+}
+body {
+  margin: 0;
+  background: var(--screen);
+  color: var(--ink);
+  font-family:
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+}
+h1 {
+  font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.15;
+  margin: 12px 0 18px;
+}
+p {
+  margin: 0 0 14px;
+  color: var(--ink-2);
+}
+strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+a {
+  color: var(--accent-ink);
+}
+a:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.kembali a {
+  display: inline-block;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.tanggal {
+  color: var(--muted);
+  font-size: 13px;
+}
