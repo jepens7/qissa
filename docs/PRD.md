@@ -89,7 +89,7 @@ Semua episode melewati pipeline: kartu dilema, draf, baca Gen Z, review ulama, l
 
 ## 10. Platform dan distribusi
 
-- Web/PWA di qissa.id (Easypanel di VPS, nginx, konten statis).
+- Web/PWA di qissah.id (Easypanel di VPS, nginx, konten statis).
 - Android lewat Capacitor, Play Store, rating 17+; akun developer dan pendaftaran PSE sebelum Desember.
 - Distribusi: poll "Lu bakal gimana?" di TikTok dan Instagram, grup WhatsApp dan komunitas kampus, Saluran WhatsApp sebagai kanal retensi, kampanye Kitabisa sebelum Ramadan.
 
@@ -110,7 +110,7 @@ Inti gratis selamanya tanpa iklan. Qissa Plus (langganan, harga regional Rp19–
 
 ## 13. Jadwal
 
-Lihat `docs/ROADMAP.md`. Tonggak utama: qissa.id live (4 November), Tahap 0 selesai (18 November), Android closed testing (9 Desember), konten Ramadan dibekukan (20 Januari), rilis (7 Februari 2027).
+Lihat `docs/ROADMAP.md`. Tonggak utama: qissah.id live (4 November), Tahap 0 selesai (18 November), Android closed testing (9 Desember), konten Ramadan dibekukan (20 Januari), rilis (7 Februari 2027).
 
 ## 14. Pertanyaan terbuka
 

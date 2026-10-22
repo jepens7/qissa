@@ -35,7 +35,7 @@ export function cekEnv(env: Env): string[] {
 
   const siteUrl = teks(env, 'VITE_SITE_URL');
   if (siteUrl === '') {
-    masalah.push('VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissa.id.');
+    masalah.push('VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissah.id.');
   } else if (!URL_PENUH.test(siteUrl)) {
     masalah.push(`VITE_SITE_URL harus URL lengkap yang diawali https://, bukan “${siteUrl}”.`);
   }
