@@ -1,0 +1,9 @@
+# Konteks build infra/nginx/Dockerfile: sumber saja, tanpa hasil build lokal, git, dan .env lokal.
+.git
+**/node_modules
+**/dist
+coverage
+apps/web/public/content
+**/.env
+**/.env.*
+!**/.env.example
