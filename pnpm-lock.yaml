@@ -35,6 +35,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@qissa/engine':
+        specifier: workspace:*
+        version: link:../../packages/engine
       '@qissa/script':
         specifier: workspace:*
         version: link:../../packages/script

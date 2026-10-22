@@ -10,6 +10,7 @@
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "dependencies": {
+    "@qissa/engine": "workspace:*",
     "@qissa/script": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

@@ -1,18 +1,33 @@
-// Layar episode: memuat episode lewat lib/content.ts lalu menampilkan sampulnya. Pemutar cerita menyusul
-// di D3 (docs/PLAN.md).
+// Layar episode: memuat episode lewat lib/content.ts, lalu memutarnya. Gagal muat menampilkan "Coba lagi";
+// kesalahan konten dan format yang belum didukung ditangkap ErrorBoundary.
 import type { Episode, ManifestEpisode } from '@qissa/script/types';
 import { useCallback, useEffect, useState } from 'react';
-import { Cover } from '../../components/cover.tsx';
+import { ErrorBoundary } from '../../components/error-boundary.tsx';
 import { Header } from '../../components/header.tsx';
 import { muatEpisode, type Lingkungan } from '../../lib/content.ts';
 import { t } from '../../lib/i18n.ts';
+import { Pemutar } from './pemutar.tsx';
 
-type Props = { entri: ManifestEpisode; ling: Lingkungan; onHome: () => void };
+type Props = {
+  entri: ManifestEpisode;
+  sebelumnya: ManifestEpisode | undefined;
+  ling: Lingkungan;
+  onHome: () => void;
+};
 
 type Muat = { keadaan: 'memuat' } | { keadaan: 'galat' } | { keadaan: 'siap'; episode: Episode };
 
-export function Reader({ entri, ling, onHome }: Props) {
+function geraknDikurangi(): boolean {
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch {
+    return false;
+  }
+}
+
+export function Reader({ entri, sebelumnya, ling, onHome }: Props) {
   const [muat, setMuat] = useState<Muat>({ keadaan: 'memuat' });
+  const [reducedMotion] = useState(geraknDikurangi);
 
   const ambil = useCallback(() => {
     setMuat({ keadaan: 'memuat' });
@@ -30,6 +45,19 @@ export function Reader({ entri, ling, onHome }: Props) {
     ambil();
   }, [ambil]);
 
+  if (muat.keadaan === 'siap') {
+    return (
+      <ErrorBoundary onHome={onHome}>
+        <Pemutar
+          episode={muat.episode}
+          sebelumnya={sebelumnya}
+          penyimpanan={ling.penyimpanan}
+          reducedMotion={reducedMotion}
+          onHome={onHome}
+        />
+      </ErrorBoundary>
+    );
+  }
   return (
     <>
       <Header
@@ -50,14 +78,6 @@ export function Reader({ entri, ling, onHome }: Props) {
               {t('galat.coba')}
             </button>
           </section>
-        ) : null}
-        {muat.keadaan === 'siap' ? (
-          <Cover
-            kicker={t('sampul.kicker', { nomor: muat.episode.nomor })}
-            title={muat.episode.judul}
-            body={muat.episode.meta.sampul}
-            length={t('sampul.panjang', { menit: muat.episode.meta.durasi_menit, pilihan: 2 })}
-          />
         ) : null}
       </main>
     </>

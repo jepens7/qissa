@@ -72,7 +72,13 @@ export function App() {
     return entri === undefined ? (
       <main />
     ) : (
-      <Reader key={entri.id} entri={entri} ling={ling} onHome={keHome} />
+      <Reader
+        key={entri.id}
+        entri={entri}
+        sebelumnya={terbit.find((e) => e.nomor === entri.nomor - 1)}
+        ling={ling}
+        onHome={keHome}
+      />
     );
   }
   return (
