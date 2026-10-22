@@ -12,7 +12,12 @@
 6. Uji:
    - `curl -I https://qissah.id` menampilkan `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, dan `Cache-Control: no-cache`.
    - `https://qissah.id/healthz` menjawab `ok`; pasang pemantau uptime ke alamat ini (RUNBOOK).
-   - Buka qissah.id di HP, mainkan satu episode, lalu cek Umami → Events. Episode baru tampil mulai tanggal `rilis`-nya (zona Asia/Jakarta).
+   - Sesi uji analitik (BACKLOG E3), di HP pada atau setelah tanggal `rilis` (zona Asia/Jakarta; sebelum itu daftar episode kosong). Tujuh event SRS §8 muncul dari urutan ini:
+     1. Buka qissah.id, lalu tekan salah satu opsi poll: `poll`, lalu `mulai` saat Episode 1 terbuka.
+     2. Pilih di Pilihan 1 dan Pilihan 2: `pilihan` dua kali, lalu `selesai` di akhir.
+     3. Di layar akhir, tekan "Bagikan dilemanya" (`bagikan`) dan "Kirim masukan ke pembuat" (`masukan`); lembar bagikan boleh ditutup.
+     4. Tekan "Ikuti saluran" (`saluran`); kartu ini hanya ada bila `VITE_WA_CHANNEL` terisi.
+     5. Umami → Websites → qissah.id → Events: tujuh nama event terlihat. Screenshot dasbornya untuk PR E3.
 
 Uji lokal sebelum push (butuh Docker):
 
