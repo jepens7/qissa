@@ -13,7 +13,7 @@ Dokumen yang menjadi sumber kebenaran (baca sesuai kebutuhan tugas):
 - Aturan konten: `docs/CONTENT-RULES.md`; story bible lengkap: `docs/STORY-BIBLE.md`
 - Privasi, keamanan, CSP, kebijakan privasi: `docs/PRIVACY-SECURITY.md`
 - Keputusan arsitektur: `docs/DECISIONS.md`
-- Jadwal: `docs/ROADMAP.md`; tugas minggu 1–2 dengan kriteria terima: `docs/BACKLOG.md`
+- Jadwal: `docs/ROADMAP.md`; tugas minggu 1–2 dengan kriteria terima: `docs/BACKLOG.md`; urutan dan cara pengerjaannya: `docs/PLAN.md`
 - Operasional dan insiden: `docs/RUNBOOK.md`; checklist rilis: `docs/RELEASE.md`
 - Progres tugas, keputusan per sesi, dan pertanyaan terbuka: `docs/PROGRESS.md`
 
@@ -93,7 +93,7 @@ Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `
 
 ## Status saat ini
 - Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (job belum berjalan karena billing organisasi; diverifikasi di container Linux), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Rinciannya di `docs/PROGRESS.md`.
-- Sedang: engine (Epik C), qissa.id live dengan Umami.
+- Sedang: tindak lanjut Epik B, lalu engine (Epik C), apps/web (Epik D), dan qissa.id live dengan Umami (Epik E), menurut `docs/PLAN.md`.
 - Belum: review ulama (badge masih "Belum direview"), Play Store, konten Ramadan, Episode 3.
 
 ## Rujukan eksternal

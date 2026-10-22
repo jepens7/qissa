@@ -33,7 +33,7 @@ apps/android      → membungkus hasil build apps/web
 backend/pocketbase→ mandiri (migrasi dan hooks)
 ```
 
-Aturan: `engine` dan `script` tidak boleh mengimpor `react` atau memakai `window` dan `document`. ESLint (`no-restricted-imports` dan `no-restricted-globals`) serta tsconfig tanpa lib DOM menegakkannya. `apps/web` hanya boleh mengimpor `@qissa/script/types`.
+Aturan: `engine` dan `script` tidak boleh mengimpor `react` atau memakai `window` dan `document`. ESLint (`no-restricted-imports` dan `no-restricted-globals`) serta tsconfig tanpa lib DOM menegakkannya. `apps/web` hanya boleh mengimpor `@qissa/script/types`. Pengecualian satu-satunya: tes engine dan tes Node apps/web membaca golden snapshot `packages/script/__snapshots__/*.json` dengan `node:fs` (ADR-016).
 
 ## 4. packages/script
 
@@ -92,7 +92,7 @@ Perilaku:
 - Snapshot menyimpan `StoryState` penuh termasuk `rendered`. UI menyimpan daftar item yang dirender; saat `restore`, UI memotong daftarnya ke `rendered` dari snapshot. Dengan begitu tidak ada HTML yang disimpan.
 - Semua kesalahan konten (knot tidak ada) melempar `StoryContentError` dengan nama knot; UI menampilkannya di error boundary. Dalam praktik ini tidak terjadi karena compiler menolaknya.
 
-Tes: setiap jenis baris; `cond` dan `cases`; branch default; snapshot/restore; tes jelajah untuk semua episode di `content/` (semua kombinasi pilihan mencapai `end`).
+Tes: setiap jenis baris; `cond` dan `cases`; branch default; snapshot/restore; tes jelajah untuk semua episode di `content/` (semua kombinasi pilihan mencapai `end`), dengan JSON dari golden snapshot packages/script (ADR-016).
 
 ## 6. apps/web
 
