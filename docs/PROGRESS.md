@@ -24,7 +24,7 @@ Urutan sesuai `docs/PLAN.md` §2. Status: belum, sedang, menunggu (butuh keputus
 | Tugas | Status | Bukti terima |
 | --- | --- | --- |
 | T1 Bukti CI A2 di `main` | terblokir | Rerun CI `main` 22 Oktober masih ditolak GitHub: "recent account payments have failed or your spending limit needs to be increased". Repo privat milik organisasi `jepens7`; billing organisasi perlu dicek |
-| T2 `content:` rapikan W1 ep02 | belum | Pemilik memilih opsi "pil waktu di penutup" (diuji di salinan `content/`: 0 error, 0 peringatan, 9 jalur END) |
+| T2 `content:` rapikan W1 ep02 | selesai | Opsi pilihan pemilik: `@sys Senin, 03.10` membuka `penutup` (narasinya menjadi “Gelap. Lalu layar HP-mu menyala.”), pil “Chat dengan Dion” di `nanti_dipakai`, dan pil “Komentar dinonaktifkan” di `nanti_sebagian`. `qs lint` 0 error dan 0 peringatan; `qs walk ep02` 9 jalur END (47–59 baris terlihat); `EPISODES` prototipe disamakan dan tes paritas lulus; golden snapshot ep02 hanya berubah di tiga tempat itu; `versi_konten` ep02 naik ke `2026-10-22.1` |
 | T3 Daftar L5 dan W4 dari riset | sedang | Riset dua sudut dan verifikasi adversarial selesai: 15 nama aplikasi judi (35 bentuk ternormalisasi) dan 16 kata ketuaan (19 ejaan) lolos |
 | T4 `format: 1` di JSON episode | belum | |
 | C1 `createStory` | belum | |

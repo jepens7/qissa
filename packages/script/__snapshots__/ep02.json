@@ -688,6 +688,14 @@
     ],
     "nanti_dipakai": [
       {
+        "t": "view",
+        "name": "Dion",
+        "initial": "D",
+        "sub": "online",
+        "pill": "Chat dengan Dion",
+        "group": false
+      },
+      {
         "t": "nar",
         "text": "Malam. Kos. Kamu mengetik pesan untuk Dion: “Bro, kayaknya lu salah transfer minggu lalu.” Kamu menghapusnya. Mengetik lagi. Menghapus lagi."
       },
@@ -732,6 +740,10 @@
         "text": "Malam. Kamu mematikan kolom komentar di akun jualanmu. Butuh dua ketukan."
       },
       {
+        "t": "sys",
+        "text": "Komentar dinonaktifkan"
+      },
+      {
         "t": "nar",
         "text": "Mematikan komentar tidak mematikan orang yang sudah membacanya. Dan Rp1.250.000 itu masih bukan milikmu."
       },
@@ -742,8 +754,12 @@
     ],
     "penutup": [
       {
+        "t": "sys",
+        "text": "Senin, 03.10"
+      },
+      {
         "t": "nar",
-        "text": "Senin, 03.10. Gelap. Lalu layar HP-mu menyala."
+        "text": "Gelap. Lalu layar HP-mu menyala."
       },
       {
         "t": "notif",

@@ -46,7 +46,7 @@ describe('walkEpisode pada naskah di content/', () => {
   test('panjang setiap jalur dalam baris terlihat (W3, qs walk): typing tidak dihitung', () => {
     // Jalur ep01 yang memuat @typing (Cerita semuanya dan Tegur) ikut diuji di sini.
     expect(jalurDari(NASKAH.ep01).map(panjang)).toEqual([50, 44, 47, 51, 48, 49, 48, 45, 46]);
-    expect(jalurDari(NASKAH.ep02).map(panjang)).toEqual([48, 58, 45, 49, 52, 49, 48, 52, 46]);
+    expect(jalurDari(NASKAH.ep02).map(panjang)).toEqual([49, 59, 47, 50, 53, 50, 49, 53, 48]);
   });
 });
 

@@ -59,6 +59,9 @@ function versiDiKunci(konten: string): Record<string, string | undefined> {
   return Object.fromEntries(Object.entries(kunci).map(([id, e]) => [id, e.versi]));
 }
 
+/** Versi di berkas kunci repo; tes membandingkan dengannya, bukan dengan tanggal tertulis. */
+const VERSI_REPO = versiDiKunci(join(AKAR, 'content'));
+
 describe('qs walk (BACKLOG B6)', () => {
   test('ep02 mencetak 9 jalur yang semuanya berakhir di END', () => {
     const { kode, keluar } = qs(['walk', 'ep02']);
@@ -66,7 +69,7 @@ describe('qs walk (BACKLOG B6)', () => {
     const baris = keluar.trimEnd().split('\n');
     expect(baris[0]).toBe('ep02 Transferan Nyasar: 9 jalur');
     expect(baris.filter((b) => b.endsWith('  END'))).toHaveLength(9);
-    expect(baris).toContain('  2  Pakai dulu > Sebenernya         58 baris  END');
+    expect(baris).toContain('  2  Pakai dulu > Sebenernya         59 baris  END');
     expect(baris.at(-1)).toBe('Semua jalur berakhir di END.');
   });
 
@@ -110,25 +113,29 @@ describe('qs walk (BACKLOG B6)', () => {
 });
 
 describe('qs lint', () => {
-  test('content/ apa adanya: tanpa error, tiga peringatan, keluar 0', () => {
+  test('content/ apa adanya: tanpa error dan tanpa peringatan, keluar 0', () => {
     const { kode, keluar } = qs(['lint']);
     expect(kode).toBe(0);
-    expect(keluar).toContain(
-      'content/episodes/ep02-transferan-nyasar/episode.qs.md:195  W1  4 kartu narasi berturut-turut',
-    );
-    expect(keluar.trimEnd().split('\n').at(-1)).toBe('0 error, 3 peringatan.');
+    expect(keluar).toBe('0 error, 0 peringatan.\n');
   });
 
-  test('di GitHub Actions peringatan juga dicetak sebagai anotasi', () => {
-    expect(qs(['lint'], { GITHUB_ACTIONS: 'true' }).keluar).toContain(
-      '::warning file=content/episodes/ep02-transferan-nyasar/episode.qs.md,line=195,title=W1::4 kartu narasi',
+  test('peringatan tidak membuat lint keluar 1; di GitHub Actions dicetak sebagai anotasi', () => {
+    const konten = salinKonten();
+    ubahBerkas(join(konten, NASKAH_EP01), (s) =>
+      s.replace('Gilang: lu masih temenan sama nadia?', `Gilang: ${'a'.repeat(161)}`),
     );
+    const { kode, keluar } = qs(['lint', '--in', konten], { GITHUB_ACTIONS: 'true' });
+    expect(kode).toBe(0);
+    expect(keluar).toMatch(
+      /::warning file=[^,]*episode\.qs\.md,line=36,title=W2::Gelembung 161 karakter/,
+    );
+    expect(keluar.trimEnd().split('\n').at(-1)).toBe('0 error, 1 peringatan.');
   });
 
   test('--wajib-review menolak episode draft dan keluar 1', () => {
     const { kode, keluar } = qs(['lint', '--wajib-review']);
     expect(kode).toBe(1);
-    expect(keluar.trimEnd().split('\n').at(-1)).toBe('2 error, 3 peringatan.');
+    expect(keluar.trimEnd().split('\n').at(-1)).toBe('2 error, 0 peringatan.');
   });
 
   test('error di naskah membuat lint keluar 1', () => {
@@ -174,7 +181,7 @@ describe('qs compile', () => {
       durasi_menit: 5,
       rating: '17+',
       url: '/content/ep01.json',
-      versi_konten: '2026-10-21.1',
+      versi_konten: VERSI_REPO['ep01'],
       review: { status: 'draft', oleh: null, tanggal: null },
       rilis: '2026-11-04',
     });
@@ -229,12 +236,12 @@ describe('qs compile', () => {
       JSON.stringify({ ...data, episodes: data.episodes.filter((e) => e.id !== 'ep02') }, null, 2),
     );
     expect(qs(['compile', '--in', konten, '--out', folderSementara()]).kode).toBe(0);
-    expect(versiDiKunci(konten)['ep02']).toBe('2026-10-21.1');
+    expect(versiDiKunci(konten)['ep02']).toBe(VERSI_REPO['ep02']);
 
     ubahBerkas(join(konten, NASKAH_EP02), (s) => s.replace('Senin, 19.20.', 'Senin, 19.21.'));
     writeFileSync(pathManifest, asli);
     expect(qs(['compile', '--in', konten, '--out', folderSementara()]).kode).toBe(0);
-    expect(versiDiKunci(konten)['ep02']).not.toBe('2026-10-21.1');
+    expect(versiDiKunci(konten)['ep02']).not.toBe(VERSI_REPO['ep02']);
   });
 
   test('berkas kunci yang rusak: pesan berbahasa Indonesia yang menyebut berkasnya', () => {
@@ -279,8 +286,8 @@ describe('qs compile', () => {
       readFileSync(join(konten, 'versi-konten.lock.json'), 'utf8'),
     ) as Record<string, { versi: string }>;
     expect(kunci['ep01']?.versi).toMatch(/^\d{4}-\d{2}-\d{2}\.\d+$/);
-    expect(kunci['ep01']?.versi).not.toBe('2026-10-21.1');
-    expect(kunci['ep02']?.versi).toBe('2026-10-21.1');
+    expect(kunci['ep01']?.versi).not.toBe(VERSI_REPO['ep01']);
+    expect(kunci['ep02']?.versi).toBe(VERSI_REPO['ep02']);
   });
 
   test('ada error: tidak ada berkas yang ditulis dan keluar 1', () => {

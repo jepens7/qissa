@@ -30,14 +30,8 @@ const kesalahan = (p: Proyek, opsi = {}) =>
     .map((d) => `${d.code} ${d.file}:${d.line}: ${d.message}`);
 
 describe('lintProyek', () => {
-  test('content/ apa adanya: tanpa error, hanya tiga peringatan W1 di ep02', () => {
-    const { diagnostik } = lintProyek(proyek());
-    expect(diagnostik.filter((d) => d.level === 'error')).toEqual([]);
-    expect(diagnostik.map((d) => `${d.code} ${d.file}:${d.line}`)).toEqual([
-      `W1 ${NASKAH.ep02}:195`,
-      `W1 ${NASKAH.ep02}:207`,
-      `W1 ${NASKAH.ep02}:211`,
-    ]);
+  test('content/ apa adanya: tanpa diagnostik', () => {
+    expect(lintProyek(proyek()).diagnostik).toEqual([]);
   });
 
   test('L6: id tidak sama dengan awalan folder', () => {
