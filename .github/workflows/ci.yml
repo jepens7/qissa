@@ -40,7 +40,7 @@ jobs:
       - run: pnpm build
         env:
           # Variabel wajib apps/web (DATA-CONTRACTS §1); VITE_APP_VERSION diambil dari package.json.
-          VITE_SITE_URL: https://qissa.id
+          VITE_SITE_URL: https://qissah.id
           VITE_CONTENT_BASE: /content
       # PRIVACY-SECURITY §3: dependensi dipindai di CI.
       - run: pnpm audit --prod --audit-level=high --ignore-registry-errors

@@ -46,14 +46,14 @@ describe('vite build', () => {
   test('gagal dengan pesan jelas bila VITE_SITE_URL kosong', async () => {
     writeFileSync(join(envDir, '.env'), 'VITE_SITE_URL=\nVITE_CONTENT_BASE=/content\n');
     await expect(jalankanBuild()).rejects.toThrow(
-      'VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissa.id.',
+      'VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissah.id.',
     );
   }, 30_000);
 
   test('berhasil bila variabel wajib terisi', async () => {
     writeFileSync(
       join(envDir, '.env'),
-      'VITE_SITE_URL=https://qissa.id\nVITE_CONTENT_BASE=/content\n',
+      'VITE_SITE_URL=https://qissah.id\nVITE_CONTENT_BASE=/content\n',
     );
     await expect(jalankanBuild()).resolves.toBeDefined();
   }, 30_000);

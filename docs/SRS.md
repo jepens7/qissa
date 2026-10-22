@@ -21,7 +21,7 @@ Sistem terdiri dari: (a) konten episode dalam Qissa Script yang dikompilasi menj
 ```
 content/*.qs.md ──(qs compile)──> content JSON ──┐
                                                  ▼
-  nginx (Easypanel, qissa.id) ── serves ── apps/web (PWA) ──> Umami (events)
+  nginx (Easypanel, qissah.id) ── serves ── apps/web (PWA) ──> Umami (events)
                                    │                └──> PocketBase (feedback, fase 2: akun)
                                    └── /content/manifest.json + /content/epNN.json
   apps/android (Capacitor) = apps/web + WebView + plugin (share, push nanti)
@@ -89,10 +89,10 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - PWA-4 (wajib) Semua fitur inti bekerja tanpa jaringan untuk episode yang sudah pernah dibuka.
 
 ### 3.10 Android (AND)
-- AND-1 (wajib) Capacitor membungkus apps/web; `appId` `id.qissa.app`; target Android 8.0 ke atas.
-- AND-2 (wajib) Plugin: Share (native share sheet), App (deep link `qissa.id/#epNN`), StatusBar (warna mengikuti tema).
+- AND-1 (wajib) Capacitor membungkus apps/web; `appId` `id.qissah.app`; target Android 8.0 ke atas.
+- AND-2 (wajib) Plugin: Share (native share sheet), App (deep link `qissah.id/#epNN`), StatusBar (warna mengikuti tema).
 - AND-3 (sebaiknya) Push notification FCM untuk pengingat harian Ramadan; opt-in eksplisit; tidak ada notifikasi rasa bersalah.
-- AND-4 (wajib) Play Store listing: rating konten 17+, kebijakan privasi di qissa.id/privasi, deklarasi data (tidak ada data yang dikumpulkan selain analitik agregat).
+- AND-4 (wajib) Play Store listing: rating konten 17+, kebijakan privasi di qissah.id/privasi, deklarasi data (tidak ada data yang dikumpulkan selain analitik agregat).
 - AND-5 (wajib) Pendaftaran PSE Komdigi sebelum rilis produksi.
 
 ### 3.11 Analitik (ANL)
@@ -139,8 +139,8 @@ Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pert
 `users` (auth Google), `progress` (user, episode, akhir[], jalur, updated), `circles` dan `circle_members` (halaqah), `subscriptions` (status langganan dari webhook). Refleksi tetap di perangkat kecuali pengguna memilih sinkronisasi terenkripsi (keputusan terpisah).
 
 ## 6. Antarmuka eksternal
-- Konten: `https://qissa.id/content/manifest.json` dan `/content/epNN.json`, `Cache-Control: no-cache` untuk manifest, `max-age=31536000, immutable` untuk JSON berversi (nama berkas memuat versi).
-- Umami: skrip `https://umami.qissa.id/script.js` dengan `data-website-id`; event lewat `umami.track(nama, data)`.
+- Konten: `https://qissah.id/content/manifest.json` dan `/content/epNN.json`, `Cache-Control: no-cache` untuk manifest, `max-age=31536000, immutable` untuk JSON berversi (nama berkas memuat versi).
+- Umami: skrip `https://umami.qissah.id/script.js` dengan `data-website-id`; event lewat `umami.track(nama, data)`.
 - Saluran WhatsApp: URL dari konfigurasi.
 - Play Store dan FCM (nanti).
 
@@ -176,7 +176,7 @@ Metrik turunan: completion = selesai ÷ mulai; share rate = bagikan ÷ selesai; 
 
 ## 10. Deployment dan rilis
 - Build: GitHub Actions menjalankan typecheck, lint, test, `qs lint`, `qs compile`, `vite build`, lalu Easypanel membangun image dari `infra/nginx/Dockerfile` (konten dan app shell dalam satu image).
-- Staging: `staging.qissa.id` dari branch `staging` dengan manifest yang memuat episode draft.
+- Staging: `staging.qissah.id` dari branch `staging` dengan manifest yang memuat episode draft.
 - Produksi: branch `main`; manifest hanya episode `reviewed` (gerbang `qs lint --wajib-review` dinyalakan setelah review ep01–02; ADR-012).
 - Versi: app shell `MAJOR.MINOR.PATCH`; konten `YYYY-MM-DD.n` per episode.
 - Android: build lokal `pnpm cap:sync` lalu Android Studio; internal testing → closed testing → production. Pendaftaran PSE Komdigi sebelum production.

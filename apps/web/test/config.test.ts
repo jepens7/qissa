@@ -2,9 +2,9 @@ import { describe, expect, test } from 'vitest';
 import { ConfigError, cekEnv, parseConfig } from '../src/lib/config.ts';
 
 const LENGKAP = {
-  VITE_SITE_URL: 'https://qissa.id/',
+  VITE_SITE_URL: 'https://qissah.id/',
   VITE_CONTENT_BASE: '/content/',
-  VITE_UMAMI_SCRIPT: 'https://umami.qissa.id/script.js',
+  VITE_UMAMI_SCRIPT: 'https://umami.qissah.id/script.js',
   VITE_UMAMI_ID: '',
   VITE_WA_CHANNEL: '  ',
 };
@@ -12,9 +12,9 @@ const LENGKAP = {
 describe('parseConfig', () => {
   test('membaca variabel lengkap dan membuang garis miring di akhir', () => {
     expect(parseConfig(LENGKAP, '0.1.0')).toEqual({
-      siteUrl: 'https://qissa.id',
+      siteUrl: 'https://qissah.id',
       contentBase: '/content',
-      umamiScript: 'https://umami.qissa.id/script.js',
+      umamiScript: 'https://umami.qissah.id/script.js',
       umamiId: null,
       waChannel: null,
       pbUrl: null,
@@ -39,21 +39,21 @@ describe('parseConfig', () => {
 describe('cekEnv', () => {
   test('melaporkan semua masalah sekaligus', () => {
     expect(cekEnv({})).toEqual([
-      'VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissa.id.',
+      'VITE_SITE_URL kosong; isi dengan URL situs, misalnya https://qissah.id.',
       'VITE_CONTENT_BASE kosong; isi dengan lokasi konten, misalnya /content.',
     ]);
   });
 
   test('menolak URL situs tanpa skema dan lokasi konten relatif', () => {
-    expect(cekEnv({ VITE_SITE_URL: 'qissa.id', VITE_CONTENT_BASE: 'content' })).toEqual([
-      'VITE_SITE_URL harus URL lengkap yang diawali https://, bukan “qissa.id”.',
+    expect(cekEnv({ VITE_SITE_URL: 'qissah.id', VITE_CONTENT_BASE: 'content' })).toEqual([
+      'VITE_SITE_URL harus URL lengkap yang diawali https://, bukan “qissah.id”.',
       'VITE_CONTENT_BASE harus diawali / atau https://, bukan “content”.',
     ]);
   });
 
   test('menerima lokasi konten berupa URL penuh', () => {
     expect(
-      cekEnv({ VITE_SITE_URL: 'https://qissa.id', VITE_CONTENT_BASE: 'https://cdn.qissa.id/c' }),
+      cekEnv({ VITE_SITE_URL: 'https://qissah.id', VITE_CONTENT_BASE: 'https://cdn.qissah.id/c' }),
     ).toEqual([]);
   });
 });

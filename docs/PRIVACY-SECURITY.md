@@ -20,7 +20,7 @@ Tidak ada: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak k
 
 ## 3. Keamanan aplikasi
 - Semua teks naskah dirender sebagai teks (escaping React); tidak ada HTML mentah dari konten.
-- Content Security Policy (header nginx): `default-src 'self'; script-src 'self' https://umami.qissa.id; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com 'self'; img-src 'self' data:; connect-src 'self' https://umami.qissa.id https://api.qissa.id; frame-ancestors 'none'`.
+- Content Security Policy (header nginx): `default-src 'self'; script-src 'self' https://umami.qissah.id; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com 'self'; img-src 'self' data:; connect-src 'self' https://umami.qissah.id https://api.qissah.id; frame-ancestors 'none'`.
 - Header lain: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` menolak kamera, mikrofon, geolokasi.
 - Dependensi: `pnpm audit` di CI; pembaruan bulanan; tidak ada dependensi baru tanpa ADR.
 - PocketBase: admin hanya lewat HTTPS, 2FA bila tersedia, aturan koleksi dikomit sebagai migrasi, rate limit di hook.
@@ -38,10 +38,10 @@ Tidak ada: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak k
 ## 5. Kepatuhan
 - UU PDP (UU 27/2022): data yang diproses minimal (IP sementara, masukan sukarela tanpa identitas); dasar pemrosesan kepentingan sah dan persetujuan untuk masukan; retensi log 7 hari, feedback 12 bulan; kontak permintaan hapus di kebijakan privasi.
 - PSE Lingkup Privat (Komdigi): pendaftaran sebelum rilis Play Store produksi, melalui OSS; cek langkah terbaru karena prosedur bisa berubah.
-- Play Store Data Safety: "tidak mengumpulkan data pengguna" untuk kategori identitas; "data aplikasi dan performa: analitik" dikumpulkan, tidak dibagikan, tidak bisa dihapus per pengguna karena tidak terkait identitas. Kebijakan privasi: `https://qissa.id/privasi`.
+- Play Store Data Safety: "tidak mengumpulkan data pengguna" untuk kategori identitas; "data aplikasi dan performa: analitik" dikumpulkan, tidak dibagikan, tidak bisa dihapus per pengguna karena tidak terkait identitas. Kebijakan privasi: `https://qissah.id/privasi`.
 - Rating konten: isi kuesioner IARC dengan jujur: ada referensi ke perjudian dan tema dewasa tanpa adegan eksplisit; harapkan 17+.
 
-## 6. Teks kebijakan privasi (draf untuk qissa.id/privasi)
+## 6. Teks kebijakan privasi (draf untuk qissah.id/privasi)
 
 Kebijakan Privasi Qissa
 
@@ -57,6 +57,6 @@ Yang tidak kami lakukan. Tidak ada iklan, tidak ada penjualan atau pembagian dat
 
 Anak-anak. Qissa ditujukan untuk pembaca 17 tahun ke atas.
 
-Hak Anda. Untuk pertanyaan atau permintaan penghapusan masukan yang pernah Anda kirim, hubungi [email]. Kebijakan ini dapat berubah; tanggal pembaruan tercantum di bawah.
+Hak Anda. Untuk pertanyaan atau permintaan penghapusan masukan yang pernah Anda kirim, hubungi halo@qissah.id. Kebijakan ini dapat berubah; tanggal pembaruan tercantum di bawah.
 
 Diperbarui: [tanggal].

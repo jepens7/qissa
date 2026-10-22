@@ -14,13 +14,13 @@ Sekali:
 - [ ] Play App Signing diaktifkan; keystore unggah dicadangkan terenkripsi di dua tempat.
 - [ ] Listing: nama "Qissa", deskripsi singkat dan panjang (Indonesia), ikon 512, feature graphic 1024×500, minimal 4 screenshot HP (360×780 dari dua tema), kategori Buku dan Referensi atau Gaya Hidup.
 - [ ] Kuesioner rating konten diisi jujur (referensi perjudian dan tema dewasa tanpa adegan eksplisit).
-- [ ] Data Safety: analitik tanpa identitas; kebijakan privasi `https://qissa.id/privasi`.
+- [ ] Data Safety: analitik tanpa identitas; kebijakan privasi `https://qissah.id/privasi`.
 - [ ] Pendaftaran PSE Lingkup Privat selesai atau sedang berjalan dengan bukti.
 Setiap rilis:
 - [ ] `versionCode` naik, `versionName` = versi web.
 - [ ] `pnpm build && pnpm cap:sync`; build AAB di Android Studio dengan keystore yang benar.
 - [ ] Internal testing → closed testing → production dengan rollout bertahap 20% lalu 100%.
-- [ ] Deep link `https://qissa.id/#ep02` membuka app ke episode itu.
+- [ ] Deep link `https://qissah.id/#ep02` membuka app ke episode itu.
 - [ ] Catatan rilis satu paragraf berbahasa Indonesia.
 
 ## Konten (setiap episode)

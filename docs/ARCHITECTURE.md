@@ -14,9 +14,9 @@ Dokumen ini menjelaskan bagaimana sistem dibagi, bagaimana data mengalir, dan an
 ```
                   ┌────────────────────────────────────────────────────┐
                   │ VPS (Easypanel)                                    │
-  Pembaca ──HTTPS─┤ nginx: qissa.id ─ app shell + /content/*.json      │
-  (PWA/Android)   │ Umami: umami.qissa.id ─ event agregat              │
-                  │ PocketBase: api.qissa.id ─ koleksi feedback (ops.) │
+  Pembaca ──HTTPS─┤ nginx: qissah.id ─ app shell + /content/*.json      │
+  (PWA/Android)   │ Umami: umami.qissah.id ─ event agregat              │
+                  │ PocketBase: api.qissah.id ─ koleksi feedback (ops.) │
                   └────────────────────────────────────────────────────┘
                          ▲ image Docker dari GitHub (CI: lint, test, build)
   Founder ── git push ───┘
@@ -142,8 +142,8 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 10. Android (Capacitor)
 
-- `apps/android` berisi `capacitor.config.ts` (`appId: 'id.qissa.app'`, `webDir` ke build web) dan folder `android/` hasil `cap add`.
-- Plugin: `@capacitor/share` (dipakai `lib/share.ts` bila `Capacitor.isNativePlatform()`), `@capacitor/app` (deep link `https://qissa.id/#epNN` lewat App Links), `@capacitor/status-bar`.
+- `apps/android` berisi `capacitor.config.ts` (`appId: 'id.qissah.app'`, `webDir` ke build web) dan folder `android/` hasil `cap add`.
+- Plugin: `@capacitor/share` (dipakai `lib/share.ts` bila `Capacitor.isNativePlatform()`), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links), `@capacitor/status-bar`.
 - Push (opsional): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
 - Build: `pnpm build && pnpm cap:sync`, lalu Android Studio untuk AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
 

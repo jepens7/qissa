@@ -92,8 +92,8 @@ Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `
 - Perbarui bagian "Status saat ini" di bawah setiap kali milestone berubah.
 
 ## Status saat ini
-- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (job belum berjalan karena billing organisasi; diverifikasi di container Linux), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Rinciannya di `docs/PROGRESS.md`.
-- Sedang: tindak lanjut Epik B, lalu engine (Epik C), apps/web (Epik D), dan qissa.id live dengan Umami (Epik E), menurut `docs/PLAN.md`.
+- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (hijau sejak 23 Oktober), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Rinciannya di `docs/PROGRESS.md`.
+- Sedang: engine (Epik C), lalu apps/web (Epik D) dan qissah.id live dengan Umami (Epik E), menurut `docs/PLAN.md`. Tindak lanjut Epik B (ep02 tanpa peringatan, daftar L5 dan W4, `format: 1`) selesai.
 - Belum: review ulama (badge masih "Belum direview"), Play Store, konten Ramadan, Episode 3.
 
 ## Rujukan eksternal

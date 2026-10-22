@@ -6,12 +6,12 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 
 | Variabel | Contoh | Wajib |
 | --- | --- | --- |
-| `VITE_SITE_URL` | `https://qissa.id` | ya |
+| `VITE_SITE_URL` | `https://qissah.id` | ya |
 | `VITE_CONTENT_BASE` | `/content` | ya |
-| `VITE_UMAMI_SCRIPT` | `https://umami.qissa.id/script.js` | tidak |
+| `VITE_UMAMI_SCRIPT` | `https://umami.qissah.id/script.js` | tidak |
 | `VITE_UMAMI_ID` | UUID | tidak |
 | `VITE_WA_CHANNEL` | `https://whatsapp.com/channel/…` | tidak |
-| `VITE_PB_URL` | `https://api.qissa.id` | tidak |
+| `VITE_PB_URL` | `https://api.qissah.id` | tidak |
 | `VITE_APP_VERSION` | `1.2.0`; bila kosong diambil dari `version` di `apps/web/package.json` (tag `web-vX.Y.Z` mengikutinya) | tidak |
 
 `.env.example` dikomit; `.env` tidak. `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia.

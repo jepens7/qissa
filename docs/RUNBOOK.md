@@ -3,8 +3,8 @@
 Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bisa dijalankan saat lelah, jam 2 pagi, dari HP bila perlu.
 
 ## 1. Deploy
-- Produksi: merge ke `main` → CI hijau → Easypanel membangun image → live dalam 3–5 menit. Cek `https://qissa.id/healthz` dan buka satu episode di HP.
-- Staging: push ke `staging` → `staging.qissa.id`. Manifest staging boleh memuat episode `draft`.
+- Produksi: merge ke `main` → CI hijau → Easypanel membangun image → live dalam 3–5 menit. Cek `https://qissah.id/healthz` dan buka satu episode di HP.
+- Staging: push ke `staging` → `staging.qissah.id`. Manifest staging boleh memuat episode `draft`.
 - Rollback: Easypanel → service `qissa` → Deployments → pilih image sebelumnya → Redeploy. Waktu: 1 menit. Konten ikut kembali ke versi image itu.
 
 ## 2. Rilis konten (episode baru)
@@ -20,7 +20,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 - Kalau sakit atau tidak bisa: tidak ada yang perlu dilakukan; rilis sudah terjadwal. Pesan saluran bisa dijadwalkan lewat fitur jadwal WhatsApp Business bila tersedia, atau dilewati.
 
 ## 4. Pemantauan
-- Uptime: pemantau eksternal (mis. UptimeRobot gratis) ke `https://qissa.id/healthz` setiap 5 menit, notifikasi ke email dan WhatsApp.
+- Uptime: pemantau eksternal (mis. UptimeRobot gratis) ke `https://qissah.id/healthz` setiap 5 menit, notifikasi ke email dan WhatsApp.
 - Analitik: dasbor Umami; alarm manual bila completion harian turun di bawah 40% dua hari berturut-turut (periksa konten, bukan fitur).
 - Log nginx: 7 hari, hanya dilihat saat insiden.
 
