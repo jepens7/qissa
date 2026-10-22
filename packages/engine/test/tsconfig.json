@@ -1,0 +1,8 @@
+{
+  // Tes engine membaca golden snapshot dengan node:fs (ADR-016); kode sumber engine tetap tanpa tipe Node.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["."]
+}
