@@ -1,0 +1,70 @@
+/* Token warna (docs/DESIGN-SYSTEM.md §1), sama dengan prototipe. Komponen hanya memakai token ini.
+   Gelap mengikuti sistem; data-theme disiapkan untuk pilihan manual. */
+:root {
+  color-scheme: light;
+  --bg: #e3e8ec;
+  --screen: #f2f4f6;
+  --surface: #ffffff;
+  --surface-2: #e8edf3;
+  --ink: #141a1f;
+  --ink-2: #4a545d;
+  --muted: #78848d;
+  --line: rgba(20, 26, 31, 0.11);
+  --accent: #2b4dd6;
+  --accent-ink: #1e3bae;
+  --on-accent: #ffffff;
+  --out: #dce4fb;
+  --out-ink: #152657;
+  --paper: #fbf7ee;
+  --paper-ink: #2a2420;
+  --paper-muted: #7a6e60;
+  --paper-rule: #dcd2c0;
+  --bank: #0e3b2e;
+  --bank-ink: #e9f5ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #090d11;
+    --screen: #10161c;
+    --surface: #1a222b;
+    --surface-2: #232e39;
+    --ink: #e8edf1;
+    --ink-2: #b9c2cb;
+    --muted: #8e9aa5;
+    --line: rgba(232, 237, 241, 0.11);
+    --accent: #8da3ff;
+    --accent-ink: #b4c2ff;
+    --on-accent: #0b0f13;
+    --out: #223466;
+    --out-ink: #dce4fb;
+    --paper: #2b2622;
+    --paper-ink: #efe7d8;
+    --paper-muted: #b5a991;
+    --paper-rule: #4c4238;
+    --bank: #163f33;
+    --bank-ink: #e9f5ef;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #090d11;
+  --screen: #10161c;
+  --surface: #1a222b;
+  --surface-2: #232e39;
+  --ink: #e8edf1;
+  --ink-2: #b9c2cb;
+  --muted: #8e9aa5;
+  --line: rgba(232, 237, 241, 0.11);
+  --accent: #8da3ff;
+  --accent-ink: #b4c2ff;
+  --on-accent: #0b0f13;
+  --out: #223466;
+  --out-ink: #dce4fb;
+  --paper: #2b2622;
+  --paper-ink: #efe7d8;
+  --paper-muted: #b5a991;
+  --paper-rule: #4c4238;
+  --bank: #163f33;
+  --bank-ink: #e9f5ef;
+}
