@@ -40,7 +40,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 - Sampai M3a (minggu 5), `url` berbentuk `/content/epNN.json`. Nama berkas berversi dan retensi 30 hari menyusul bersama service worker.
 
 ## 3. Episode JSON
-Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/types.ts` adalah sumber kebenaran; JSON Schema dihasilkan darinya ke `packages/script/schema/episode.schema.json` untuk validasi di CI (ADR-011). JSON episode memuat `dalil` dengan struktur §4 di bawah, supaya kartu dalil ikut tersimpan offline bersama episodenya.
+Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/types.ts` adalah sumber kebenaran; JSON Schema dihasilkan darinya ke `packages/script/schema/episode.schema.json` untuk validasi di CI (ADR-011). JSON episode diawali `format` (versi format, sekarang 1; engine menolak format yang tidak dikenalnya, ADR-015) dan memuat `dalil` dengan struktur §4 di bawah, supaya kartu dalil ikut tersimpan offline bersama episodenya.
 
 ## 4. Dalil (hasil `compileDalil`)
 ```ts

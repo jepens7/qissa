@@ -114,7 +114,7 @@ Lihat §8. Semua event dikirim lewat `umami.track` bila skrip Umami termuat; bil
 ## 5. Model data
 
 ### 5.1 Episode JSON
-Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ id, nomor, judul, pov, meta{teaser, sampul, durasi_menit, rating, refleksi, bagikan, berikutnya}, vars[], start, knots{ nama: Baris[] }, shots{ nama: Shot } }`.
+Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ format, id, nomor, judul, pov, meta{teaser, sampul, durasi_menit, rating, refleksi, bagikan, berikutnya}, vars[], start, knots{ nama: Baris[] }, shots{ nama: Shot } }`.
 
 ### 5.2 Manifest
 ```json

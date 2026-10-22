@@ -26,6 +26,7 @@ function buatSkema(): SchemaObject {
 }
 
 const EPISODE_MINIMAL: Episode = {
+  format: 1,
   id: 'ep99',
   nomor: 99,
   judul: 'Contoh',

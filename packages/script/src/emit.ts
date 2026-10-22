@@ -10,7 +10,15 @@ import type {
 import type { Lapor } from './diagnostics.ts';
 import type { FieldFrontMatter } from './front-matter.ts';
 import type { TokenBersyarat, TokenSederhana } from './tokenize.ts';
-import type { ChoiceLine, Cond, Episode, Line, NarCase, Shot } from './types.ts';
+import {
+  FORMAT_EPISODE,
+  type ChoiceLine,
+  type Cond,
+  type Episode,
+  type Line,
+  type NarCase,
+  type Shot,
+} from './types.ts';
 
 /** Episode tanpa dalil; dalil digabungkan compileEpisode. */
 export type IsiEpisode = Omit<Episode, 'dalil'>;
@@ -284,6 +292,7 @@ export function emitEpisode(
 
   const berikutnya = teks(fm.get('berikutnya'));
   const isi: IsiEpisode = {
+    format: FORMAT_EPISODE,
     id: teks(fm.get('id')),
     nomor: bilangan(fm.get('nomor')),
     judul: teks(fm.get('judul')),
