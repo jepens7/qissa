@@ -6,6 +6,7 @@ import { HomeScreen } from './features/home/home-screen.tsx';
 import { Reader } from './features/reader/reader.tsx';
 import { getConfig } from './lib/config.ts';
 import { episodeTerbit, hariIniJakarta, lingkunganBrowser, muatManifest } from './lib/content.ts';
+import { t } from './lib/i18n.ts';
 import { bacaRute, hashRute, type Rute } from './lib/route.ts';
 import { penyimpananBrowser } from './lib/storage.ts';
 
@@ -68,28 +69,39 @@ export function App() {
   if (rute.nama === 'debug') {
     return <DebugPage />;
   }
+  const buka = (id: string) => {
+    pindah({ nama: 'episode', id });
+  };
+  let layar;
   if (rute.nama === 'episode') {
-    return entri === undefined ? (
-      <main />
-    ) : (
-      <Reader
-        key={entri.id}
-        entri={entri}
-        terbit={terbit}
-        ling={ling}
-        onHome={keHome}
-        onOpen={(id) => {
-          pindah({ nama: 'episode', id });
-        }}
+    layar =
+      entri === undefined ? (
+        <main />
+      ) : (
+        <Reader
+          key={entri.id}
+          entri={entri}
+          terbit={terbit}
+          ling={ling}
+          onHome={keHome}
+          onOpen={buka}
+        />
+      );
+  } else {
+    layar = (
+      <HomeScreen
+        episodes={terbit}
+        gagal={manifest === null}
+        penyimpanan={ling.penyimpanan}
+        waChannel={getConfig().waChannel}
+        onOpen={buka}
       />
     );
   }
   return (
-    <HomeScreen
-      episodes={terbit}
-      onOpen={(id) => {
-        pindah({ nama: 'episode', id });
-      }}
-    />
+    <>
+      {layar}
+      <footer>{t('footer')}</footer>
+    </>
   );
 }
