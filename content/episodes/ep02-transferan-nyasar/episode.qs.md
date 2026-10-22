@@ -191,6 +191,7 @@ Fajar: Oke. Tapi nanti itu kapan, Dek?
 => dipakai: nanti_dipakai | sebagian: nanti_sebagian | nanti_balikin
 
 == nanti_dipakai
+@view Dion | D | online | Chat dengan Dion
 > Malam. Kos. Kamu mengetik pesan untuk Dion: “Bro, kayaknya lu salah transfer minggu lalu.” Kamu menghapusnya. Mengetik lagi. Menghapus lagi.
 > Kamu tidak jadi bicara dengan Fajar. Kamu tidak jadi bicara dengan Dion. Yang kamu ajak bicara malam itu hanya angka di layar.
 -> penutup
@@ -204,11 +205,13 @@ Raka: Makasih, Bu. Rabu pasti.
 
 == nanti_sebagian
 > Malam. Kamu mematikan kolom komentar di akun jualanmu. Butuh dua ketukan.
+@sys Komentar dinonaktifkan
 > Mematikan komentar tidak mematikan orang yang sudah membacanya. Dan Rp1.250.000 itu masih bukan milikmu.
 -> penutup
 
 == penutup
-> Senin, 03.10. Gelap. Lalu layar HP-mu menyala.
+@sys Senin, 03.10
+> Gelap. Lalu layar HP-mu menyala.
 @notif Gacor Family | 27 pesan baru | 03.10
 > Minggu lalu kamu menggesernya hilang. Kali ini jempolmu berhenti di atasnya.
 -> END

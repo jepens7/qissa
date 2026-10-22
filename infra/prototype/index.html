@@ -567,6 +567,7 @@ footer{max-width:440px;margin:0 auto;padding:12px 16px 28px;font-size:12.5px;col
           { t: 'branch', cases: [ { cond: 'dipakai', to: 'nanti_dipakai' }, { cond: 'sebagian', to: 'nanti_sebagian' }, { to: 'nanti_balikin' } ] }
         ],
         nanti_dipakai: [
+          { t: 'view', name: 'Dion', initial: 'D', sub: 'online', pill: 'Chat dengan Dion' },
           { t: 'nar', text: 'Malam. Kos. Kamu mengetik pesan untuk Dion: \u201cBro, kayaknya lu salah transfer minggu lalu.\u201d Kamu menghapusnya. Mengetik lagi. Menghapus lagi.' },
           { t: 'nar', text: 'Kamu tidak jadi bicara dengan Fajar. Kamu tidak jadi bicara dengan Dion. Yang kamu ajak bicara malam itu hanya angka di layar.' },
           { t: 'go', to: 'penutup' }
@@ -580,11 +581,13 @@ footer{max-width:440px;margin:0 auto;padding:12px 16px 28px;font-size:12.5px;col
         ],
         nanti_sebagian: [
           { t: 'nar', text: 'Malam. Kamu mematikan kolom komentar di akun jualanmu. Butuh dua ketukan.' },
+          { t: 'sys', text: 'Komentar dinonaktifkan' },
           { t: 'nar', text: 'Mematikan komentar tidak mematikan orang yang sudah membacanya. Dan Rp1.250.000 itu masih bukan milikmu.' },
           { t: 'go', to: 'penutup' }
         ],
         penutup: [
-          { t: 'nar', text: 'Senin, 03.10. Gelap. Lalu layar HP-mu menyala.' },
+          { t: 'sys', text: 'Senin, 03.10' },
+          { t: 'nar', text: 'Gelap. Lalu layar HP-mu menyala.' },
           { t: 'notif', app: 'Gacor Family', text: '27 pesan baru', time: '03.10' },
           { t: 'nar', text: 'Minggu lalu kamu menggesernya hilang. Kali ini jempolmu berhenti di atasnya.' },
           { t: 'end' }

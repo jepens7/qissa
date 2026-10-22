@@ -482,7 +482,7 @@ describe('tes positif: naskah di content/ (BACKLOG B4)', () => {
     ).toEqual([]);
   });
 
-  test('ep02 tanpa error; tiga peringatan W1 yang sudah dicatat di docs/PROGRESS.md', () => {
+  test('ep02 tanpa diagnostik', () => {
     expect(
       ringkas(
         lintEpisode(bacaRepo(NASKAH.ep02), bacaRepo(DALIL.ep02), {
@@ -490,10 +490,6 @@ describe('tes positif: naskah di content/ (BACKLOG B4)', () => {
           dalilFile: DALIL.ep02,
         }),
       ),
-    ).toEqual([
-      'W1@195: 4 kartu narasi berturut-turut di jalur “Pakai dulu > Nanti aja” (baris 190, 194, 195, 211); maksimal dua.',
-      'W1@207: 4 kartu narasi berturut-turut di jalur “Balikin sebagian > Nanti aja” (baris 190, 206, 207, 211); maksimal dua.',
-      'W1@211: 3 kartu narasi berturut-turut di jalur “Pakai dulu > Aman” (baris 122, 123, 211); maksimal dua.',
-    ]);
+    ).toEqual([]);
   });
 });
