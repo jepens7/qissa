@@ -155,13 +155,13 @@ Fase 2 (dirancang, tidak dibangun): `users` (OAuth Google), `progress`, `circles
 
 ## 12. Build, CI, deploy
 
-GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `test`, `qs lint`, `qs compile --check`, `qs compile`, `vite build`, `pnpm audit --prod --audit-level=high`, unggah artefak. Action pihak ketiga dipin ke SHA commit. Easypanel membangun image dari `infra/nginx/Dockerfile` setelah push ke `main` (produksi) atau `staging`. Tidak ada rahasia yang dibutuhkan untuk build web; konfigurasi runtime lewat `VITE_*` di `.env` per lingkungan.
+GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `test`, `qs lint`, `qs compile --check`, `qs compile`, `vite build`, `pnpm audit --prod --audit-level=high`, unggah artefak. Action pihak ketiga dipin ke SHA commit. Easypanel membangun image dari `infra/nginx/Dockerfile` setelah push ke `main` (produksi) atau `staging`. Image dibangun multi-tahap: Node 22 menjalankan `pnpm build`, lalu nginx menyajikan `apps/web/dist` dengan header keamanan dan CSP (PRIVACY-SECURITY §3). Tidak ada rahasia yang dibutuhkan untuk build web; konfigurasi `VITE_*` per lingkungan diisi di Environment service Easypanel dan masuk sebagai build arg, bukan `.env` yang di-commit (`.env` hanya untuk lokal).
 
 ## 13. Penanganan error dan observabilitas
 
 - Error konten dicegah di compile time; sisa kemungkinan ditangani `ErrorBoundary` dengan pesan berbahasa Indonesia dan tombol "Kembali ke daftar episode".
 - Tidak ada pelaporan error otomatis ke pihak ketiga (privasi). Bila dibutuhkan nanti: GlitchTip self-hosted, dicatat sebagai ADR baru.
-- Kesehatan: endpoint `/healthz` dari nginx (berkas statis), dipantau uptime eksternal.
+- Kesehatan: endpoint `/healthz` dijawab nginx langsung (`200 ok`, tanpa aplikasi), dipantau uptime eksternal.
 
 ## 14. Anggaran kinerja
 - App shell ≤ 150 KB gzip (tanpa font). React + React DOM ≈ 45 KB; sisanya untuk app. Tidak ada library UI, tidak ada markdown parser besar (dalil diparse di compile time, bukan di klien).
