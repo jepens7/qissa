@@ -74,7 +74,7 @@ Konsekuensi: perubahan naskah dikomit bersama berkas kunci; nilai awal diambil d
 
 ## ADR-015 Versi format JSON episode
 Konteks: setelah service worker (M3a) dan APK pertama (M3b), shell lama bisa menerima JSON episode yang ditulis untuk engine lebih baru. ADR-005 membuat konten dimuat dari server tanpa rilis app, jadi ketidakcocokan itu harus bisa dikenali.
-Keputusan: JSON episode memuat `format: 1` sebagai key pertama. `createStory` menolak format yang tidak dikenalnya dengan `StoryContentError`, dan UI meminta pembaca memperbarui aplikasi. Format naik hanya bila engine lama tidak bisa memutar JSON baru dengan benar (jenis baris baru, makna field berubah); field opsional yang aman diabaikan tidak menaikkannya. Format tidak ditulis di manifest.
+Keputusan: JSON episode memuat `format: 1` sebagai key pertama, dari konstanta `FORMAT_EPISODE` di `packages/script/src/types.ts` yang juga dipakai engine. `createStory` menolak format yang tidak dikenalnya dengan `StoryContentError`, dan UI meminta pembaca memperbarui aplikasi. Format naik hanya bila engine lama tidak bisa memutar JSON baru dengan benar (jenis baris baru, makna field berubah); field opsional yang aman diabaikan tidak menaikkannya. Format tidak ditulis di manifest.
 Konsekuensi: satu kali kenaikan `versi_konten` untuk ep01–02 saat field ditambahkan. Episode baru dengan format lebih tinggi tetap tampil di daftar app lama, tetapi menolak dibuka dengan pesan yang jelas.
 
 ## ADR-016 Strategi tes engine dan UI di minggu 1–2

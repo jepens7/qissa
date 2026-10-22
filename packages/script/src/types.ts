@@ -107,7 +107,15 @@ export type EpisodeMeta = {
   berikutnya: string | null;
 };
 
+/**
+ * Versi format JSON episode (ADR-015). Naik hanya bila engine lama tidak bisa memutar JSON baru dengan
+ * benar. Compiler menulis nilai ini; engine menolak format yang tidak dikenalnya.
+ */
+export const FORMAT_EPISODE = 1;
+
 export type Episode = {
+  /** Versi format JSON; lihat FORMAT_EPISODE. */
+  format: number;
   id: string;
   nomor: number;
   judul: string;

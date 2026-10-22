@@ -102,6 +102,7 @@ Nadia: InsyaAllah. Jam 7 ya, aku langsung dari kantor.
 
 ```ts
 type Episode = {
+  format: number;                         // versi format JSON, sekarang 1 (ADR-015)
   id: string; nomor: number; judul: string; pov: string;
   meta: { teaser: string; sampul: string; durasi_menit: number; rating: string;
           refleksi: string; bagikan: string; berikutnya: string | null };

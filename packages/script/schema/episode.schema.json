@@ -5,6 +5,9 @@
     "Episode": {
       "type": "object",
       "properties": {
+        "format": {
+          "type": "number"
+        },
         "id": {
           "type": "string"
         },
@@ -49,6 +52,7 @@
         }
       },
       "required": [
+        "format",
         "id",
         "nomor",
         "judul",
