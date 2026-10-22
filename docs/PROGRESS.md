@@ -25,7 +25,7 @@ Urutan sesuai `docs/PLAN.md` §2. Status: belum, sedang, menunggu (butuh keputus
 | --- | --- | --- |
 | T1 Bukti CI A2 di `main` | terblokir | Rerun CI `main` 22 Oktober masih ditolak GitHub: "recent account payments have failed or your spending limit needs to be increased". Repo privat milik organisasi `jepens7`; billing organisasi perlu dicek |
 | T2 `content:` rapikan W1 ep02 | selesai | Opsi pilihan pemilik: `@sys Senin, 03.10` membuka `penutup` (narasinya menjadi “Gelap. Lalu layar HP-mu menyala.”), pil “Chat dengan Dion” di `nanti_dipakai`, dan pil “Komentar dinonaktifkan” di `nanti_sebagian`. `qs lint` 0 error dan 0 peringatan; `qs walk ep02` 9 jalur END (47–59 baris terlihat); `EPISODES` prototipe disamakan dan tes paritas lulus; golden snapshot ep02 hanya berubah di tiga tempat itu; `versi_konten` ep02 naik ke `2026-10-22.1` |
-| T3 Daftar L5 dan W4 dari riset | sedang | Riset dua sudut dan verifikasi adversarial selesai: 15 nama aplikasi judi (35 bentuk ternormalisasi) dan 16 kata ketuaan (19 ejaan) lolos |
+| T3 Daftar L5 dan W4 dari riset | selesai | Dua peneliti per daftar (berita dan sumber resmi; komunitas dan perspektif Gen Z), lalu satu verifikator adversarial yang membuka setiap sumber. Hasilnya: 15 nama aplikasi judi dalam 35 bentuk ternormalisasi, hanya hash-nya yang masuk `forbidden.ts`; 16 kata ketuaan dalam 19 ejaan di `dated-words.ts`. Kata umum yang menjadi bagian nama (nama dewa, kata Inggris biasa) dan kata gaul yang masih dipakai Gen Z ditolak. `qs lint` tetap 0 error dan 0 peringatan; pemindai repo bersih; tes memastikan setiap hash berformat SHA-256 dan setiap kata ketuaan memicu W4 |
 | T4 `format: 1` di JSON episode | belum | |
 | C1 `createStory` | belum | |
 | C2 Tes jelajah engine | belum | |

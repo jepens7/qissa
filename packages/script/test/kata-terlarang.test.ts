@@ -1,14 +1,38 @@
 // Pencocok L5. Kasus yang harus kena memakai kata taruhan dan nama aplikasi sintetis, karena nominal
 // taruhan dan nama aplikasi judi dilarang muncul di fixture test (CLAUDE.md).
 import { describe, expect, test } from 'vitest';
-import { KATA_TARUHAN } from '../src/forbidden.ts';
+import { KATA_KETUAAN } from '../src/dated-words.ts';
+import { HASH_NAMA_APLIKASI_JUDI, KATA_TARUHAN } from '../src/forbidden.ts';
 import {
   DAFTAR_BAWAAN,
   adaNominalTaruhan,
   hashNama,
+  kataKata,
+  periksaKataKetuaan,
   periksaKataTerlarang,
   type DaftarKata,
 } from '../src/kata-terlarang.ts';
+
+describe('daftar bawaan', () => {
+  test('setiap hash nama aplikasi berupa SHA-256 heksadesimal dan tidak kembar', () => {
+    expect(HASH_NAMA_APLIKASI_JUDI.length).toBeGreaterThan(0);
+    for (const h of HASH_NAMA_APLIKASI_JUDI) {
+      expect(h).toMatch(/^[0-9a-f]{64}$/);
+    }
+    expect(new Set(HASH_NAMA_APLIKASI_JUDI).size).toBe(HASH_NAMA_APLIKASI_JUDI.length);
+  });
+
+  test('kata ketuaan bawaan: satu kata huruf kecil, tidak kembar, dan memicu W4', () => {
+    for (const k of KATA_KETUAAN) {
+      expect(kataKata(k)).toEqual([k]);
+    }
+    expect(new Set(KATA_KETUAAN).size).toBe(KATA_KETUAAN.length);
+    expect(periksaKataKetuaan('Ciyus? Miapah?').map((t) => t.message)).toEqual([
+      'Kata “ciyus” terdengar ketuaan bagi pembaca (dated-words.ts).',
+      'Kata “miapah” terdengar ketuaan bagi pembaca (dated-words.ts).',
+    ]);
+  });
+});
 
 const pesan = (baris: string, daftar: DaftarKata = DAFTAR_BAWAAN) =>
   periksaKataTerlarang(baris, daftar).map((t) => t.message);
