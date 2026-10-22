@@ -7,7 +7,7 @@
     "node": ">=22.18.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @qissa/web dev",
+    "dev": "pnpm qs compile && pnpm --filter @qissa/web dev",
     "build": "pnpm qs compile && pnpm -r build",
     "test": "vitest run",
     "lint": "eslint . && prettier --check .",

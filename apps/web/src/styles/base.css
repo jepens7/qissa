@@ -147,6 +147,10 @@ main {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+/* Prototipe memakai <p> di dalam tombol; di sini <span> supaya HTML-nya sah. */
+.epcard span {
+  display: block;
+}
 .epcard .num {
   font-size: 12.5px;
   color: var(--muted);
