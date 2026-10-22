@@ -114,6 +114,18 @@ export default defineConfig(
   {
     files: ['apps/web/**/*.{ts,tsx}'],
     rules: {
+      // Teks naskah dan dalil selalu dirender lewat escaping React (SRS NFR-5, BACKLOG D4).
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+          message: 'Tanpa HTML mentah: render teks lewat React (PRIVACY-SECURITY §3).',
+        },
+        {
+          selector: 'AssignmentExpression[left.property.name=/^(innerHTML|outerHTML)$/]',
+          message: 'Tanpa HTML mentah: render teks lewat React (PRIVACY-SECURITY §3).',
+        },
+      ],
       'no-restricted-imports': [
         'error',
         {
