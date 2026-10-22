@@ -101,7 +101,14 @@ export function App() {
   return (
     <>
       {layar}
-      <footer>{t('footer')}</footer>
+      <footer>
+        {t('footer')}
+        {/* Halaman statis di apps/web/public (BACKLOG E2); garis miring akhir menghindari redirect. */}
+        <span className="tautan">
+          <a href="/tentang/">{t('footer.tentang')}</a>
+          <a href="/privasi/">{t('footer.privasi')}</a>
+        </span>
+      </footer>
     </>
   );
 }

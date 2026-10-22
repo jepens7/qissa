@@ -32,7 +32,7 @@ Tiap tugas punya kriteria terima. Urutan kerja minggu 1–2 mengikuti `docs/PLAN
 
 ## Epik E: qissah.id live
 - E1 `infra/nginx/Dockerfile` menyalin `apps/web/dist`; header keamanan dan CSP dari `docs/PRIVACY-SECURITY.md` §3. Terima: `curl -I` menunjukkan header; situs berjalan di Easypanel.
-- E2 Halaman `/privasi` dan `/tentang` (statis, dari markdown di `apps/web/public/`). Terima: tautan dari footer.
+- E2 Halaman `/privasi` dan `/tentang` (HTML statis di `apps/web/public/`, tanpa konversi markdown). Terima: tautan dari footer.
 - E3 Umami terpasang dan tujuh event terlihat di dasbor dari sesi uji. Terima: screenshot dasbor di PR.
 
 ## Setelah Minggu 2 (dipilih sesuai ROADMAP)
