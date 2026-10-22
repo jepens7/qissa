@@ -88,6 +88,30 @@ export default defineConfig(
     },
   },
   {
+    // Tes engine boleh membaca golden snapshot packages/script dengan node:fs saja (ADR-016).
+    files: ['packages/engine/test/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: larangReact.paths,
+          patterns: [
+            ...larangReact.patterns,
+            {
+              regex: '^node:(?!fs$)',
+              message:
+                'tes engine hanya boleh memakai node:fs untuk membaca golden snapshot (ADR-016).',
+            },
+            {
+              regex: '^@qissa/script(?!/types$)',
+              message: 'engine hanya boleh mengimpor @qissa/script/types (ARCHITECTURE §3).',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['apps/web/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
