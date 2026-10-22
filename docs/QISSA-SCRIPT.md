@@ -200,7 +200,7 @@ Peringatan (CI kuning):
 - W1 Lebih dari dua kartu narasi berturut-turut di satu jalur, termasuk melintasi knot. Baris terlihat lain apa pun, termasuk pil dan notifikasi, memutus rangkaian.
 - W2 Gelembung (in/out) dengan teks lebih dari 160 karakter; label lampiran tidak dihitung.
 - W3 Lebih dari 220 baris terlihat di jalur terpanjang. Baris terlihat: pil `@view`, narasi, gelembung, shot, `@sys`, notifikasi, kartu bank, dan blok pilihan (dihitung satu); `@typing` tidak dihitung.
-- W4 Kata yang masuk daftar "ketuaan" (`packages/script/src/dated-words.ts`, diisi dari masukan pembaca Gen Z), dicocokkan per kata tanpa membedakan huruf besar-kecil.
+- W4 Kata yang masuk daftar "ketuaan" (`packages/script/src/dated-words.ts`), dicocokkan per kata tanpa membedakan huruf besar-kecil. Daftar awalnya berasal dari riset sumber tertulis, lalu diperbarui dari masukan pembaca Gen Z.
 
 ## 7. Contoh singkat
 
