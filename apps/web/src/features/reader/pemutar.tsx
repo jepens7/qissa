@@ -8,7 +8,6 @@ import { BankCard } from '../../components/bank-card.tsx';
 import { Bubble } from '../../components/bubble.tsx';
 import { ChoiceBlock } from '../../components/choice-block.tsx';
 import { Cover } from '../../components/cover.tsx';
-import { EndCard } from '../../components/end-card.tsx';
 import { Header } from '../../components/header.tsx';
 import { NarrationCard } from '../../components/narration-card.tsx';
 import { NotifCard } from '../../components/notif-card.tsx';
@@ -16,10 +15,19 @@ import { Pill } from '../../components/pill.tsx';
 import { ShotCard } from '../../components/shot-card.tsx';
 import { TapHint } from '../../components/tap-hint.tsx';
 import { TypingDots } from '../../components/typing-dots.tsx';
+import { Ending } from '../ending/ending.tsx';
 import { track } from '../../lib/analytics.ts';
 import { t } from '../../lib/i18n.ts';
 import { bacaJalur, simpanJalur, tambahAkhir, type Penyimpanan } from '../../lib/storage.ts';
-import { jumlahPilihan, ketuk, pilih, tandai, type Hasil, type Item } from './langkah.ts';
+import {
+  jumlahPilihan,
+  ketuk,
+  pilih,
+  tandai,
+  ulangDari,
+  type Hasil,
+  type Item,
+} from './langkah.ts';
 
 type Mode = 'sampul' | 'baca' | 'mengetik' | 'jeda' | 'memilih' | 'tamat';
 
@@ -27,9 +35,15 @@ type Props = {
   episode: Episode;
   /** Episode sebelumnya yang sudah terbit, untuk memo sampul (SRS LIB-3). */
   sebelumnya: ManifestEpisode | undefined;
+  /** Episode berikutnya yang sudah terbit, untuk tombol lanjut. */
+  berikutnya: ManifestEpisode | undefined;
   penyimpanan: Penyimpanan | null;
   reducedMotion: boolean;
+  siteUrl: string;
+  waChannel: string | null;
   onHome: () => void;
+  onNext: (id: string) => void;
+  onRestart: () => void;
 };
 
 /** Jeda sesudah memilih sebelum baris berikutnya muncul, seperti prototipe. */
@@ -84,7 +98,8 @@ function memoSampul(
     : { text: t('sampul.mandiri', { nomor: episode.nomor - 1 }), ingat: false };
 }
 
-export function Pemutar({ episode, sebelumnya, penyimpanan, reducedMotion, onHome }: Props) {
+export function Pemutar(props: Props) {
+  const { episode, sebelumnya, penyimpanan, reducedMotion, onHome } = props;
   const [story] = useState(() => createStory(episode, { reducedMotion }));
   const [memo] = useState(() => memoSampul(episode, sebelumnya, penyimpanan));
   const [items, setItems] = useState<Item[]>([]);
@@ -213,6 +228,21 @@ export function Pemutar({ episode, sebelumnya, penyimpanan, reducedMotion, onHom
     );
   };
 
+  /** Ulang dari Pilihan 2: log dipotong ke snapshot, lalu blok pilihan yang sama muncul lagi. */
+  const ulangP2 = () => {
+    const potong = ulangDari(story, items, 'p2');
+    if (potong === null) {
+      props.onRestart();
+      return;
+    }
+    setAkhir(null);
+    try {
+      terapkan(ketuk(story, potong));
+    } catch (e) {
+      setGalat(e instanceof Error ? e : new Error(String(e)));
+    }
+  };
+
   const klikLog = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof Element && e.target.closest('button, a, textarea, input') !== null) {
       return;
@@ -265,7 +295,19 @@ export function Pemutar({ episode, sebelumnya, penyimpanan, reducedMotion, onHom
           )}
           {mode === 'mengetik' ? <TypingDots /> : null}
           {akhir === null ? null : (
-            <EndCard nomor={episode.nomor} path={akhir.path} endings={akhir.jumlah} />
+            <Ending
+              episode={episode}
+              path={akhir.path}
+              jumlahAkhir={akhir.jumlah}
+              berikutnya={props.berikutnya}
+              penyimpanan={penyimpanan}
+              siteUrl={props.siteUrl}
+              waChannel={props.waChannel}
+              onNext={props.onNext}
+              onRestartP2={ulangP2}
+              onRestart={props.onRestart}
+              onHome={onHome}
+            />
           )}
         </div>
         <TapHint

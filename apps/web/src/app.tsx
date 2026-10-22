@@ -75,9 +75,12 @@ export function App() {
       <Reader
         key={entri.id}
         entri={entri}
-        sebelumnya={terbit.find((e) => e.nomor === entri.nomor - 1)}
+        terbit={terbit}
         ling={ling}
         onHome={keHome}
+        onOpen={(id) => {
+          pindah({ nama: 'episode', id });
+        }}
       />
     );
   }

@@ -4,20 +4,23 @@ import type { Episode, ManifestEpisode } from '@qissa/script/types';
 import { useCallback, useEffect, useState } from 'react';
 import { ErrorBoundary } from '../../components/error-boundary.tsx';
 import { Header } from '../../components/header.tsx';
+import { getConfig } from '../../lib/config.ts';
 import { muatEpisode, type Lingkungan } from '../../lib/content.ts';
 import { t } from '../../lib/i18n.ts';
 import { Pemutar } from './pemutar.tsx';
 
 type Props = {
   entri: ManifestEpisode;
-  sebelumnya: ManifestEpisode | undefined;
+  /** Episode yang sudah terbit, untuk memo sampul dan tombol lanjut. */
+  terbit: ManifestEpisode[];
   ling: Lingkungan;
   onHome: () => void;
+  onOpen: (id: string) => void;
 };
 
 type Muat = { keadaan: 'memuat' } | { keadaan: 'galat' } | { keadaan: 'siap'; episode: Episode };
 
-function geraknDikurangi(): boolean {
+function gerakDikurangi(): boolean {
   try {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   } catch {
@@ -25,9 +28,11 @@ function geraknDikurangi(): boolean {
   }
 }
 
-export function Reader({ entri, sebelumnya, ling, onHome }: Props) {
+export function Reader({ entri, terbit, ling, onHome, onOpen }: Props) {
   const [muat, setMuat] = useState<Muat>({ keadaan: 'memuat' });
-  const [reducedMotion] = useState(geraknDikurangi);
+  const [reducedMotion] = useState(gerakDikurangi);
+  /** Naik setiap "Ulang dari awal", supaya pemutar dibuat ulang dari sampul. */
+  const [putaran, setPutaran] = useState(0);
 
   const ambil = useCallback(() => {
     setMuat({ keadaan: 'memuat' });
@@ -46,14 +51,25 @@ export function Reader({ entri, sebelumnya, ling, onHome }: Props) {
   }, [ambil]);
 
   if (muat.keadaan === 'siap') {
+    const { episode } = muat;
+    const config = getConfig();
     return (
       <ErrorBoundary onHome={onHome}>
         <Pemutar
-          episode={muat.episode}
-          sebelumnya={sebelumnya}
+          key={putaran}
+          episode={episode}
+          sebelumnya={terbit.find((e) => e.nomor === episode.nomor - 1)}
+          berikutnya={terbit.find((e) => e.id === episode.meta.berikutnya)}
           penyimpanan={ling.penyimpanan}
           reducedMotion={reducedMotion}
+          siteUrl={config.siteUrl}
+          waChannel={config.waChannel}
           onHome={onHome}
+          onNext={onOpen}
+          onRestart={() => {
+            setPutaran((p) => p + 1);
+            window.scrollTo(0, 0);
+          }}
         />
       </ErrorBoundary>
     );
