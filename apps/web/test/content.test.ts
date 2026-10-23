@@ -144,6 +144,25 @@ describe('muatManifest: network-first dengan cadangan', () => {
     const { fetch } = fetchPalsu({});
     expect(await muatManifest('/content', lingkungan(fetch))).toBeNull();
   });
+
+  test('lambat tanpa salinan: jawaban jaringan ditunggu melewati batas waktu', async () => {
+    // Menjawab sesudah batas waktu, dan menolak bila dibatalkan seperti fetch sungguhan.
+    const lambat = (_input: RequestInfo | URL, init?: RequestInit): Promise<Response> =>
+      new Promise((selesai, tolak) => {
+        const waktu = setTimeout(() => {
+          selesai(json(MANIFEST));
+        }, 60);
+        init?.signal?.addEventListener('abort', () => {
+          clearTimeout(waktu);
+          tolak(new DOMException('dibatalkan', 'AbortError'));
+        });
+      });
+    const penyimpanan = penyimpananPalsu();
+    expect(await muatManifest('/content', lingkungan(lambat, { penyimpanan }), 20)).toEqual(
+      MANIFEST,
+    );
+    expect(penyimpanan.peta.has('qissa.v1.manifest')).toBe(true);
+  });
 });
 
 describe('penyaringan rilis', () => {
