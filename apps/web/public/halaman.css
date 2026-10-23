@@ -5,7 +5,7 @@
   --screen: #f2f4f6;
   --ink: #141a1f;
   --ink-2: #4a545d;
-  --muted: #78848d;
+  --muted: #5f686f;
   --accent-ink: #1e3bae;
 }
 @media (prefers-color-scheme: dark) {

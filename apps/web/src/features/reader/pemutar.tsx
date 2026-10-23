@@ -8,6 +8,7 @@ import { BankCard } from '../../components/bank-card.tsx';
 import { Bubble } from '../../components/bubble.tsx';
 import { ChoiceBlock } from '../../components/choice-block.tsx';
 import { Cover } from '../../components/cover.tsx';
+import { EndCard } from '../../components/end-card.tsx';
 import { Header } from '../../components/header.tsx';
 import { NarrationCard } from '../../components/narration-card.tsx';
 import { NotifCard } from '../../components/notif-card.tsx';
@@ -15,10 +16,16 @@ import { Pill } from '../../components/pill.tsx';
 import { ShotCard } from '../../components/shot-card.tsx';
 import { TapHint } from '../../components/tap-hint.tsx';
 import { TypingDots } from '../../components/typing-dots.tsx';
-import { Ending } from '../ending/ending.tsx';
+import { catatanPoll, Ending } from '../ending/ending.tsx';
 import { track } from '../../lib/analytics.ts';
 import { t } from '../../lib/i18n.ts';
-import { bacaJalur, simpanJalur, tambahAkhir, type Penyimpanan } from '../../lib/storage.ts';
+import {
+  bacaJalur,
+  bacaPoll,
+  simpanJalur,
+  tambahAkhir,
+  type Penyimpanan,
+} from '../../lib/storage.ts';
 import {
   jumlahPilihan,
   ketuk,
@@ -105,7 +112,11 @@ export function Pemutar(props: Props) {
   const [items, setItems] = useState<Item[]>([]);
   const [mode, setMode] = useState<Mode>('sampul');
   const [header, setHeader] = useState<HeaderChat | null>(null);
-  const [akhir, setAkhir] = useState<{ path: string[]; jumlah: number } | null>(null);
+  const [akhir, setAkhir] = useState<{
+    path: string[];
+    jumlah: number;
+    pollNote: string | undefined;
+  } | null>(null);
   const [galat, setGalat] = useState<Error | null>(null);
   const waktu = useRef<number | undefined>(undefined);
   const mulaiTerkirim = useRef(false);
@@ -145,7 +156,10 @@ export function Pemutar(props: Props) {
           const jumlah = tambahAkhir(penyimpanan, episode.id, path[path.length - 1] ?? '').length;
           simpanJalur(penyimpanan, episode.id, path);
           track('selesai', { ep: episode.id, jalur: path.join('>') });
-          setAkhir({ path, jumlah });
+          // Catatan poll hanya untuk Episode 1 (SRS LIB-2).
+          const pollNote =
+            episode.nomor === 1 ? catatanPoll(bacaPoll(penyimpanan), path[0]) : undefined;
+          setAkhir({ path, jumlah, pollNote });
           setMode('tamat');
           break;
         }
@@ -153,7 +167,7 @@ export function Pemutar(props: Props) {
           setMode('baca');
       }
     },
-    [story, penyimpanan, episode.id],
+    [story, penyimpanan, episode.id, episode.nomor],
   );
 
   /** Satu ketukan; false bila saat ini tidak bisa maju (typing, jeda, pilihan, atau tamat). */
@@ -295,21 +309,30 @@ export function Pemutar(props: Props) {
           )}
           {mode === 'mengetik' ? <TypingDots /> : null}
           {akhir === null ? null : (
-            <Ending
-              episode={episode}
+            <EndCard
+              nomor={episode.nomor}
               path={akhir.path}
-              jumlahAkhir={akhir.jumlah}
-              berikutnya={props.berikutnya}
-              penyimpanan={penyimpanan}
-              siteUrl={props.siteUrl}
-              waChannel={props.waChannel}
-              onNext={props.onNext}
-              onRestartP2={ulangP2}
-              onRestart={props.onRestart}
-              onHome={onHome}
+              endings={akhir.jumlah}
+              {...(akhir.pollNote === undefined ? {} : { pollNote: akhir.pollNote })}
             />
           )}
         </div>
+        {/* Di luar region live: pembaca layar mengumumkan kartu tamat saja, bukan seluruh kartu dalil
+            (DESIGN-SYSTEM §6). */}
+        {akhir === null ? null : (
+          <Ending
+            episode={episode}
+            path={akhir.path}
+            berikutnya={props.berikutnya}
+            penyimpanan={penyimpanan}
+            siteUrl={props.siteUrl}
+            waChannel={props.waChannel}
+            onNext={props.onNext}
+            onRestartP2={ulangP2}
+            onRestart={props.onRestart}
+            onHome={onHome}
+          />
+        )}
         <TapHint
           text={mode === 'sampul' ? t('reader.hint.mulai') : t('reader.hint.lanjut')}
           hidden={mode !== 'sampul' && mode !== 'baca' && mode !== 'jeda'}

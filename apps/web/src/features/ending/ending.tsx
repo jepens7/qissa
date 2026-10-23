@@ -1,9 +1,9 @@
-// Layar akhir (BACKLOG D4, SRS UI-5): tamat, kartu dalil, refleksi, bagikan dan masukan, saluran, serta
-// lanjut atau ulang. Dalil dirender dari struktur Dalil, tidak dari HTML.
+// Layar akhir (BACKLOG D4, SRS UI-5): kartu dalil, refleksi, bagikan dan masukan, saluran, serta lanjut atau
+// ulang. Kartu tamat dirender pemutar di dalam region live; bagian ini di luarnya, supaya pembaca layar tidak
+// membacakan seluruh kartu dalil sekaligus (DESIGN-SYSTEM §6). Dalil dirender dari struktur Dalil, tidak dari HTML.
 import type { Episode, ManifestEpisode } from '@qissa/script/types';
 import { useState } from 'react';
 import { ChannelCard } from '../../components/channel-card.tsx';
-import { EndCard } from '../../components/end-card.tsx';
 import { NextCard } from '../../components/next-card.tsx';
 import { PaperCard } from '../../components/paper-card.tsx';
 import { ReflectionCard } from '../../components/reflection-card.tsx';
@@ -11,13 +11,11 @@ import { ShareCard } from '../../components/share-card.tsx';
 import { track } from '../../lib/analytics.ts';
 import { t } from '../../lib/i18n.ts';
 import { kirimTeks, teksBagikan, type HasilKirim } from '../../lib/share.ts';
-import { bacaPoll, bacaRefleksi, simpanRefleksi, type Penyimpanan } from '../../lib/storage.ts';
+import { bacaRefleksi, simpanRefleksi, type Penyimpanan } from '../../lib/storage.ts';
 
 type Props = {
   episode: Episode;
   path: string[];
-  /** Jumlah akhir berbeda yang sudah dibaca di perangkat ini. */
-  jumlahAkhir: number;
   /** Episode berikutnya yang sudah terbit; undefined bila belum ada. */
   berikutnya: ManifestEpisode | undefined;
   penyimpanan: Penyimpanan | null;
@@ -55,8 +53,6 @@ export function Ending(props: Props) {
   const [catatanRefleksi, setCatatanRefleksi] = useState('');
   const [catatanKirim, setCatatanKirim] = useState('');
 
-  const pollNote = episode.nomor === 1 ? catatanPoll(bacaPoll(penyimpanan), path[0]) : undefined;
-
   const kirim = (teks: string) => {
     void kirimTeks(teks).then((hasil) => {
       setCatatanKirim(pesanKirim(hasil));
@@ -65,12 +61,6 @@ export function Ending(props: Props) {
 
   return (
     <>
-      <EndCard
-        nomor={episode.nomor}
-        path={path}
-        endings={props.jumlahAkhir}
-        {...(pollNote === undefined ? {} : { pollNote })}
-      />
       <PaperCard dalil={episode.dalil} />
       <ReflectionCard
         question={episode.meta.refleksi}

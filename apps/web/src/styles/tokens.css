@@ -1,4 +1,4 @@
-/* Token warna (docs/DESIGN-SYSTEM.md §1), sama dengan prototipe. Komponen hanya memakai token ini.
+/* Token warna (docs/DESIGN-SYSTEM.md §1), sama dengan prototipe kecuali --muted terang yang digelapkan untuk kontras 4,5:1. Komponen hanya memakai token ini.
    Gelap mengikuti sistem; data-theme disiapkan untuk pilihan manual. */
 :root {
   color-scheme: light;
@@ -8,7 +8,7 @@
   --surface-2: #e8edf3;
   --ink: #141a1f;
   --ink-2: #4a545d;
-  --muted: #78848d;
+  --muted: #5f686f;
   --line: rgba(20, 26, 31, 0.11);
   --accent: #2b4dd6;
   --accent-ink: #1e3bae;

@@ -66,7 +66,8 @@ export function App() {
     pindah({ nama: 'home' });
   }, [pindah]);
 
-  if (rute.nama === 'debug') {
+  // import.meta.env.DEV menjadi false di build produksi, sehingga modul debug ikut terbuang.
+  if (import.meta.env.DEV && rute.nama === 'debug') {
     return <DebugPage />;
   }
   const buka = (id: string) => {

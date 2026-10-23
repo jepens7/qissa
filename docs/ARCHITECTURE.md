@@ -99,28 +99,28 @@ Tes: setiap jenis baris; `cond` dan `cases`; branch default; snapshot/restore; t
 Struktur:
 ```
 src/
-  main.tsx, app.tsx            # bootstrap, routing berbasis hash (#home, #epNN)
+  main.tsx, app.tsx            # bootstrap, routing berbasis hash (#home, #epNN; #debug hanya di vite dev)
   features/home/               # poll, daftar episode, saluran
-  features/reader/             # Reader: memegang Story, daftar item, ketukan
-  features/ending/             # Tamat, Dalil, Refleksi, Bagikan, Lanjut
+  features/reader/             # Reader (memuat episode) dan Pemutar: memegang Story, daftar item, ketukan, kartu tamat
+  features/ending/             # Dalil, Refleksi, Bagikan, Saluran, Lanjut (di luar region aria-live)
+  features/debug/              # #debug: semua komponen dengan data contoh, hanya di vite dev
   components/                  # Header, Bubble, NarrationCard, Pill, ShotCard, NotifCard, BankCard, TypingDots, ChoiceBlock, Cover, EpisodeCard, PaperCard
   lib/content.ts               # muat manifest + episode (fetch, cache, versi)
   lib/storage.ts               # kunci localStorage, try/catch, versi skema
   lib/analytics.ts             # track(); no-op bila umami tidak ada
   lib/share.ts                 # Web Share, fallback clipboard, Capacitor Share bila native
-  lib/dalil.ts                 # render Dalil → struktur komponen (tanpa HTML mentah)
   i18n/id.json
   styles/tokens.css, base.css
 ```
 
 State:
-- `Reader` memegang `Story` di `useRef`, dan `items: RenderedItem[]` di `useState`. Setiap `next()` menambah item; `restore` memotong.
+- `Pemutar` memegang `Story` dan `items` di `useState`. Setiap `next()` menambah item; `restore` memotong.
 - Tidak ada state manager global. Konteks React hanya untuk tema dan konfigurasi.
 - Progres per episode (akhir yang sudah dibaca, jalur terakhir, refleksi) ditulis ke `storage.ts` pada peristiwa, bukan pada setiap render.
 
 Rendering teks: semua teks naskah dirender sebagai teks (React escaping). Kartu dalil dirender dari struktur `Dalil` (bagian, entri, baris Arab) menjadi komponen, bukan `dangerouslySetInnerHTML`.
 
-Routing: `#home`, `#epNN`. Hash dibaca saat muat; `history.replaceState` saat berpindah (tidak menambah riwayat untuk setiap ketukan).
+Routing: `#home`, `#epNN`, dan `#debug` yang hanya ada saat `vite dev` (halaman itu menampilkan kartu dalil semua episode, jadi tidak boleh ikut build produksi; prinsip 2). Hash dibaca saat muat; `history.replaceState` saat berpindah (tidak menambah riwayat untuk setiap ketukan).
 
 Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (prefers-color-scheme: dark)` serta `[data-theme="dark"]`. Komponen hanya memakai token.
 

@@ -17,7 +17,7 @@ describe('i18n', () => {
   test('t mengganti placeholder dan membiarkan yang tanpa isian', () => {
     expect(t('akhir.selesai', { nomor: 2 })).toBe('Episode 2 selesai');
     expect(t('sampul.memo', { pertama: 'Tutup' })).toBe(
-      'Minggu lalu kamu memilih Tutup, lalu {kedua}.',
+      'Di episode sebelumnya kamu memilih Tutup, lalu {kedua}.',
     );
   });
 
