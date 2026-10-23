@@ -1,11 +1,45 @@
 // BACKLOG D7: nama event hanya dari union tujuh nama SRS §8, dan track diam bila Umami tidak ada.
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { track, type EventName } from '../src/lib/analytics.ts';
+import { pasangUmami, track, type EventName } from '../src/lib/analytics.ts';
 
-const g = globalThis as { window?: unknown };
+const g = globalThis as { window?: unknown; document?: unknown };
 
 afterEach(() => {
   delete g.window;
+  delete g.document;
+});
+
+describe('pasangUmami', () => {
+  test('tanpa parameter URL (PRIVACY-SECURITY §1), dan tidak dipasang bila konfigurasi kosong', () => {
+    const atribut = new Map<string, string>();
+    const el = {
+      defer: false,
+      src: '',
+      setAttribute: (k: string, v: string) => {
+        atribut.set(k, v);
+      },
+    };
+    const dipasang: unknown[] = [];
+    g.document = {
+      createElement: () => el,
+      head: {
+        appendChild: (x: unknown) => {
+          dipasang.push(x);
+        },
+      },
+    };
+    pasangUmami(null, 'abc');
+    pasangUmami('https://umami.qissah.id/script.js', null);
+    expect(dipasang).toHaveLength(0);
+
+    pasangUmami('https://umami.qissah.id/script.js', 'abc');
+    expect(dipasang).toEqual([el]);
+    expect(el).toMatchObject({ defer: true, src: 'https://umami.qissah.id/script.js' });
+    expect(Object.fromEntries(atribut)).toEqual({
+      'data-website-id': 'abc',
+      'data-exclude-search': 'true',
+    });
+  });
 });
 
 describe('track', () => {

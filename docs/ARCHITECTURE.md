@@ -138,7 +138,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 9. Analitik
 
-`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi; bila tidak ada, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
+`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi dengan `data-exclude-search="true"`, supaya parameter URL dari tautan media sosial tidak ikut terkirim; bila tidak ada, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
 
 ## 10. Android (Capacitor)
 

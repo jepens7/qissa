@@ -10,7 +10,7 @@
 | Masukan sukarela (templat dari “Kirim masukan ke pembuat”) | WhatsApp, email, atau aplikasi yang dipilih pembaca, paling lama 12 bulan | founder | perbaikan konten |
 | Alamat IP | log nginx (7 hari), Umami (di-hash, tidak disimpan mentah) | founder | keamanan, rate limit |
 
-Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak ketiga. Pembaca yang mengirim masukan lewat WhatsApp atau email memperlihatkan nomor atau alamatnya kepada founder; hal ini disebut di kebijakan privasi (§6). Form masukan ke PocketBase (SRS SHR-3) ditunda sampai setelah Ramadan.
+Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak ketiga. Skrip Umami dipasang dengan `data-exclude-search="true"`, jadi parameter URL yang ditambahkan aplikasi lain ke tautan Qissa (misalnya `fbclid` atau `utm_source`) tidak ikut tersimpan. Pembaca yang mengirim masukan lewat WhatsApp atau email memperlihatkan nomor atau alamatnya kepada founder; hal ini disebut di kebijakan privasi (§6). Form masukan ke PocketBase (SRS SHR-3) ditunda sampai setelah Ramadan.
 
 ## 2. Prinsip
 1. Data minimal: kalau fitur bisa jalan tanpa data, jalankan tanpa data.
