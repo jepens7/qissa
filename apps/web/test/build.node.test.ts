@@ -48,8 +48,9 @@ describe('vite build', () => {
       envDir,
       mode: 'production',
       logLevel: 'silent',
-      // vite-plugin-pwa tetap menulis sw.js walau write: false; arahkan ke folder sementara, bukan apps/web/dist.
-      build: { write: false, outDir: join(envDir, 'dist') },
+      // Build sungguhan ke folder sementara (bukan apps/web/dist): service worker butuh berkas hasil build untuk
+      // di-precache, jadi write: false tidak bisa dipakai.
+      build: { outDir: join(envDir, 'dist'), emptyOutDir: true },
     });
 
   test('gagal dengan pesan jelas bila VITE_SITE_URL kosong', async () => {
@@ -97,12 +98,15 @@ describe('vite build', () => {
         'privasi/index.html',
         'tentang/index.html',
         'manifest.webmanifest',
+        // Font di-host sendiri (ADR-019).
+        'fonts/plus-jakarta-sans-latin.woff2',
+        'fonts/newsreader-latin.woff2',
+        'fonts/amiri-arabic.woff2',
       ]),
     );
     expect(existsSync(join(outDir, 'content', 'ep99.json'))).toBe(true);
     expect(precache.filter((u) => u.startsWith('content/') || u === 'og.png')).toEqual([]);
     expect(sw).not.toContain('NavigationRoute');
-    // Pola rute font tersimpan sebagai regex di sw.js.
-    expect(sw).toContain(String.raw`fonts\.gstatic\.com`);
+    expect(sw).not.toContain('googleapis');
   }, 60_000);
 });

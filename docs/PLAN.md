@@ -121,7 +121,7 @@ Bukan PR; hasilnya dicatat di PROGRESS. Perbaikan hanya untuk yang gagal, masing
 - Saat menguji service worker, centang "Update on reload" atau hapus data situs di antara percobaan.
 
 ### Sesudah deploy web
-- Daftar periksa (RELEASE dan `infra/easypanel.md`): DNS, TLS, dan `/healthz`; `curl -I` untuk CSP (termasuk origin font) dan cache; pembaruan service worker lewat HTTPS; sesi E3; retensi log nginx paling lama 7 hari diatur sebelum `/privasi` tayang, karena kebijakan privasi menjanjikannya; pemantau uptime dan cadangan Umami; Lighthouse di situs live; tampilan Safari iOS; tag `web-v*`.
+- Daftar periksa (RELEASE dan `infra/easypanel.md`): DNS, TLS, dan `/healthz`; `curl -I` untuk CSP (sama persis dengan PRIVACY-SECURITY §3, tanpa origin Google sejak ADR-019) dan cache; pembaruan service worker lewat HTTPS; sesi E3; retensi log nginx paling lama 7 hari diatur sebelum `/privasi` tayang, karena kebijakan privasi menjanjikannya; pemantau uptime dan cadangan Umami; Lighthouse di situs live; tampilan Safari iOS; tag `web-v*`.
 - Epik H (Android, M3b) dimulai paralel dengan Tahap 0, dengan ADR Capacitor yang disetujui pemilik saat itu. Bagian web dan infra H2 (CORS `/content/`, URL episode di-resolve terhadap URL manifest, skrip `cap:sync` yang menolak `VITE_CONTENT_BASE` selain https) dikerjakan lebih dulu karena tidak butuh Android Studio.
 - Saklar pratinjau untuk staging (episode dengan `rilis` di masa depan) dibuat bersama service staging.
 
@@ -147,4 +147,4 @@ Bukan PR; hasilnya dicatat di PROGRESS. Perbaikan hanya untuk yang gagal, masing
 ### Risiko
 - Tahap 0 mundur sekitar satu minggu. Keputusan lanjut atau perbaiki cerita jatuh sekitar 26 November, masih sebelum keputusan format "30 Malam" (1 Desember).
 - Jalur Play Store: closed testing butuh 12 penguji selama 14 hari dan URL `/privasi` yang publik, jadi deploy web paling lambat 1 Desember.
-- Service worker: `navigateFallback` yang menelan `/privasi`, `connect-src` untuk font, dan cache basi saat uji. Ketiganya menjadi kriteria terima G1.
+- Service worker: `navigateFallback` yang menelan `/privasi`, `connect-src` untuk font (tidak relevan lagi sejak ADR-019), dan cache basi saat uji. Ketiganya menjadi kriteria terima G1.

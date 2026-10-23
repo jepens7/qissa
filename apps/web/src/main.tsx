@@ -4,6 +4,7 @@ import { App } from './app.tsx';
 import { UpdateBar } from './components/update-bar.tsx';
 import { pasangUmami } from './lib/analytics.ts';
 import { getConfig } from './lib/config.ts';
+import './styles/fonts.css';
 import './styles/tokens.css';
 import './styles/base.css';
 

@@ -1,0 +1,37 @@
+/* Font di-host sendiri (ADR-019): subset dari Google Fonts, lisensi SIL OFL 1.1 ada di public/fonts/. Berkasnya
+   di public/, jadi URL /fonts/… tidak diubah Vite dan bisa dipakai juga oleh halaman statis (halaman.css). */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/newsreader-latin.woff2') format('woff2');
+}
+/* Amiri hanya untuk baris Arab di kartu dalil. */
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/amiri-arabic.woff2') format('woff2');
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E,
+    U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+/* Spasi di baris Arab juga dari Amiri, seperti sebelumnya dengan face latin Google. Face terpisah dengan
+   berkas yang sama: bila spasi masuk face di atas, tanda waqaf sesudah spasi salah tempat. */
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/amiri-arabic.woff2') format('woff2');
+  unicode-range: U+0020, U+00A0;
+}
