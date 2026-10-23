@@ -22,7 +22,7 @@ createRoot(root).render(
   </StrictMode>,
 );
 
-// APK (ADR-020): status bar mengikuti tema. Service worker tidak dipasang, karena app shell ikut
+// APK (ADR-020): status bar dan tautan qissah.id/#epNN. Service worker tidak dipasang, karena app shell ikut
 // di dalam APK dan diperbarui lewat rilis APK. Kondisi mode ditulis langsung (bukan konstanta dari modul lain)
 // supaya Rolldown membuang cabang dan impor dinamisnya dari build web.
 if (import.meta.env.MODE === 'android') {

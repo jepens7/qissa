@@ -147,6 +147,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 - Plugin: `@capacitor/share` (lembar bagikan native dari `lib/share.ts`, H3), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links, H3), dan `@capacitor/status-bar` (`lib/native.ts`: ikon status bar mengikuti tema).
 - Push (ditunda setelah Ramadan, keputusan 23 Oktober): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
 - Konten: APK memuat manifest dan episode dari `https://qissah.id/content`, sehingga episode baru tidak butuh rilis APK. nginx mengirim `Access-Control-Allow-Origin: *` untuk `/content/`, dan `lib/content.ts` me-resolve URL episode terhadap URL manifest (BACKLOG H2).
+- Deep link: `intent-filter` untuk `https://qissah.id` dengan `autoVerify`. Sampai `https://qissah.id/.well-known/assetlinks.json` memuat sidik jari kunci penanda tangan APK, Android membuka tautan di browser atau lewat pemilih aplikasi; `adb shell am start` dengan nama paket tetap bisa dipakai untuk uji.
 - Build: `pnpm cap:sync` (apps/web mode `android` ke `dist-android`, lalu `cap sync android`), kemudian `pnpm cap:open` dan Android Studio untuk APK atau AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
 
 ## 11. Backend (PocketBase)
