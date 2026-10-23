@@ -55,7 +55,7 @@
   "bagikan.masukan": "Kirim masukan ke pembuat",
   "bagikan.tersalin": "Teks tersalin. Tempel di WhatsApp atau mana saja.",
   "bagikan.gagal": "Tidak bisa menyalin otomatis di browser ini.",
-  "masukan.templat": "Masukan untuk Qissa, Episode {nomor} ({judul})\nJalur saya: {jalur}\n\n1. Bagian yang saya skip:\n2. Kata atau kalimat yang ketuaan:\n3. Pilihan saya dan kenapa:\n4. Ada momen terasa diceramahin? Di mana:\n5. Kartu bagikannya bakal saya kirim ke:\n",
+  "masukan.templat": "Masukan untuk Qissa, Episode {nomor} ({judul})\nJalur saya: {jalur}\n\n1. Bagian yang saya skip:\n2. Kata atau kalimat yang ketuaan:\n3. Pilihan saya dan kenapa:\n4. Ada momen terasa diceramahin? Di mana:\n5. Kartu bagikannya bakal saya kirim ke:\n\nKirim ke halo@qissah.id",
   "lanjut.judul": "Lanjut, atau coba pilihan lain?",
   "lanjut.judul.terakhir": "Kalau tadi milih yang lain?",
   "lanjut.menyusul": "Episode {nomor} menyusul.",
