@@ -14,14 +14,31 @@ export function App() {
   const [rute, setRute] = useState<Rute>(() => bacaRute(window.location.hash));
   const [ling] = useState(() => lingkunganBrowser(penyimpananBrowser()));
   const [manifest, setManifest] = useState<Manifest | null | 'memuat'>('memuat');
+  // Tanggal Jakarta untuk saringan rilis. Diperbarui saat hash berubah dan saat halaman kembali terlihat, supaya
+  // sesi yang dibiarkan hidup melewati 00.00 WIB menampilkan episode yang baru mencapai tanggal rilisnya, dan
+  // tautan #epNN di jendela yang sama tidak dipantulkan ke home (RUNBOOK §2).
+  const [hariIni, setHariIni] = useState(() => hariIniJakarta(new Date()));
 
   useEffect(() => {
     const ubah = () => {
       setRute(bacaRute(window.location.hash));
+      setHariIni(hariIniJakarta(new Date()));
     };
     window.addEventListener('hashchange', ubah);
     return () => {
       window.removeEventListener('hashchange', ubah);
+    };
+  }, []);
+
+  useEffect(() => {
+    const terlihat = () => {
+      if (document.visibilityState === 'visible') {
+        setHariIni(hariIniJakarta(new Date()));
+      }
+    };
+    document.addEventListener('visibilitychange', terlihat);
+    return () => {
+      document.removeEventListener('visibilitychange', terlihat);
     };
   }, []);
 
@@ -48,10 +65,8 @@ export function App() {
     if (manifest === 'memuat' || manifest === null) {
       return [];
     }
-    return import.meta.env.DEV
-      ? manifest.episodes
-      : episodeTerbit(manifest, hariIniJakarta(new Date()));
-  }, [manifest]);
+    return import.meta.env.DEV ? manifest.episodes : episodeTerbit(manifest, hariIni);
+  }, [manifest, hariIni]);
 
   const entri = rute.nama === 'episode' ? terbit.find((e) => e.id === rute.id) : undefined;
 

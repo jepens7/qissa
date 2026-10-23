@@ -105,6 +105,44 @@ test('poll membuka Episode 1 sampai tamat, refleksi tersimpan, bagikan memakai c
   expect(salinan[0]).not.toContain('Ketemu dulu');
 });
 
+test('sesi yang hidup melewati 00.00 WIB tanggal rilis: episode tampil tanpa muat ulang', async ({
+  page,
+  request,
+}) => {
+  const manifest = (await (await request.get('/content/manifest.json')).json()) as {
+    episodes: { id: string; rilis: string }[];
+  };
+  const rilis = manifest.episodes.find((e) => e.id === 'ep01')?.rilis ?? '2026-11-04';
+  const sebelum = new Date(`${rilis}T00:00:00+07:00`).getTime() - 60_000;
+  const sesudah = new Date(`${rilis}T00:01:00+07:00`);
+  const kartu = page.getByRole('button', { name: /Tangkapan Layar/ });
+  // Footer baru tampil setelah manifest termuat.
+  const footer = page.getByRole('link', { name: 'Kebijakan privasi' });
+
+  // Halaman kembali terlihat (pindah aplikasi) sesudah tengah malam.
+  await page.clock.setFixedTime(sebelum);
+  await page.goto('/#home');
+  await expect(footer).toBeVisible();
+  await expect(kartu).toHaveCount(0);
+  await page.clock.setFixedTime(sesudah);
+  await page.evaluate(() => {
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await expect(kartu).toBeVisible();
+
+  // Tautan #ep01 dibuka di jendela yang sama sesudah tengah malam.
+  await page.clock.setFixedTime(sebelum);
+  await page.reload();
+  await expect(footer).toBeVisible();
+  await expect(kartu).toHaveCount(0);
+  await page.clock.setFixedTime(sesudah);
+  await page.evaluate(() => {
+    window.location.hash = '#ep01';
+  });
+  await expect(page.getByRole('heading', { name: 'Tangkapan Layar', level: 1 })).toBeVisible();
+  await expect(page).toHaveURL(/#ep01$/);
+});
+
 test('muat ulang offline: episode yang pernah dibuka tetap terbaca', async ({ page, context }) => {
   await page.goto('/');
   // Kunjungan pertama memasang service worker; muat ulang supaya halaman dikendalikannya.
