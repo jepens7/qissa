@@ -19,29 +19,14 @@ function serviceWorker() {
     // public/manifest.webmanifest tetap dipakai apa adanya.
     manifest: false,
     workbox: {
-      globPatterns: ['**/*.{js,css,html,png,webmanifest}'],
+      // Font di-host sendiri ikut di-precache, jadi teks Arab dan serif tampil offline sejak kunjungan pertama.
+      globPatterns: ['**/*.{js,css,html,png,webmanifest,woff2}'],
       // og.png hanya untuk pratinjau tautan; konten di-cache lib/content.ts.
       globIgnores: ['og.png', 'content/**'],
       navigateFallback: null,
       // App tidak memakai query string (routing hash), jadi tautan berparameter pelacak dari aplikasi lain tetap
       // dilayani index.html dari precache, termasuk saat offline.
       ignoreURLParametersMatching: [/.*/],
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
-          handler: 'StaleWhileRevalidate',
-          options: { cacheName: 'qissa-font-css', cacheableResponse: { statuses: [0, 200] } },
-        },
-        {
-          urlPattern: /^https:\/\/fonts\.gstatic\.com\//,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'qissa-font',
-            cacheableResponse: { statuses: [0, 200] },
-            expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-          },
-        },
-      ],
     },
   });
 }

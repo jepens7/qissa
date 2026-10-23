@@ -130,7 +130,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 - `manifest.json` dan episode disajikan `Cache-Control: no-cache`. `lib/content.ts` memuat manifest network-first dengan timeout 3 detik, lalu memakai salinan terakhir di localStorage.
 - Episode: cache-first di Cache Storage oleh `lib/content.ts`, dengan kunci `url?v=versi_konten`. Bila manifest menunjuk versi baru, versi itu diunduh utuh dan disimpan saat episode dibuka, baru kemudian versi lama episode yang sama dihapus. Bila unduhan gagal (offline, putus di tengah, galat server, atau JSON rusak), versi lama yang masih tersimpan dan formatnya dikenal shell tetap dipakai.
 - Penyaringan rilis: app menyembunyikan episode dengan `rilis` di masa depan (zona waktu Asia/Jakarta). JSON-nya tetap bisa diakses langsung; diterima untuk MVP (tidak ada spoiler yang bernilai).
-- Service worker (Workbox lewat `vite-plugin-pwa`, ADR-017) hanya untuk app shell: precache HTML (termasuk `/privasi/` dan `/tentang/`), JS, CSS, ikon, dan manifest web, tanpa `navigateFallback`, dan query string diabaikan saat mencocokkan precache. Runtime: CSS Google Fonts StaleWhileRevalidate, berkas font CacheFirst. Konten tidak dirute service worker. Pembaruan: `registerType: 'prompt'`; `components/update-bar.tsx` menampilkan baris "Versi baru tersedia" tanpa memaksa.
+- Service worker (Workbox lewat `vite-plugin-pwa`, ADR-017) hanya untuk app shell: precache HTML (termasuk `/privasi/` dan `/tentang/`), JS, CSS, ikon, dan manifest web, tanpa `navigateFallback`, dan query string diabaikan saat mencocokkan precache. Font di-host sendiri di `/fonts/` dan ikut di-precache (ADR-019). Konten tidak dirute service worker. Pembaruan: `registerType: 'prompt'`; `components/update-bar.tsx` menampilkan baris "Versi baru tersedia" tanpa memaksa.
 
 ## 8. Penyimpanan perangkat
 
@@ -167,7 +167,7 @@ GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, 
 
 ## 14. Anggaran kinerja
 - App shell ≤ 150 KB gzip (tanpa font). React + React DOM ≈ 45 KB; sisanya untuk app. Tidak ada library UI, tidak ada markdown parser besar (dalil diparse di compile time, bukan di klien).
-- Font: subset Latin untuk Plus Jakarta Sans dan Newsreader; Amiri hanya Arab. `display=swap`.
+- Font: di-host sendiri (ADR-019), subset Latin untuk Plus Jakarta Sans dan Newsreader, Amiri hanya Arab, `font-display: swap`; Plus Jakarta Sans di-preload.
 - Episode JSON ≤ 60 KB. Gambar hanya ikon dan OG.
 
 ## 15. Alur utama

@@ -55,7 +55,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - UI-5 (wajib) Setelah `end`: kartu tamat (jalur, jumlah akhir yang sudah dibaca, catatan poll bila ada), kartu dalil, refleksi, bagikan dan masukan, lanjut ke episode berikutnya, ulang dari Pilihan 2, ulang dari awal, daftar episode.
 - UI-6 (wajib) Halaman otomatis menggulir ke baris terbaru; menghormati `prefers-reduced-motion`.
 - UI-7 (wajib) Tema terang dan gelap mengikuti sistem lewat token CSS; kartu dalil memakai permukaan "kertas" yang berbeda di kedua tema.
-- UI-8 (wajib) Tipografi: Plus Jakarta Sans (UI dan chat), Newsreader (narasi, dalil), Amiri (Arab), semua dengan fallback sistem; font dimuat dengan `display=swap`.
+- UI-8 (wajib) Tipografi: Plus Jakarta Sans (UI dan chat), Newsreader (narasi, dalil), Amiri (Arab), semua dengan fallback sistem; font di-host sendiri (ADR-019) dan dimuat dengan `font-display: swap`.
 
 ### 3.4 Daftar episode (LIB)
 - LIB-1 (wajib) Landing menampilkan poll Episode 1 (tiga opsi), lalu daftar episode dari manifest dengan status per perangkat: belum dibaca, selesai, jumlah akhir yang sudah dibaca dari 3.
@@ -84,7 +84,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 
 ### 3.9 PWA dan offline (PWA)
 - PWA-1 (wajib) Manifest web app, ikon 192 dan 512, `display: standalone`, warna tema.
-- PWA-2 (wajib) Service worker mem-precache app shell (HTML, JS, CSS, ikon) dan meng-cache font (CSS stale-while-revalidate, berkas font cache-first). Manifest konten network-first dengan cadangan salinan terakhir, dan episode JSON cache-first setelah pernah diunduh, keduanya oleh `lib/content.ts` (ADR-017).
+- PWA-2 (wajib) Service worker mem-precache app shell (HTML, JS, CSS, ikon, dan font yang di-host sendiri, ADR-019). Manifest konten network-first dengan cadangan salinan terakhir, dan episode JSON cache-first setelah pernah diunduh, keduanya oleh `lib/content.ts` (ADR-017).
 - PWA-3 (wajib) Pembaruan app shell: setelah build baru terdeteksi, tampilkan satu baris "Versi baru tersedia, muat ulang" tanpa memaksa.
 - PWA-4 (wajib) Semua fitur inti bekerja tanpa jaringan untuk episode yang sudah pernah dibuka.
 
