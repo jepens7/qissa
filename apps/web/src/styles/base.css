@@ -86,6 +86,8 @@ body::before {
   color: var(--muted);
   line-height: 1.2;
   margin-top: 3px;
+  /* Tinggi satu baris walau kosong (mis. saat manifest belum termuat), supaya header tidak bergeser. */
+  min-height: 1.2em;
 }
 .ep {
   font-size: 12.5px;
