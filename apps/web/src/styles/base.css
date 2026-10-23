@@ -643,7 +643,7 @@ textarea:focus-visible {
   color: var(--paper-muted);
   margin: 0 0 6px;
 }
-.ar {
+.paper .ar {
   font-family: 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif;
   font-size: 25px;
   line-height: 1.95;
