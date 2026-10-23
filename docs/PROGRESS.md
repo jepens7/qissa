@@ -124,6 +124,7 @@ Jawaban pemilik atas ringkasan Epik B:
    - metrik Tahap 0 dihitung dari pengunjung unik atau Funnel Umami, tanpa menyaring event ganda di kode;
    - mode tema manual tidak dibangun.
 10. CI mengikuti playbook CI pemilik: concurrency hanya membatalkan run PR yang tergantikan (sebelumnya run di `main` ikut dibatalkan bila merge berurutan), dan `--ignore-registry-errors` dihapus dari `pnpm audit` supaya pemindaian yang gagal tidak tersembunyi. Validasi: actionlint dan zizmor lulus.
+11. CI memasang Chromium dengan `playwright install chromium` tanpa `--with-deps`. Dari 16 run sukses dengan E2E, langkah itu biasanya 19–32 detik, tetapi tiga kali tertahan 663–726 detik dan sekali 105 detik. Penyebabnya mirror apt Azure (sekitar 33 kB/s untuk paket font dan library sekitar 20 MB), sehingga job 12–13 menit hampir menyentuh batas 15 menit. Image runner ubuntu-24.04 sudah memuat library Chrome; tes tidak bergantung pada font sistem karena font di-host sendiri. Bila ada library yang kurang, Playwright gagal dengan pesan yang menyebutnya. Repo publik, jadi menit runner gratis; yang dikejar keandalan dan waktu umpan balik.
 
 ## Pertanyaan terbuka
 - Deploy ditunda sampai fase lokal selesai: record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4 dan §6.

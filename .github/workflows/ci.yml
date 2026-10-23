@@ -47,7 +47,10 @@ jobs:
       # PRIVACY-SECURITY §3: dependensi dipindai di CI.
       - run: pnpm audit --prod --audit-level=high
       # E2E SRS §9 (ADR-018) terhadap build di atas, lewat vite preview; paling mahal, jadi paling akhir.
-      - run: pnpm --filter @qissa/web exec playwright install --with-deps chromium
+      # Tanpa --with-deps: image ubuntu-24.04 sudah memuat library Chrome, sedangkan paket apt tambahannya
+      # (font dan pembaruan library) beberapa kali tertahan 11–12 menit di mirror Azure. Bila ada library
+      # yang kurang, Playwright gagal sambil menyebut yang hilang.
+      - run: pnpm --filter @qissa/web exec playwright install chromium
       - run: pnpm e2e
         env:
           # Sama dengan build, supaya vite preview tidak mencetak peringatan konfigurasi palsu.
