@@ -115,6 +115,20 @@ const putus = () =>
 
 const json = (data: unknown) => new Response(JSON.stringify(data), { status: 200 });
 
+/** fetch yang menjawab `data` sesudah `ms`, dan menolak bila dibatalkan seperti fetch sungguhan. */
+function fetchLambat(data: unknown, ms: number) {
+  return (_input: RequestInfo | URL, init?: RequestInit): Promise<Response> =>
+    new Promise((selesai, tolak) => {
+      const waktu = setTimeout(() => {
+        selesai(json(data));
+      }, ms);
+      init?.signal?.addEventListener('abort', () => {
+        clearTimeout(waktu);
+        tolak(new DOMException('dibatalkan', 'AbortError'));
+      });
+    });
+}
+
 function lingkungan(f: typeof fetch, ubah: Partial<Lingkungan> = {}): Lingkungan {
   return { fetch: f, caches: null, penyimpanan: penyimpananPalsu(), ...ubah };
 }
@@ -146,21 +160,9 @@ describe('muatManifest: network-first dengan cadangan', () => {
   });
 
   test('lambat tanpa salinan: jawaban jaringan ditunggu melewati batas waktu', async () => {
-    // Menjawab sesudah batas waktu, dan menolak bila dibatalkan seperti fetch sungguhan.
-    const lambat = (_input: RequestInfo | URL, init?: RequestInit): Promise<Response> =>
-      new Promise((selesai, tolak) => {
-        const waktu = setTimeout(() => {
-          selesai(json(MANIFEST));
-        }, 60);
-        init?.signal?.addEventListener('abort', () => {
-          clearTimeout(waktu);
-          tolak(new DOMException('dibatalkan', 'AbortError'));
-        });
-      });
     const penyimpanan = penyimpananPalsu();
-    expect(await muatManifest('/content', lingkungan(lambat, { penyimpanan }), 20)).toEqual(
-      MANIFEST,
-    );
+    const ling = lingkungan(fetchLambat(MANIFEST, 60), { penyimpanan });
+    expect(await muatManifest('/content', ling, 20)).toEqual(MANIFEST);
     expect(penyimpanan.peta.has('qissa.v1.manifest')).toBe(true);
   });
 });
@@ -239,6 +241,25 @@ describe('muatEpisode: cache-first dengan versi_konten', () => {
     expect(await muatEpisode(baru, terputus)).toEqual(LAMA);
     expect([...isi.keys()]).toEqual(kunciLama);
     expect(await muatEpisode(baru, lingkungan(fetchPalsu({}).fetch, { caches }))).toEqual(LAMA);
+  });
+
+  test('versi baru menggantung dan versi lama tersimpan: versi lama dipakai setelah batas waktu', async () => {
+    const LAMA = { format: 1, id: 'ep01', isi: 'lama' };
+    const { caches, isi } = cachesPalsu();
+    await muatEpisode(
+      entri('ep01'),
+      lingkungan(fetchPalsu({ '/content/ep01.json': json(LAMA) }).fetch, { caches }),
+    );
+    const baru = entri('ep01', { versi_konten: '2026-10-23.1' });
+    const { fetch } = fetchPalsu({ '/content/ep01.json': 'gantung' });
+    expect(await muatEpisode(baru, lingkungan(fetch, { caches }), 20)).toEqual(LAMA);
+    expect([...isi.keys()]).toEqual(['https://qissah.id/content/ep01.json?v=2026-10-22.1']);
+  });
+
+  test('versi baru lambat tanpa versi lama: jawaban jaringan ditunggu melewati batas waktu', async () => {
+    expect(await muatEpisode(entri('ep01'), lingkungan(fetchLambat(EPISODE, 60)), 20)).toEqual(
+      EPISODE,
+    );
   });
 
   test('cadangan dengan format yang tidak dikenal shell tidak dipakai (ADR-015)', async () => {

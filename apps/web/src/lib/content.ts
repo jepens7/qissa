@@ -25,8 +25,8 @@ export function lingkunganBrowser(penyimpanan: Penyimpanan | null): Lingkungan {
   };
 }
 
-/** Batas waktu manifest network-first (ARCHITECTURE §7). */
-export const BATAS_MANIFEST_MS = 3000;
+/** Batas waktu jaringan bila ada cadangan tersimpan: salinan manifest atau versi lama episode (ARCHITECTURE §7). */
+export const BATAS_JARINGAN_MS = 3000;
 
 const NAMA_CACHE = 'qissa-episode-v1';
 
@@ -77,7 +77,7 @@ async function ambilDenganBatas(ling: Lingkungan, url: string, batasMs: number):
 export async function muatManifest(
   base: string,
   ling: Lingkungan,
-  batasMs = BATAS_MANIFEST_MS,
+  batasMs = BATAS_JARINGAN_MS,
 ): Promise<Manifest | null> {
   const salinan = bacaManifestTersimpan(ling.penyimpanan);
   const cadangan = adalahManifest(salinan) ? salinan : null;
@@ -135,9 +135,14 @@ async function versiTersimpan(cache: Cache | null, url: string): Promise<Episode
 /**
  * Episode cache-first. Versi baru dibaca utuh, disimpan, baru kemudian versi lama episode yang sama dihapus.
  * Bila versi baru belum tersimpan dan unduhannya gagal (offline, putus di tengah, galat server, atau JSON rusak),
- * versi lama yang masih tersimpan dipakai (SRS PWA-4, NFR-2).
+ * versi lama yang masih tersimpan dipakai (SRS PWA-4, NFR-2). Bila versi lama ada, unduhan versi baru diberi batas
+ * waktu seperti manifest, supaya di jaringan yang tersambung tapi macet pembaca tidak menunggu layar kosong.
  */
-export async function muatEpisode(entri: ManifestEpisode, ling: Lingkungan): Promise<Episode> {
+export async function muatEpisode(
+  entri: ManifestEpisode,
+  ling: Lingkungan,
+  batasMs = BATAS_JARINGAN_MS,
+): Promise<Episode> {
   const kunci = `${entri.url}?v=${encodeURIComponent(entri.versi_konten)}`;
   let cache: Cache | null = null;
   try {
@@ -150,11 +155,15 @@ export async function muatEpisode(entri: ManifestEpisode, ling: Lingkungan): Pro
     cache = null;
   }
 
+  const lama = await versiTersimpan(cache, entri.url);
   let teks = '';
   let episode: Episode | null = null;
   let galat = `Episode ${entri.id} gagal dimuat: jaringan tidak tersedia.`;
   try {
-    const respons = await ling.fetch(entri.url);
+    const respons =
+      lama === undefined
+        ? await ling.fetch(entri.url)
+        : await ambilDenganBatas(ling, entri.url, batasMs);
     if (respons.ok) {
       teks = await respons.text();
       episode = JSON.parse(teks) as Episode;
@@ -167,7 +176,6 @@ export async function muatEpisode(entri: ManifestEpisode, ling: Lingkungan): Pro
     }
   }
   if (episode === null) {
-    const lama = await versiTersimpan(cache, entri.url);
     if (lama !== undefined) {
       return lama;
     }
