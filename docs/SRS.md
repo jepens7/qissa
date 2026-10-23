@@ -175,12 +175,12 @@ Metrik turunan: completion = selesai ÷ mulai; share rate = bagikan ÷ selesai; 
 - Manual sebelum rilis: checklist QA di `docs/CONTENT-RULES.md` §6 untuk tiap episode; uji di dua HP Android nyata (satu kelas menengah bawah).
 
 ## 10. Deployment dan rilis
-- Build: GitHub Actions menjalankan typecheck, lint, test, `qs lint`, `qs compile`, `vite build`, lalu Easypanel membangun image dari `infra/nginx/Dockerfile` (konten dan app shell dalam satu image).
+- Build: GitHub Actions menjalankan typecheck, lint, test, `qs lint`, `qs compile --check`, build, `pnpm audit`, dan E2E (ARCHITECTURE §12). Easypanel membangun image dari `infra/nginx/Dockerfile` (konten dan app shell dalam satu image) setiap push ke `main`, tanpa menunggu CI (ADR-012).
 - Staging: `staging.qissah.id` dari branch `staging` dengan manifest yang memuat episode draft.
 - Produksi: branch `main`; manifest hanya episode `reviewed` (gerbang `qs lint --wajib-review` dinyalakan setelah review ep01–02; ADR-012).
 - Versi: app shell `MAJOR.MINOR.PATCH`; konten `YYYY-MM-DD.n` per episode.
 - Android: build lokal `pnpm cap:sync` lalu Android Studio; internal testing → closed testing → production. Pendaftaran PSE Komdigi sebelum production.
-- Rollback: Easypanel menyimpan image sebelumnya; manifest bisa diubah tanpa build.
+- Rollback: Easypanel menyimpan image sebelumnya. Konten ikut di dalam image, jadi mengubah manifest butuh PR dan build ulang (RUNBOOK §7); manifest dari volume baru di fase berikutnya (`infra/easypanel.md`).
 
 ## 11. Kriteria penerimaan MVP
 - Semua FR berlabel wajib terpenuhi dan diuji.
