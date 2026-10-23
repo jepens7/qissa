@@ -182,6 +182,22 @@ describe('muatManifest: network-first dengan cadangan', () => {
     expect(await muatManifest('/content', ling, 20)).toEqual(MANIFEST);
   });
 
+  test('manifest dari URL absolut (APK, H2): URL episode di-resolve terhadap URL manifest', async () => {
+    const base = 'https://qissah.id/content';
+    const mutlak = MANIFEST.episodes.map((e) => `https://qissah.id${e.url}`);
+    const { fetch } = fetchPalsu({ [`${base}/manifest.json`]: json(MANIFEST) });
+    const penyimpanan = penyimpananPalsu();
+    const dariJaringan = await muatManifest(base, lingkungan(fetch, { penyimpanan }));
+    expect(dariJaringan?.episodes.map((e) => e.url)).toEqual(mutlak);
+    // Salinan disimpan apa adanya, lalu di-resolve juga saat dipakai sebagai cadangan.
+    expect(penyimpanan.peta.get('qissa.v1.manifest')).toBe(JSON.stringify(MANIFEST));
+    const offline = lingkungan(fetchPalsu({}).fetch, { penyimpanan });
+    expect((await muatManifest(base, offline))?.episodes.map((e) => e.url)).toEqual(mutlak);
+    // Di web, base relatif: manifest dipakai apa adanya.
+    const relatif = fetchPalsu({ '/content/manifest.json': json(MANIFEST) });
+    expect(await muatManifest('/content', lingkungan(relatif.fetch))).toEqual(MANIFEST);
+  });
+
   test('lambat tanpa salinan: jawaban jaringan ditunggu melewati batas waktu', async () => {
     const penyimpanan = penyimpananPalsu();
     const ling = lingkungan(fetchLambat(MANIFEST, 60), { penyimpanan });

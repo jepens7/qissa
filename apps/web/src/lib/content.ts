@@ -98,13 +98,28 @@ export async function muatManifest(
       const data: unknown = JSON.parse(teks);
       if (adalahManifest(data)) {
         simpanManifest(ling.penyimpanan, data);
-        return data;
+        return urlMutlak(data, url);
       }
     }
   } catch {
     // Jaringan gagal, terlalu lambat, atau JSON rusak: pakai salinan.
   }
-  return cadangan;
+  return cadangan === null ? null : urlMutlak(cadangan, url);
+}
+
+/**
+ * Bila manifest diambil dari URL absolut (APK Capacitor memuat konten dari qissah.id, BACKLOG H2), URL episode
+ * di-resolve terhadap URL manifest; tanpa itu `/content/epNN.json` mengarah ke origin APK. Di web, `base`
+ * relatif dan manifest dipakai apa adanya.
+ */
+function urlMutlak(manifest: Manifest, urlManifest: string): Manifest {
+  if (!/^https?:\/\//.test(urlManifest)) {
+    return manifest;
+  }
+  return {
+    ...manifest,
+    episodes: manifest.episodes.map((e) => ({ ...e, url: new URL(e.url, urlManifest).href })),
+  };
 }
 
 /** Tanggal hari ini di Asia/Jakarta, YYYY-MM-DD. */
