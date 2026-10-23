@@ -33,7 +33,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 }
 ```
 - `versi`: naik bila bentuk manifest berubah; app menolak versi yang tidak dikenal dan memakai cache.
-- `url` berbentuk `/content/epNN.json`, tanpa versi; app memakai `versi_konten` sebagai bagian kunci cache (ADR-017).
+- `url` berbentuk `/content/epNN.json`, tanpa versi; app memakai `versi_konten` sebagai bagian kunci cache (ADR-017). Bila manifest diambil dari URL absolut, seperti di APK dengan `VITE_CONTENT_BASE=https://qissah.id/content`, app me-resolve `url` terhadap URL manifest.
 - `rilis` tanggal ISO, zona waktu Asia/Jakarta; episode tersembunyi sebelum tanggal itu.
 - Produksi hanya memuat `review.status = "reviewed"`; CI menolak selainnya di branch `main`. Gerbang ini tersedia sebagai `qs lint --wajib-review` dan baru dinyalakan setelah review ulama ep01–02 selesai; sampai saat itu episode draft boleh tayang dengan badge "Belum direview ulama" (ADR-012).
 - `content/manifest.json` ditulis tangan: daftar dan urutan episode, `rilis`, dan `review`. `qs compile` menambahkan `rating` dari front matter dan `versi_konten` dari berkas kunci (§9), lalu menolak bila `nomor`, `judul`, `teaser`, `durasi_menit`, atau `review` berbeda dengan front matter dan `dalil.md`, bila satu episode ditulis dua kali, atau bila `url` yang ditulis tangan tidak sama dengan berkas yang ditulis compile (QISSA-SCRIPT §6, S1, L6, dan L7).

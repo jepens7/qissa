@@ -21,7 +21,7 @@ Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pe
 ## 3. Keamanan aplikasi
 - Semua teks naskah dirender sebagai teks (escaping React); tidak ada HTML mentah dari konten.
 - Content Security Policy (header nginx): `default-src 'self'; script-src 'self' https://umami.qissah.id; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://umami.qissah.id; frame-ancestors 'none'`. Font di-host sendiri, jadi tidak ada origin pihak ketiga selain Umami (ADR-019).
-- Header lain: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` menolak kamera, mikrofon, geolokasi.
+- Header lain: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` menolak kamera, mikrofon, geolokasi. Khusus `/content/`: `Access-Control-Allow-Origin: *`, supaya APK bisa memuat manifest dan episode; isinya publik dan diambil tanpa kredensial (BACKLOG H2).
 - Dependensi: `pnpm audit` di CI; pembaruan bulanan; tidak ada dependensi baru tanpa ADR.
 - PocketBase (setelah Ramadan, bila form masukan dibangun): admin hanya lewat HTTPS, 2FA bila tersedia, aturan koleksi dikomit sebagai migrasi, rate limit di hook.
 - Rahasia (keystore Android, kredensial Easypanel, PocketBase, Umami, Play Console, registrar domain) disimpan di password manager dengan pemulihan yang didokumentasikan di RUNBOOK.
