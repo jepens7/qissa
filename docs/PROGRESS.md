@@ -59,6 +59,7 @@ Urutan sesuai `docs/PLAN.md` §6.
 | QA: episode baru tampil di sesi yang hidup | selesai | Keputusan 23 Oktober butir 12. Tanggal Jakarta untuk saringan rilis kini berupa state di `app.tsx`, diperbarui saat halaman kembali terlihat (`visibilitychange`) dan saat hash berubah. Sesi yang tetap hidup melewati 00.00 WIB tanggal rilis kini menampilkan episode baru, dan tautan `#epNN` di jendela yang sama tidak lagi dipantulkan ke home. Manifest sengaja tidak dimuat ulang: entri episode tetap objek yang sama, jadi pemutar yang sedang terbuka tidak dimuat ulang. E2E baru (jam 23.59 WIB sebelum `rilis` ep01, lalu 00.01) memeriksa kedua jalur, dan gagal pada kode lama |
 | QA: unduhan episode berbatas waktu | selesai | Keputusan 23 Oktober butir 12. `muatEpisode` mencari versi lama episode sebelum mengunduh. Bila ada, unduhan versi baru memakai `ambilDenganBatas` dengan batas 3 detik yang sama dengan manifest (konstanta `BATAS_JARINGAN_MS`), lalu jatuh ke versi lama. Tanpa versi lama, jawaban jaringan tetap ditunggu, karena menyerah hanya berujung galat. Tes `content.test.ts`: versi baru menggantung dengan versi lama tersimpan memakai versi lama sesudah batas waktu (gagal pada kode lama), dan versi baru yang lambat tanpa versi lama tetap ditunggu. ARCHITECTURE §7 diperbarui |
 | QA: poll Episode 1 mengikuti rilis | selesai | Keputusan 23 Oktober butir 12. `HomeScreen` mendapat prop `poll`, dan App mengisinya `manifest === 'memuat' \|\| terbit.some((e) => e.id === 'ep01')`. Poll tetap ada di render pertama (NFR-1), lalu hilang bila ep01 tidak terbit, misalnya disembunyikan lewat RUNBOOK §7 atau manifest gagal tanpa salinan, sehingga tidak ada lagi tombol yang hanya memantul ke home. Tes `home.test.tsx` memeriksa poll tampil dan tersembunyi. E2E rilis memeriksa poll tidak ada sebelum 00.00 WIB `rilis` ep01 dan muncul sesudahnya. RUNBOOK §7 menyebut bahwa pratinjau tautan (`og:description` dan `og.png`) tetap memuat dilema ep01 dan butuh PR kode |
+| QA: tujuan templat masukan | selesai | Keputusan 23 Oktober butir 13. `masukan.templat` di id.json kini diakhiri "Kirim ke halo@qissah.id", teks yang disetujui pemilik. Sebelumnya lembar bagikan tidak memberi tahu pembaca ke mana mengirim masukan. Tes `akhir.test.ts` memeriksa jalur, lima pertanyaan, dan alamat tujuan di akhir templat. SRS SHR-2 menyebutnya |
 
 ## Sesudah deploy web dan pemicu
 
@@ -134,8 +135,11 @@ Jawaban pemilik atas ringkasan Epik B:
    - dua perbaikan ketahanan dikerjakan sebelum deploy: episode yang mencapai tanggal rilis tampil tanpa muat ulang di sesi yang masih hidup, dan unduhan versi baru episode diberi batas waktu bila versi lama tersimpan;
    - poll Episode 1 hanya tampil selama manifest dimuat atau bila ep01 terbit;
    - tiga belas kartu narasi ep01–ep02 yang berisi 4–6 kalimat dipangkas saat revisi baca Gen Z sesudah I2, tanpa mengubah aturan 1–3 kalimat (BACKLOG I2).
+13. Keputusan pemilik menjelang deploy:
+   - templat masukan diakhiri "Kirim ke halo@qissah.id" (teks disetujui), sehingga pembaca tahu ke mana mengirimnya;
+   - Saluran WhatsApp dibuat sebelum deploy, dan URL-nya diisi sebagai build arg `VITE_WA_CHANNEL`;
+   - deploy dilakukan sesudah uji HP, dengan sasaran sekitar 12 November sesuai PLAN, sehingga ep01–02 (rilis 4 November) sudah tampil saat situs live dan sesi E3 bisa langsung dijalankan.
 
 ## Pertanyaan terbuka
-- Deploy ditunda sampai fase lokal selesai: record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4 dan §6.
-- Pembaca publik tidak tahu ke mana mengirim templat masukan, karena lembar bagikan tidak punya tujuan. Usulan: cantumkan `halo@qissah.id` di templat atau di kartu bagikan; butuh persetujuan teks pemilik.
+- Deploy sesudah uji HP, sasaran sekitar 12 November (keputusan butir 13): record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4 dan §6.
 - Dari audit kesiapan: PLAN §4 menulis "Baris D ditutup setelah uji HP", padahal D1–D8 sudah berstatus selesai berdasarkan pemeriksaan DevTools 360×780 (ADR-016). Uji HP kini tercatat di baris QA lokal. Temuan audit lain sudah diputuskan (keputusan 23 Oktober butir 12).

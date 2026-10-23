@@ -1,12 +1,25 @@
 // BACKLOG D4: teks bagikan tanpa pilihan pembaca, cadangan salin ke clipboard, dan catatan poll Episode 1.
+// SRS SHR-2: templat masukan berisi jalur, lima pertanyaan, dan alamat tujuan.
 import { describe, expect, test, vi } from 'vitest';
 import { catatanPoll } from '../src/features/ending/ending.tsx';
+import { t } from '../src/lib/i18n.ts';
 import { kirimTeks, teksBagikan } from '../src/lib/share.ts';
 
 test('teks bagikan: kalimat bagikan lalu URL episode', () => {
   expect(teksBagikan('Lu bakal gimana?', 'https://qissah.id', 'ep01')).toBe(
     'Lu bakal gimana?\nhttps://qissah.id#ep01',
   );
+});
+
+test('templat masukan: jalur, lima pertanyaan, lalu alamat tujuan', () => {
+  const teks = t('masukan.templat', {
+    nomor: 1,
+    judul: 'Tangkapan Layar',
+    jalur: 'Tutup → Ketemu dulu',
+  });
+  expect(teks).toContain('Jalur saya: Tutup → Ketemu dulu');
+  expect(teks.match(/^[1-5]\. /gm)).toHaveLength(5);
+  expect(teks.endsWith('\n\nKirim ke halo@qissah.id')).toBe(true);
 });
 
 describe('kirimTeks', () => {
