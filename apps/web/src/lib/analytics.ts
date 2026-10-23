@@ -16,10 +16,22 @@ export type EventName = keyof DataEvent;
 
 type Umami = { track: (nama: string, data: Record<string, string>) => void };
 
-/** Kirim event bila skrip Umami sudah termuat; bila belum, tidak dikonfigurasi, atau diblokir, diam. */
+/**
+ * Event yang terjadi selama skrip Umami masih dimuat, misalnya `mulai` pada kunjungan pertama lewat `#epNN`;
+ * dikirim berurutan begitu skrip termuat. null saat tidak sedang memuat (Umami tidak dikonfigurasi, sudah
+ * termuat, atau gagal dimuat), sehingga event yang tidak bisa dikirim dibuang.
+ */
+let antrean: [EventName, DataEvent[EventName]][] | null = null;
+
+/** Kirim event bila skrip Umami sudah termuat, antre bila masih dimuat; selain itu diam. */
 export function track<N extends EventName>(nama: N, data: DataEvent[N]) {
   try {
-    (window as { umami?: Umami }).umami?.track(nama, data);
+    const umami = (window as { umami?: Umami }).umami;
+    if (umami === undefined) {
+      antrean?.push([nama, data]);
+    } else {
+      umami.track(nama, data);
+    }
   } catch {
     // Analitik tidak boleh mengganggu pembaca.
   }
@@ -37,5 +49,16 @@ export function pasangUmami(skrip: string | null, websiteId: string | null) {
   // Parameter URL (mis. fbclid atau utm_* dari media sosial) tidak ikut terkirim; app tidak memakai query
   // string (routing hash), jadi tidak ada yang hilang (PRIVACY-SECURITY §1).
   el.setAttribute('data-exclude-search', 'true');
+  antrean = [];
+  el.onload = () => {
+    const tertunda = antrean ?? [];
+    antrean = null;
+    for (const [nama, data] of tertunda) {
+      track(nama, data);
+    }
+  };
+  el.onerror = () => {
+    antrean = null;
+  };
   document.head.appendChild(el);
 }
