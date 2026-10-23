@@ -102,14 +102,18 @@ export function App() {
   return (
     <>
       {layar}
-      <footer>
-        {t('footer')}
-        {/* Halaman statis di apps/web/public (BACKLOG E2); garis miring akhir menghindari redirect. */}
-        <span className="tautan">
-          <a href="/tentang/">{t('footer.tentang')}</a>
-          <a href="/privasi/">{t('footer.privasi')}</a>
-        </span>
-      </footer>
+      {/* Footer baru tampil setelah manifest termuat, bersama daftar episode, supaya tidak terdorong ke bawah
+          saat kartu muncul (layout shift, SRS §11). */}
+      {manifest === 'memuat' ? null : (
+        <footer>
+          {t('footer')}
+          {/* Halaman statis di apps/web/public (BACKLOG E2); garis miring akhir menghindari redirect. */}
+          <span className="tautan">
+            <a href="/tentang/">{t('footer.tentang')}</a>
+            <a href="/privasi/">{t('footer.privasi')}</a>
+          </span>
+        </footer>
+      )}
     </>
   );
 }
