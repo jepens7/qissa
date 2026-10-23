@@ -129,7 +129,7 @@ test('sesi yang hidup melewati 00.00 WIB tanggal rilis: episode tampil tanpa mua
   await expect(poll).toHaveCount(0);
   await page.clock.setFixedTime(sesudah);
   await page.evaluate(() => {
-    document.dispatchEvent(new Event('visibilitychange'));
+    document.dispatchEvent(new Event('visibilitychange', { bubbles: true }));
   });
   await expect(kartu).toBeVisible();
   await expect(poll).toBeVisible();
@@ -145,6 +145,62 @@ test('sesi yang hidup melewati 00.00 WIB tanggal rilis: episode tampil tanpa mua
   });
   await expect(page.getByRole('heading', { name: 'Tangkapan Layar', level: 1 })).toBeVisible();
   await expect(page).toHaveURL(/#ep01$/);
+});
+
+test.describe('manifest tertahan', () => {
+  // Tanpa service worker, supaya setiap permintaan manifest pasti lewat context.route.
+  test.use({ serviceWorkers: 'block' });
+
+  test('poll tampil selama manifest dimuat, dan tanggal rilis dihitung saat manifest tiba', async ({
+    page,
+    context,
+    request,
+  }) => {
+    const manifest = (await (await request.get('/content/manifest.json')).json()) as {
+      episodes: { id: string; rilis: string }[];
+    };
+    const rilis = manifest.episodes.find((e) => e.id === 'ep01')?.rilis ?? '2026-11-04';
+    /** Menahan setiap permintaan manifest sampai fungsi yang dikembalikan dipanggil. */
+    const tahanManifest = async () => {
+      let lepas: (() => void) | undefined;
+      const tahanan = new Promise<void>((r) => {
+        lepas = () => {
+          r();
+        };
+      });
+      await context.route('**/content/manifest.json', async (route) => {
+        await tahanan;
+        await route.continue();
+      });
+      return () => {
+        lepas?.();
+      };
+    };
+    const poll = page.getByRole('button', { name: 'Tutup, jangan dibuka' });
+    const footer = page.getByRole('link', { name: 'Kebijakan privasi' });
+
+    // Poll sudah tampil sebelum manifest tiba (NFR-1); footer menunggu manifest.
+    let lepas = await tahanManifest();
+    await page.goto('/');
+    await expect(poll).toBeVisible();
+    await expect(footer).toHaveCount(0);
+    lepas();
+    await expect(footer).toBeVisible();
+    await expect(poll).toBeVisible();
+
+    // #ep01 dibuka pukul 23.59.58 WIB sehari sebelum rilis ep01, dan manifest baru tiba sesudah 00.00.
+    await context.unroute('**/content/manifest.json');
+    lepas = await tahanManifest();
+    const tengahMalam = new Date(`${rilis}T00:00:00+07:00`).getTime();
+    await page.clock.setFixedTime(tengahMalam - 2_000);
+    // Lewat about:blank supaya #ep01 dimuat penuh, bukan sekadar hashchange di halaman yang sudah ada.
+    await page.goto('about:blank');
+    await page.goto('/#ep01');
+    await page.clock.setFixedTime(tengahMalam + 2_000);
+    lepas();
+    await expect(page.getByRole('heading', { name: 'Tangkapan Layar', level: 1 })).toBeVisible();
+    await expect(page).toHaveURL(/#ep01$/);
+  });
 });
 
 test('muat ulang offline: episode yang pernah dibuka tetap terbaca', async ({ page, context }) => {

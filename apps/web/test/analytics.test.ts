@@ -90,6 +90,8 @@ describe('pasangUmami', () => {
     track('pilihan', { ep: 'ep01', titik: 'p1', pilih: 'Tutup' });
     const umami = { track: vi.fn() };
     g.window = { umami };
+    // Tidak terjadi di browser, tetapi membuktikan antrean sudah kosong: tidak ada event lama yang ikut terkirim.
+    el.onload?.();
     track('selesai', { ep: 'ep01', jalur: 'Tutup' });
     expect(umami.track).toHaveBeenCalledTimes(1);
     expect(umami.track).toHaveBeenCalledWith('selesai', { ep: 'ep01', jalur: 'Tutup' });

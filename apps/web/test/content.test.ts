@@ -129,6 +129,21 @@ function fetchLambat(data: unknown, ms: number) {
     });
 }
 
+/** fetch yang mengirim header 200 dan sepotong body, lalu macet sampai dibatalkan seperti fetch sungguhan. */
+function fetchBodyMacet(potongan: string) {
+  return (_input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+    const body = new ReadableStream<Uint8Array>({
+      start(c) {
+        c.enqueue(new TextEncoder().encode(potongan));
+        init?.signal?.addEventListener('abort', () => {
+          c.error(new DOMException('dibatalkan', 'AbortError'));
+        });
+      },
+    });
+    return Promise.resolve(new Response(body, { status: 200 }));
+  };
+}
+
 function lingkungan(f: typeof fetch, ubah: Partial<Lingkungan> = {}): Lingkungan {
   return { fetch: f, caches: null, penyimpanan: penyimpananPalsu(), ...ubah };
 }
@@ -157,6 +172,14 @@ describe('muatManifest: network-first dengan cadangan', () => {
   test('tanpa jaringan dan tanpa salinan: null', async () => {
     const { fetch } = fetchPalsu({});
     expect(await muatManifest('/content', lingkungan(fetch))).toBeNull();
+  });
+
+  test('header tiba tetapi body macet, dengan salinan: salinan dipakai setelah batas waktu', async () => {
+    const tersimpan = { 'qissa.v1.manifest': JSON.stringify(MANIFEST) };
+    const ling = lingkungan(fetchBodyMacet('{"versi":1,'), {
+      penyimpanan: penyimpananPalsu(tersimpan),
+    });
+    expect(await muatManifest('/content', ling, 20)).toEqual(MANIFEST);
   });
 
   test('lambat tanpa salinan: jawaban jaringan ditunggu melewati batas waktu', async () => {
@@ -256,10 +279,23 @@ describe('muatEpisode: cache-first dengan versi_konten', () => {
     expect([...isi.keys()]).toEqual(['https://qissah.id/content/ep01.json?v=2026-10-22.1']);
   });
 
-  test('versi baru lambat tanpa versi lama: jawaban jaringan ditunggu melewati batas waktu', async () => {
-    expect(await muatEpisode(entri('ep01'), lingkungan(fetchLambat(EPISODE, 60)), 20)).toEqual(
-      EPISODE,
+  test('versi baru dengan body macet dan versi lama tersimpan: versi lama dipakai setelah batas waktu', async () => {
+    const LAMA = { format: 1, id: 'ep01', isi: 'lama' };
+    const { caches } = cachesPalsu();
+    await muatEpisode(
+      entri('ep01'),
+      lingkungan(fetchPalsu({ '/content/ep01.json': json(LAMA) }).fetch, { caches }),
     );
+    const baru = entri('ep01', { versi_konten: '2026-10-23.1' });
+    const ling = lingkungan(fetchBodyMacet('{"format":1,'), { caches });
+    expect(await muatEpisode(baru, ling, 20)).toEqual(LAMA);
+  });
+
+  test('versi baru lambat tanpa versi lama: jawaban jaringan ditunggu melewati batas waktu', async () => {
+    // Cache Storage ada tetapi kosong, seperti di produksi pada kunjungan pertama.
+    const { caches } = cachesPalsu();
+    const ling = lingkungan(fetchLambat(EPISODE, 60), { caches });
+    expect(await muatEpisode(entri('ep01'), ling, 20)).toEqual(EPISODE);
   });
 
   test('cadangan dengan format yang tidak dikenal shell tidak dipakai (ADR-015)', async () => {

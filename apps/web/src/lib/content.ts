@@ -56,13 +56,23 @@ function adalahManifest(data: unknown): data is Manifest {
   );
 }
 
-async function ambilDenganBatas(ling: Lingkungan, url: string, batasMs: number): Promise<Response> {
+type Unduhan = { ok: boolean; status: number; teks: string };
+
+/**
+ * Unduh teks dengan `cache: 'no-cache'`. Dengan `batasMs`, batas waktunya mencakup header dan body, jadi body yang
+ * macet di tengah ikut dibatalkan; dengan null, jawaban jaringan ditunggu.
+ */
+async function unduh(ling: Lingkungan, url: string, batasMs: number | null): Promise<Unduhan> {
   const pengendali = new AbortController();
-  const waktu = setTimeout(() => {
-    pengendali.abort();
-  }, batasMs);
+  const waktu =
+    batasMs === null
+      ? undefined
+      : setTimeout(() => {
+          pengendali.abort();
+        }, batasMs);
   try {
-    return await ling.fetch(url, { cache: 'no-cache', signal: pengendali.signal });
+    const respons = await ling.fetch(url, { cache: 'no-cache', signal: pengendali.signal });
+    return { ok: respons.ok, status: respons.status, teks: await respons.text() };
   } finally {
     clearTimeout(waktu);
   }
@@ -83,19 +93,16 @@ export async function muatManifest(
   const cadangan = adalahManifest(salinan) ? salinan : null;
   const url = `${base}/manifest.json`;
   try {
-    const respons =
-      cadangan === null
-        ? await ling.fetch(url, { cache: 'no-cache' })
-        : await ambilDenganBatas(ling, url, batasMs);
-    if (respons.ok) {
-      const data: unknown = await respons.json();
+    const { ok, teks } = await unduh(ling, url, cadangan === null ? null : batasMs);
+    if (ok) {
+      const data: unknown = JSON.parse(teks);
       if (adalahManifest(data)) {
         simpanManifest(ling.penyimpanan, data);
         return data;
       }
     }
   } catch {
-    // Jaringan gagal atau terlalu lambat: pakai salinan.
+    // Jaringan gagal, terlalu lambat, atau JSON rusak: pakai salinan.
   }
   return cadangan;
 }
@@ -160,15 +167,12 @@ export async function muatEpisode(
   let episode: Episode | null = null;
   let galat = `Episode ${entri.id} gagal dimuat: jaringan tidak tersedia.`;
   try {
-    const respons =
-      lama === undefined
-        ? await ling.fetch(entri.url)
-        : await ambilDenganBatas(ling, entri.url, batasMs);
-    if (respons.ok) {
-      teks = await respons.text();
+    const unduhan = await unduh(ling, entri.url, lama === undefined ? null : batasMs);
+    if (unduhan.ok) {
+      teks = unduhan.teks;
       episode = JSON.parse(teks) as Episode;
     } else {
-      galat = `Episode ${entri.id} gagal dimuat (HTTP ${String(respons.status)}).`;
+      galat = `Episode ${entri.id} gagal dimuat (HTTP ${String(unduhan.status)}).`;
     }
   } catch (e) {
     if (e instanceof SyntaxError) {
