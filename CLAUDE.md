@@ -44,6 +44,7 @@ Kalau kode dan dokumen bertentangan, dokumen yang benar; perbaiki kodenya, atau 
 - `pnpm qs compile` — `content/` menjadi `apps/web/public/content/*.json`; `--check` hanya memeriksa `content/versi-konten.lock.json`
 - `pnpm qs lint` — aturan konten (lihat docs/QISSA-SCRIPT.md §6); `--wajib-review` menolak episode yang belum direview
 - `pnpm qs walk epNN` — cetak semua jalur episode beserta panjangnya
+- `pnpm e2e` — E2E Playwright di 360×780 terhadap build produksi (jalankan `pnpm build` dulu; sekali di mesin baru: `pnpm --filter @qissa/web exec playwright install chromium`)
 - `pnpm cap:sync` dan `pnpm cap:open` — Android
 
 ## Peta repo
@@ -92,8 +93,8 @@ Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `
 - Perbarui bagian "Status saat ini" di bawah setiap kali milestone berubah.
 
 ## Status saat ini
-- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (hijau sejak 23 Oktober), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Epik C: `packages/engine` (`createStory`, tes jelajah semua episode, snapshot dan restore). Epik D: apps/web lengkap (token dan tema, komponen, reader, layar akhir, home, konten offline-first, analitik tujuh event, routing hash), diperiksa terhadap prototipe di 360×780. E1: image nginx multi-tahap dengan CSP dan `/healthz`. E2: halaman `/privasi` dan `/tentang`. Epik F: kontras `--muted`, region live layar akhir, `#debug` hanya di dev, memo sampul, dan bagian dalil `ikhtilaf`. Rinciannya di `docs/PROGRESS.md`.
-- Sedang: fase lokal sebelum deploy (`docs/PLAN.md` §6): Epik G (service worker, offline, E2E), lalu QA lokal. Sesudahnya deploy qissah.id dan sesi uji Umami (E1 dan E3 tinggal langkah pemilik); Android (Epik H) paralel dengan Tahap 0.
+- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (hijau sejak 23 Oktober), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Epik C: `packages/engine` (`createStory`, tes jelajah semua episode, snapshot dan restore). Epik D: apps/web lengkap (token dan tema, komponen, reader, layar akhir, home, konten offline-first, analitik tujuh event, routing hash), diperiksa terhadap prototipe di 360×780. E1: image nginx multi-tahap dengan CSP dan `/healthz`. E2: halaman `/privasi` dan `/tentang`. Epik F: kontras `--muted`, region live layar akhir, `#debug` hanya di dev, memo sampul, dan bagian dalil `ikhtilaf`. Epik G: service worker app shell dengan baris "Versi baru tersedia" (ADR-017), episode yang pernah dibuka tetap terbaca offline, dan E2E Playwright 360×780 di CI (ADR-018). Rinciannya di `docs/PROGRESS.md`.
+- Sedang: QA lokal sebelum deploy (`docs/PLAN.md` §6). Sesudahnya deploy qissah.id dan sesi uji Umami (E1 dan E3 tinggal langkah pemilik); Android (Epik H) paralel dengan Tahap 0.
 - Belum: review ulama (badge masih "Belum direview"), Play Store, konten Ramadan, Episode 3.
 
 ## Rujukan eksternal

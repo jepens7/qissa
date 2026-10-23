@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json",
     "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm qs lint",
-    "qs": "node packages/script/src/cli.ts"
+    "qs": "node packages/script/src/cli.ts",
+    "e2e": "pnpm --filter @qissa/web e2e"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

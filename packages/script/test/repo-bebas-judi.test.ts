@@ -11,7 +11,14 @@ import { adaNamaAplikasi, adaNominalTaruhan } from '../src/kata-terlarang.ts';
 const AKAR = fileURLToPath(new URL('../../../', import.meta.url));
 
 /** Folder yang dilewati di mana pun letaknya. */
-const LEWATI_NAMA = new Set(['node_modules', '.git', 'dist', 'coverage']);
+const LEWATI_NAMA = new Set([
+  'node_modules',
+  '.git',
+  'dist',
+  'coverage',
+  'test-results',
+  'playwright-report',
+]);
 
 /**
  * Path dari akar yang dilewati: naskah (diperiksa `qs lint`), hasil compile-nya, dan berkas kunci pnpm
