@@ -14,7 +14,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 | `VITE_PB_URL` | `https://api.qissah.id` | tidak |
 | `VITE_APP_VERSION` | `1.2.0`; bila kosong diambil dari `version` di `apps/web/package.json` (tag `web-vX.Y.Z` mengikutinya) | tidak |
 
-`.env.example` dikomit; `.env` tidak. Di Docker dan Easypanel, nilai yang sama masuk sebagai build arg `infra/nginx/Dockerfile` (lihat `infra/easypanel.md`). `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia.
+`.env.example` dikomit; `.env` tidak. Di Docker dan Easypanel, nilai yang sama masuk sebagai build arg `infra/nginx/Dockerfile` (lihat `infra/easypanel.md`). `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia. Untuk APK, `pnpm cap:sync` memakai `VITE_SITE_URL=https://qissah.id` dan `VITE_CONTENT_BASE=https://qissah.id/content` bila keduanya tidak diisi di lingkungan; di mode `android`, `VITE_CONTENT_BASE` wajib https (ADR-020).
 
 ## 2. `manifest.json`
 

@@ -26,11 +26,14 @@ export default defineConfig(
     ignores: [
       '**/node_modules/**',
       '**/dist/**',
+      '**/dist-android/**',
       'coverage/**',
       '**/test-results/**',
       '**/playwright-report/**',
       'infra/prototype/**',
       'apps/web/public/content/**',
+      // Proyek Android hasil `cap add`; setelah `cap sync` berisi salinan build web.
+      'apps/android/android/**',
       'packages/script/schema/**',
       'packages/script/__snapshots__/**',
     ],

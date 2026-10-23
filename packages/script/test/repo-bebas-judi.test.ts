@@ -15,16 +15,22 @@ const LEWATI_NAMA = new Set([
   'node_modules',
   '.git',
   'dist',
+  'dist-android',
   'coverage',
   'test-results',
   'playwright-report',
 ]);
 
 /**
- * Path dari akar yang dilewati: naskah (diperiksa `qs lint`), hasil compile-nya, dan berkas kunci pnpm
- * yang dibangkitkan dan memuat hash acak.
+ * Path dari akar yang dilewati: naskah (diperiksa `qs lint`), hasil compile-nya, berkas kunci pnpm yang
+ * dibangkitkan dan memuat hash acak, serta salinan build web di proyek Android setelah `cap sync`.
  */
-const LEWATI_PATH = new Set(['content', 'apps/web/public/content', 'pnpm-lock.yaml']);
+const LEWATI_PATH = new Set([
+  'content',
+  'apps/web/public/content',
+  'pnpm-lock.yaml',
+  'apps/android/android/app/src/main/assets/public',
+]);
 
 /** Semua berkas di bawah `akar`, kecuali yang dilewati. */
 function berkas(akar: string, dir = akar): string[] {

@@ -15,7 +15,9 @@
     "typecheck": "pnpm -r typecheck && tsc -p tsconfig.json",
     "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm qs lint",
     "qs": "node packages/script/src/cli.ts",
-    "e2e": "pnpm --filter @qissa/web e2e"
+    "e2e": "pnpm --filter @qissa/web e2e",
+    "cap:sync": "pnpm --filter @qissa/android cap:sync",
+    "cap:open": "pnpm --filter @qissa/android cap:open"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

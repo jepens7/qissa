@@ -142,11 +142,12 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 10. Android (Capacitor)
 
-- `apps/android` berisi `capacitor.config.ts` (`appId: 'id.qissah.app'`, `webDir` ke build web) dan folder `android/` hasil `cap add`.
-- Plugin: `@capacitor/share` (dipakai `lib/share.ts` bila `Capacitor.isNativePlatform()`), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links), `@capacitor/status-bar`.
+- `apps/android` (paket `@qissa/android`, ADR-020) berisi `capacitor.config.ts` (`appId: 'id.qissah.app'`, `webDir: '../web/dist-android'`), `scripts/sync.ts`, dan folder `android/` hasil `cap add android`.
+- Mode build `android`: kode native di apps/web hanya ada di cabang `import.meta.env.MODE === 'android'` dengan impor dinamis, sehingga build web tidak membawa Capacitor. Di APK, service worker tidak dipasang.
+- Plugin: `@capacitor/share` (lembar bagikan native dari `lib/share.ts`, H3), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links, H3), dan `@capacitor/status-bar` (`lib/native.ts`: ikon status bar mengikuti tema).
 - Push (ditunda setelah Ramadan, keputusan 23 Oktober): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
 - Konten: APK memuat manifest dan episode dari `https://qissah.id/content`, sehingga episode baru tidak butuh rilis APK. nginx mengirim `Access-Control-Allow-Origin: *` untuk `/content/`, dan `lib/content.ts` me-resolve URL episode terhadap URL manifest (BACKLOG H2).
-- Build: `pnpm build && pnpm cap:sync`, lalu Android Studio untuk AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
+- Build: `pnpm cap:sync` (apps/web mode `android` ke `dist-android`, lalu `cap sync android`), kemudian `pnpm cap:open` dan Android Studio untuk APK atau AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
 
 ## 11. Backend (PocketBase)
 

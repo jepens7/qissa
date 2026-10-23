@@ -60,6 +60,23 @@ describe('vite build', () => {
     );
   }, 30_000);
 
+  test('build APK (mode android) gagal bila VITE_CONTENT_BASE bukan https (BACKLOG H2)', async () => {
+    writeFileSync(
+      join(envDir, '.env'),
+      'VITE_SITE_URL=https://qissah.id\nVITE_CONTENT_BASE=/content\n',
+    );
+    await expect(
+      build({
+        root: ROOT,
+        configFile: join(ROOT, 'vite.config.ts'),
+        envDir,
+        mode: 'android',
+        logLevel: 'silent',
+        build: { outDir: join(envDir, 'dist'), emptyOutDir: true },
+      }),
+    ).rejects.toThrow('VITE_CONTENT_BASE untuk APK (mode android) harus diawali https://');
+  }, 30_000);
+
   test('berhasil bila variabel wajib terisi', async () => {
     writeFileSync(
       join(envDir, '.env'),
