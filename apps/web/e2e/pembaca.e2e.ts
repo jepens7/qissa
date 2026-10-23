@@ -50,7 +50,7 @@ test('landing: poll, daftar episode dengan status, dan tautan footer', async ({ 
   await expect(page.getByRole('button', { name: /Transferan Nyasar/ })).toContainText('Baru');
   await expect(page.getByRole('link', { name: 'Kebijakan privasi' })).toHaveAttribute(
     'href',
-    '/privasi/',
+    '/privasi/index.html',
   );
 });
 

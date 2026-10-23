@@ -8,9 +8,11 @@
 | Jawaban refleksi | localStorage perangkat | hanya pembaca | privat, tidak pernah dikirim |
 | Event analitik (tujuh nama, nilai pendek) | Umami self-hosted | founder | metrik agregat |
 | Masukan sukarela (templat dari “Kirim masukan ke pembuat”) | WhatsApp, email, atau aplikasi yang dipilih pembaca, paling lama 12 bulan | founder | perbaikan konten |
-| Alamat IP | Umami memakainya sesaat (di-hash, tidak disimpan mentah); log akses nginx memakai format tanpa IP (keputusan 24 Oktober) | founder | menghitung pengunjung |
+| Alamat IP | Umami memakainya sesaat (di-hash, tidak disimpan mentah) dan menyimpan perkiraan negara, wilayah, dan kota dari IP itu (GeoLite2); log akses nginx memakai format tanpa IP dan tanpa Referer (keputusan 24 Oktober) | founder | menghitung pengunjung |
 
-Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak ketiga. Skrip Umami dipasang dengan `data-exclude-search="true"`, jadi parameter URL yang ditambahkan aplikasi lain ke tautan Qissa (misalnya `fbclid` atau `utm_source`) tidak ikut tersimpan. Pembaca yang mengirim masukan lewat WhatsApp atau email memperlihatkan nomor atau alamatnya kepada founder; hal ini disebut di kebijakan privasi (§6). Form masukan ke PocketBase (SRS SHR-3) ditunda sampai setelah Ramadan.
+Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi persis (GPS), cookie pelacak, SDK pihak ketiga. Query string dibuang dari URL sebelum skrip Umami dipasang, dan skripnya memakai `data-exclude-search="true"`, jadi parameter URL yang ditambahkan aplikasi lain ke tautan Qissa (misalnya `fbclid` atau `utm_source`) tidak ikut tersimpan. Atribut itu saja tidak cukup, karena pageview pertama Umami memakai URL apa adanya. Pembaca yang mengirim masukan lewat WhatsApp atau email memperlihatkan nomor atau alamatnya kepada founder; hal ini disebut di kebijakan privasi (§6). Form masukan ke PocketBase (SRS SHR-3) ditunda sampai setelah Ramadan.
+
+APK Android mengirim event analitik yang sama ke Umami yang sama. Cadangan otomatis Android dimatikan (`allowBackup="false"`), jadi progres dan jawaban refleksi tidak ikut cadangan Google Drive. Di Android 12 ke atas, pada HP dari sebagian produsen, pemindahan langsung antarperangkat yang dijalankan pemilik HP tetap bisa menyalinnya ke HP barunya, tanpa melewati server (ADR-020).
 
 ## 2. Prinsip
 1. Data minimal: kalau fitur bisa jalan tanpa data, jalankan tanpa data.
@@ -38,7 +40,7 @@ Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pe
 ## 5. Kepatuhan
 - UU PDP (UU 27/2022): data yang diproses minimal (IP tidak dicatat di log server, masukan sukarela lewat aplikasi pilihan pembaca); dasar pemrosesan kepentingan sah dan persetujuan untuk masukan; retensi feedback 12 bulan; kontak permintaan hapus di kebijakan privasi.
 - PSE Lingkup Privat (Komdigi): pendaftaran sebelum rilis Play Store produksi, melalui OSS; cek langkah terbaru karena prosedur bisa berubah.
-- Play Store Data Safety: "tidak mengumpulkan data pengguna" untuk kategori identitas; "data aplikasi dan performa: analitik" dikumpulkan, tidak dibagikan, tidak bisa dihapus per pengguna karena tidak terkait identitas. Kebijakan privasi: `https://qissah.id/privasi`.
+- Play Store Data Safety: tidak ada data identitas. Yang dikumpulkan untuk analitik, tidak dibagikan, dan tidak terkait identitas: "Aktivitas aplikasi: interaksi aplikasi" (event dan layar yang dibuka) serta "Lokasi: lokasi perkiraan" (negara, wilayah, dan kota yang disimpulkan Umami dari IP). Data tidak bisa dihapus per pengguna karena tidak terkait identitas. Kebijakan privasi: `https://qissah.id/privasi`.
 - Rating konten: isi kuesioner IARC dengan jujur: ada referensi ke perjudian dan tema dewasa tanpa adegan eksplisit; harapkan 17+.
 
 ## 6. Teks kebijakan privasi (draf untuk qissah.id/privasi)

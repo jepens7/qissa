@@ -16,7 +16,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 ## 3. Ramadan: rotasi harian
 - Semua episode malam 1–10 sudah di `main` dengan tanggal `rilis` masing-masing sebelum 20 Januari; malam 11–30 menyusul per 10 hari.
 - Setiap pagi (10 menit): cek Umami: `mulai` dan `selesai` episode semalam; cek `halo@qissah.id` untuk masukan (templat masukan mengarah ke sana); cek uptime.
-- Setiap sore (15 menit): tulis pesan saluran WA untuk malam ini (judul, satu kalimat dilema, tautan `#epNN`).
+- Setiap sore (15 menit): tulis pesan saluran WA untuk malam ini (judul, satu kalimat dilema, tautan `https://qissah.id/#epNN`; garis miring sebelum `#` membuat APK ikut membukanya, DATA-CONTRACTS §8).
 - Kalau sakit atau tidak bisa: tidak ada yang perlu dilakukan; rilis sudah terjadwal. Pesan saluran bisa dijadwalkan lewat fitur jadwal WhatsApp Business bila tersedia, atau dilewati.
 
 ## 4. Pemantauan

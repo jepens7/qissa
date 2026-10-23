@@ -25,8 +25,9 @@ test('teks /privasi sama dengan PRIVACY-SECURITY §6', () => {
   expect(halaman).toMatch(/Diperbarui: \d{1,2} \w+ \d{4}\./);
 });
 
-test('footer menautkan /tentang/ dan /privasi/', () => {
+test('footer menautkan /tentang/index.html dan /privasi/index.html (juga terbuka di APK)', () => {
   const app = baca('../src/app.tsx');
-  expect(app).toContain('href="/tentang/"');
-  expect(app).toContain('href="/privasi/"');
+  expect(app).toContain('href="/tentang/index.html"');
+  expect(app).toContain('href="/privasi/index.html"');
+  expect(baca('../public/tentang/index.html')).toContain('href="/privasi/index.html"');
 });

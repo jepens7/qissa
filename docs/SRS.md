@@ -74,7 +74,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - REF-2 (wajib) Gagal menyimpan (storage penuh atau diblokir) ditangani dengan pesan, tanpa crash.
 
 ### 3.7 Bagikan dan masukan (SHR)
-- SHR-1 (wajib) "Bagikan dilemanya" memakai Web Share API dengan teks dari front matter `bagikan` plus `siteUrl#epNN`; fallback salin ke clipboard dengan pesan.
+- SHR-1 (wajib) "Bagikan dilemanya" memakai Web Share API dengan teks dari front matter `bagikan` plus `siteUrl/#epNN` (DATA-CONTRACTS §8); fallback salin ke clipboard dengan pesan.
 - SHR-2 (wajib) "Kirim masukan" membuka Web Share atau salin dengan templat lima pertanyaan dan jalur pembaca, diakhiri alamat tujuan `halo@qissah.id`.
 - SHR-3 (sebaiknya) Form masukan in-app mengirim ke PocketBase koleksi `feedback` (aturan create publik, read admin), tanpa login, dengan rate limit. Ditunda setelah Ramadan (keputusan 23 Oktober); masukan MVP lewat SHR-2.
 - SHR-4 (wajib) Teks bagikan tidak pernah memuat pilihan pembaca atau isi refleksi.

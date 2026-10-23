@@ -1,9 +1,12 @@
 // Bagikan dan kirim masukan (SRS SHR-1, SHR-2): Web Share API, dengan cadangan salin ke clipboard. Di APK,
 // lembar bagikan native lewat Capacitor Share (SRS AND-2, ADR-020).
 
-/** Teks bagikan: `bagikan` dari front matter, lalu URL episode. Tidak pernah memuat pilihan pembaca. */
+/**
+ * Teks bagikan: `bagikan` dari front matter, lalu URL episode. Tidak pernah memuat pilihan pembaca. Garis miring
+ * sebelum # membuat path tautan menjadi `/`, yang dicocokkan intent-filter APK (DATA-CONTRACTS §8).
+ */
 export function teksBagikan(bagikan: string, siteUrl: string, id: string): string {
-  return `${bagikan}\n${siteUrl}#${id}`;
+  return `${bagikan}\n${siteUrl}/#${id}`;
 }
 
 export type HasilKirim = 'dibagikan' | 'tersalin' | 'gagal';

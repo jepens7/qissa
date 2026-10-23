@@ -1,5 +1,5 @@
-// Integrasi Android (SRS AND-2, ADR-020): status bar mengikuti tema, dan tautan https://qissah.id/#epNN
-// membuka episodenya. Modul ini hanya dimuat dari cabang mode `android` di main.tsx.
+// Integrasi Android (SRS AND-2, ADR-020): status bar mengikuti tema, tautan https://qissah.id/#epNN membuka
+// episodenya, dan tombol kembali Android. Modul ini hanya dimuat dari cabang mode `android` di main.tsx.
 import { bacaRute } from './route.ts';
 
 const LATAR = { terang: '#e3e8ec', gelap: '#090d11' } as const;
@@ -29,15 +29,24 @@ export async function pasangNative(): Promise<void> {
   tema();
   gelap.addEventListener('change', tema);
 
-  const buka = (url: string | undefined) => {
-    const hash = url === undefined ? null : hashDariTautan(url);
+  // Tautan yang membuka APK dari keadaan mati juga datang lewat appUrlOpen: Capacitor menahannya sampai ada
+  // listener, jadi App.getLaunchUrl tidak dipakai.
+  await App.addListener('appUrlOpen', (e) => {
+    const hash = hashDariTautan(e.url);
     if (hash !== null) {
       window.location.hash = hash;
     }
-  };
-  // Saat APK dibuka lewat tautan dan saat tautan datang ketika APK sudah berjalan.
-  buka((await App.getLaunchUrl())?.url);
-  await App.addListener('appUrlOpen', (e) => {
-    buka(e.url);
+  });
+
+  // Tanpa listener, Capacitor hanya memakai riwayat WebView, padahal pindah layar memakai replaceState, sehingga
+  // tombol kembali tidak berbuat apa-apa. Dari episode kembali ke home seperti pindah() di app.tsx; dari home,
+  // APK pindah ke latar belakang.
+  await App.addListener('backButton', () => {
+    if (bacaRute(window.location.hash).nama === 'home') {
+      void App.minimizeApp();
+    } else {
+      window.location.replace('#home');
+      window.scrollTo(0, 0);
+    }
   });
 }

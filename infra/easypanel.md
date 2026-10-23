@@ -2,12 +2,12 @@
 
 1. DNS: record `A` untuk `qissah.id`, `staging` dan `umami` ke IP VPS.
 2. Easypanel → Create Project `qissa` → Add Service → App.
-   - Source: GitHub, repo ini, branch `main` (dan service kedua dari branch `staging` untuk staging.qissah.id).
+   - Source: GitHub, repo ini, branch `main` (dan service kedua dari branch `staging` untuk staging.qissah.id). Auto Deploy dinyalakan (sejak 24 Oktober), jadi setiap push ke branch itu dibangun dan live tanpa menekan Deploy.
    - Build: Dockerfile, path `infra/nginx/Dockerfile`, context akar repo. Tahap pertama (Node 22, pnpm) menjalankan `pnpm build`; tahap kedua menyajikan `apps/web/dist` dengan nginx.
    - Environment: variabel `VITE_*` dari DATA-CONTRACTS §1. Easypanel meneruskannya ke build sebagai build arg, dan Dockerfile sudah mendeklarasikan semuanya. Yang wajib hanya `VITE_SITE_URL=https://qissah.id` (staging: `https://staging.qissah.id`); tanpa itu build gagal dengan pesan yang jelas. Tidak ada `.env` yang di-commit. Semua nilai `VITE_*` ikut ke bundel publik, jadi jangan isi rahasia.
    - Domain: `qissah.id`, port 80, HTTPS otomatis.
 3. Umami: Templates → Umami → project yang sama, domain `umami.qissah.id`. Login awal `admin`/`umami`, ganti segera. Add website `qissah.id`, salin Website ID.
-4. Di Environment service web, isi `VITE_UMAMI_SCRIPT=https://umami.qissah.id/script.js`, `VITE_UMAMI_ID` (Website ID dari langkah 3), dan `VITE_WA_CHANNEL` bila saluran sudah ada, lalu Deploy. Nilai `VITE_*` dibakar ke bundel saat build, jadi perubahan baru berlaku setelah build ulang.
+4. Di Environment service web, isi `VITE_UMAMI_SCRIPT=https://umami.qissah.id/script.js`, `VITE_UMAMI_ID` (Website ID dari langkah 3), dan `VITE_WA_CHANNEL` bila saluran sudah ada, lalu Deploy. Nilai `VITE_*` dibakar ke bundel saat build, jadi perubahan baru berlaku setelah build ulang. Website ID yang sama juga menjadi nilai bawaan APK di `apps/android/scripts/sync.ts`; bila ID berubah, perbarui di sana, jalankan `pnpm cap:sync`, lalu rilis APK.
 5. PocketBase (setelah Ramadan, bila form masukan dibangun): Templates → PocketBase → domain `api.qissah.id`; impor `backend/pocketbase/pb_migrations`.
 6. Uji:
    - `curl -I https://qissah.id` menampilkan `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, dan `Cache-Control: no-cache`.

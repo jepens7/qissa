@@ -1,7 +1,8 @@
 // pnpm cap:sync (BACKLOG H1, H2): build web mode `android`, lalu `cap sync android`. APK memuat konten dari
-// qissah.id, jadi bawaannya VITE_SITE_URL https://qissah.id dan VITE_CONTENT_BASE https://qissah.id/content;
-// nilai dari lingkungan dipakai bila ada. cekEnv (apps/web/src/lib/config.ts) menolak VITE_CONTENT_BASE selain
-// https di mode ini, sehingga build berhenti sebelum `cap sync`.
+// qissah.id dan ikut Umami yang sama dengan web (PROGRESS, keputusan 24 Oktober butir 4), jadi keempat variabel
+// di bawah punya nilai bawaan. Nilai dari shell dipakai bila ada. Nilai bawaan mengalahkan apps/web/.env, karena
+// Vite tidak menimpa variabel yang sudah ada di lingkungan proses. cekEnv (apps/web/src/lib/config.ts) menolak
+// VITE_CONTENT_BASE selain https di mode ini, sehingga build berhenti sebelum `cap sync`.
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
@@ -9,9 +10,11 @@ const AKAR = fileURLToPath(new URL('../../../', import.meta.url));
 const ANDROID = fileURLToPath(new URL('../', import.meta.url));
 
 const env = {
+  VITE_SITE_URL: 'https://qissah.id',
+  VITE_CONTENT_BASE: 'https://qissah.id/content',
+  VITE_UMAMI_SCRIPT: 'https://umami.qissah.id/script.js',
+  VITE_UMAMI_ID: '3a2f0ef7-6bb4-478e-a5b6-bc371b74f881',
   ...process.env,
-  VITE_SITE_URL: process.env['VITE_SITE_URL'] ?? 'https://qissah.id',
-  VITE_CONTENT_BASE: process.env['VITE_CONTENT_BASE'] ?? 'https://qissah.id/content',
 };
 
 /** Menjalankan perintah pnpm (argumen tetap, tanpa masukan pengguna) dan berhenti bila gagal. */
