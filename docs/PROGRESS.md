@@ -65,7 +65,7 @@ Urutan sesuai `docs/PLAN.md` §6.
 
 | Tugas | Status | Bukti terima |
 | --- | --- | --- |
-| Daftar periksa sesudah deploy (PLAN §6) | sedang | Selesai 23 Oktober: DNS, TLS, `/healthz`, header dan cache lewat `curl`, Lighthouse live, dan tag `web-v0.1.0` (rincian di baris E1). Tersisa untuk pemilik: retensi log Docker paling lama 7 hari (kebijakan privasi sudah tayang), pemantau uptime ke `/healthz`, cadangan database Umami, Saluran WhatsApp (`VITE_WA_CHANNEL` belum diisi, jadi kartu saluran tidak tampil), tampilan Safari iOS, dan sesi E3 pada atau setelah 4 November. Pembaruan service worker lewat HTTPS diperiksa saat rilis app berikutnya |
+| Daftar periksa sesudah deploy (PLAN §6) | sedang | Selesai 23 Oktober: DNS, TLS, `/healthz`, header dan cache lewat `curl`, Lighthouse live, dan tag `web-v0.1.0` (rincian di baris E1). Sejak 24 Oktober, log akses nginx memakai format tanpa IP (keputusan 24 Oktober), menggantikan retensi 7 hari, sehingga cron di VPS tidak diperlukan. Tersisa untuk pemilik: menghapus log container lama (23–24 Oktober) yang masih memuat IP, paling lambat 30 Oktober sesuai janji kebijakan lama, dengan `docker container prune` di VPS; pemantau uptime ke `/healthz`; cadangan database Umami, Saluran WhatsApp (`VITE_WA_CHANNEL` belum diisi, jadi kartu saluran tidak tampil), tampilan Safari iOS, dan sesi E3 pada atau setelah 4 November. Pembaruan service worker lewat HTTPS diperiksa saat rilis app berikutnya |
 | H1 Proyek Capacitor dan APK debug | belum | Dimulai sesudah deploy web, paralel dengan Tahap 0 |
 | H2 Konten APK dari qissah.id | belum | Bagian web dan infra boleh dikerjakan lebih dulu |
 | H3 Share native dan deep link | belum | |
@@ -140,6 +140,11 @@ Jawaban pemilik atas ringkasan Epik B:
    - templat masukan diakhiri "Kirim ke halo@qissah.id" (teks disetujui), sehingga pembaca tahu ke mana mengirimnya;
    - Saluran WhatsApp dibuat sebelum deploy, dan URL-nya diisi sebagai build arg `VITE_WA_CHANNEL`;
    - deploy dilakukan sesudah uji HP, dengan sasaran sekitar 12 November sesuai PLAN, sehingga ep01–02 (rilis 4 November) sudah tampil saat situs live dan sesi E3 bisa langsung dijalankan.
+
+## Keputusan sesi 24 Oktober 2026
+Pemilik men-deploy qissah.id pada 23 Oktober, lebih awal dari sasaran. Langkah di VPS dan uji HP belum sempat dikerjakan, jadi pemilik meminta Claude mengerjakan yang bisa dikerjakan tanpanya.
+1. Log akses nginx tidak mencatat alamat IP. Formatnya `tanpa_ip`: tanpa `$remote_addr` dan `$http_x_forwarded_for`, dan path ditulis tanpa parameter URL. Keputusan ini menggantikan janji retensi 7 hari, sehingga cron di VPS tidak diperlukan. Kalimat di `/privasi` dan PRIVACY-SECURITY §6 menjadi "Log akses server web kami tidak memuat alamat IP." (teks disetujui).
+2. Capacitor 8.5.3 disetujui: `@capacitor/core`, `@capacitor/cli`, `@capacitor/android`, `@capacitor/share`, `@capacitor/app`, dan `@capacitor/status-bar` (SRS AND-2), dengan ADR di PR-nya. Epik H dimulai sekarang. APK dibangun dan diuji pemilik di Android Studio, karena mesin Claude tidak punya Java dan Android SDK.
 
 ## Pertanyaan terbuka
 - qissah.id sudah live sejak 23 Oktober, lebih awal dari sasaran 12 November (keputusan butir 13). ep01–02 baru tampil 4 November, dan sebelum itu landing hanya berisi header dan teks pengantar. Sebelum tautan disebar untuk Tahap 0, masih menunggu uji HP oleh pemilik dan sisa daftar periksa sesudah deploy (baris pertama tabel "Sesudah deploy web dan pemicu").

@@ -121,7 +121,7 @@ Bukan PR; hasilnya dicatat di PROGRESS. Perbaikan hanya untuk yang gagal, masing
 - Saat menguji service worker, centang "Update on reload" atau hapus data situs di antara percobaan. Untuk menguji baris "Versi baru tersedia", "Update on reload" dimatikan, karena opsi itu melewati fase waiting sehingga baris tidak muncul.
 
 ### Sesudah deploy web
-- Daftar periksa (RELEASE dan `infra/easypanel.md`): DNS, TLS, dan `/healthz`; `curl -I` untuk CSP (sama persis dengan PRIVACY-SECURITY §3, tanpa origin Google sejak ADR-019) dan cache; pembaruan service worker lewat HTTPS; sesi E3; retensi log nginx paling lama 7 hari diatur sebelum `/privasi` tayang, karena kebijakan privasi menjanjikannya; pemantau uptime dan cadangan Umami; Lighthouse di situs live; tampilan Safari iOS; tag `web-v*`.
+- Daftar periksa (RELEASE dan `infra/easypanel.md`): DNS, TLS, dan `/healthz`; `curl -I` untuk CSP (sama persis dengan PRIVACY-SECURITY §3, tanpa origin Google sejak ADR-019) dan cache; pembaruan service worker lewat HTTPS; sesi E3; log nginx tanpa alamat IP (keputusan 24 Oktober menggantikan retensi 7 hari, sehingga tidak perlu cron di VPS); pemantau uptime dan cadangan Umami; Lighthouse di situs live; tampilan Safari iOS; tag `web-v*`.
 - Epik H (Android, M3b) dimulai paralel dengan Tahap 0, dengan ADR Capacitor yang disetujui pemilik saat itu. Bagian web dan infra H2 (CORS `/content/`, URL episode di-resolve terhadap URL manifest, skrip `cap:sync` yang menolak `VITE_CONTENT_BASE` selain https) dikerjakan lebih dulu karena tidak butuh Android Studio.
 - Saklar pratinjau untuk staging (episode dengan `rilis` di masa depan) dibuat bersama service staging.
 

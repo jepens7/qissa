@@ -22,7 +22,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 ## 4. Pemantauan
 - Uptime: pemantau eksternal (mis. UptimeRobot gratis) ke `https://qissah.id/healthz` setiap 5 menit, notifikasi ke email dan WhatsApp.
 - Analitik: dasbor Umami; alarm manual bila completion harian turun di bawah 40% dua hari berturut-turut (periksa konten, bukan fitur).
-- Log nginx: 7 hari, hanya dilihat saat insiden.
+- Log nginx: format `tanpa_ip` (tanpa alamat IP dan tanpa parameter URL), hanya dilihat saat insiden.
 
 ## 5. Cadangan
 - Umami (PostgreSQL), dan PocketBase (`pb_data`) bila dibangun setelah Ramadan: snapshot harian oleh Easypanel ke penyimpanan objek (S3-kompatibel) dengan retensi 14 hari. Uji pemulihan sekali sebelum Ramadan.
