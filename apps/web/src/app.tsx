@@ -107,6 +107,7 @@ export function App() {
     layar = (
       <HomeScreen
         episodes={terbit}
+        poll={manifest === 'memuat' || terbit.some((e) => e.id === 'ep01')}
         gagal={manifest === null}
         penyimpanan={ling.penyimpanan}
         waChannel={getConfig().waChannel}

@@ -1,4 +1,5 @@
-// BACKLOG D5: status episode di home benar setelah membaca ("Selesai. Akhir yang sudah dibaca: N dari 3").
+// BACKLOG D5: status episode di home benar setelah membaca ("Selesai. Akhir yang sudah dibaca: N dari 3"), dan
+// poll Episode 1 hanya tampil bila App mengizinkan (selama manifest dimuat atau bila ep01 terbit).
 import type { ManifestEpisode } from '@qissa/script/types';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vitest';
@@ -21,7 +22,7 @@ function entri(nomor: number): ManifestEpisode {
   };
 }
 
-function statusDi(isi: Record<string, string>): string[] {
+function render(isi: Record<string, string>, poll = true): string {
   const peta = new Map(Object.entries(isi));
   const penyimpanan: Penyimpanan = {
     getItem: (k) => peta.get(k) ?? null,
@@ -29,17 +30,26 @@ function statusDi(isi: Record<string, string>): string[] {
       peta.set(k, v);
     },
   };
-  const html = renderToStaticMarkup(
+  return renderToStaticMarkup(
     <HomeScreen
       episodes={[entri(1), entri(2)]}
+      poll={poll}
       gagal={false}
       penyimpanan={penyimpanan}
       waChannel={null}
       onOpen={() => undefined}
     />,
   );
-  return [...html.matchAll(/<span class="st">([^<]*)<\/span>/g)].map((m) => m[1] ?? '');
 }
+
+function statusDi(isi: Record<string, string>): string[] {
+  return [...render(isi).matchAll(/<span class="st">([^<]*)<\/span>/g)].map((m) => m[1] ?? '');
+}
+
+test('poll Episode 1 tampil hanya bila diizinkan', () => {
+  expect(render({})).toContain('Tutup, jangan dibuka');
+  expect(render({}, false)).not.toContain('Tutup, jangan dibuka');
+});
 
 test('belum dibaca: Episode 1 "Mulai dari sini", episode lain "Baru"', () => {
   expect(statusDi({})).toEqual(['Mulai dari sini', 'Baru']);

@@ -11,6 +11,8 @@ import { bacaAkhir, simpanPoll, type Penyimpanan } from '../../lib/storage.ts';
 
 type Props = {
   episodes: ManifestEpisode[];
+  /** Poll Episode 1 tampil selama manifest dimuat atau bila ep01 terbit (SRS CNT-2, RUNBOOK §7). */
+  poll: boolean;
   /** Manifest gagal dimuat dan tidak ada salinan tersimpan. */
   gagal: boolean;
   penyimpanan: Penyimpanan | null;
@@ -31,7 +33,7 @@ function statusEpisode(episode: ManifestEpisode, penyimpanan: Penyimpanan | null
   return t(episode.nomor === 1 ? 'home.episode.mulai' : 'home.episode.baru');
 }
 
-export function HomeScreen({ episodes, gagal, penyimpanan, waChannel, onOpen }: Props) {
+export function HomeScreen({ episodes, poll, gagal, penyimpanan, waChannel, onOpen }: Props) {
   return (
     <>
       <Header
@@ -41,17 +43,19 @@ export function HomeScreen({ episodes, gagal, penyimpanan, waChannel, onOpen }: 
       />
       <main>
         <section className="home">
-          <PollCard
-            kicker={t('home.poll.kicker')}
-            question={t('home.poll.pertanyaan')}
-            ask={t('home.poll.ajakan')}
-            options={OPSI_POLL}
-            onPick={(name) => {
-              simpanPoll(penyimpanan, name);
-              track('poll', { pilih: name });
-              onOpen('ep01');
-            }}
-          />
+          {poll ? (
+            <PollCard
+              kicker={t('home.poll.kicker')}
+              question={t('home.poll.pertanyaan')}
+              ask={t('home.poll.ajakan')}
+              options={OPSI_POLL}
+              onPick={(name) => {
+                simpanPoll(penyimpanan, name);
+                track('poll', { pilih: name });
+                onOpen('ep01');
+              }}
+            />
+          ) : null}
           <p className="lead">{t('home.pengantar')}</p>
           {gagal ? (
             <section className="card">
