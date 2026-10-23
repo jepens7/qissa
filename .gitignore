@@ -1,6 +1,9 @@
 node_modules/
 dist/
 coverage/
+# Hasil Playwright (ADR-018).
+test-results/
+playwright-report/
 *.tsbuildinfo
 # Hasil `pnpm qs compile`; dibangun ulang di CI dan saat build.
 apps/web/public/content/
