@@ -5,7 +5,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 ## 1. Deploy
 - Produksi: CI PR hijau → merge ke `main` → Easypanel membangun image dari push itu tanpa menunggu CI di `main` (ADR-012) → live dalam 3–5 menit. Cek `https://qissah.id/healthz` dan buka satu episode di HP.
 - Staging: push ke `staging` → `staging.qissah.id`. Manifest staging boleh memuat episode `draft`.
-- Rollback: Easypanel → service `qissa` → Deployments → pilih image sebelumnya → Redeploy. Waktu: 1 menit. Konten (manifest dan episode) ikut kembali seketika. App shell hasil rollback baru dipakai perangkat yang sudah punya service worker setelah pembaca mengetuk "Muat ulang" di baris "Versi baru tersedia" atau menutup semua tab dan aplikasi Qissa; muat ulang biasa tidak cukup (ADR-017). Saat memeriksa di HP sendiri, ketuk "Muat ulang" atau hapus data situs.
+- Rollback: Easypanel → service `qissa` → Deployments → pilih image sebelumnya → Redeploy. Waktu: 1 menit. Konten (manifest dan episode) ikut kembali bagi pembaca yang membuka Qissa sesudahnya; sesi yang masih hidup memakai manifest lama sampai Qissa dibuka ulang (ARCHITECTURE §7). App shell hasil rollback baru dipakai perangkat yang sudah punya service worker setelah pembaca mengetuk "Muat ulang" di baris "Versi baru tersedia" atau menutup semua tab dan aplikasi Qissa; muat ulang biasa tidak cukup (ADR-017). Saat memeriksa di HP sendiri, ketuk "Muat ulang" atau hapus data situs.
 
 ## 2. Rilis konten (episode baru)
 1. PR `content:` dengan `episode.qs.md`, `dalil.md` (`status: reviewed`, `reviewed_by`, `reviewed_at`), dan entri manifest dengan `rilis`.
