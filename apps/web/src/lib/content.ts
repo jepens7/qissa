@@ -1,7 +1,12 @@
 // Memuat manifest dan episode (ARCHITECTURE §7, BACKLOG D6). Konten di-cache di sini, bukan oleh service worker
 // (ADR-017): episode di Cache Storage dengan versi_konten sebagai bagian kunci, dan salinan manifest terakhir
 // di localStorage sebagai cadangan offline.
-import type { Episode, Manifest, ManifestEpisode } from '@qissa/script/types';
+import {
+  FORMAT_EPISODE,
+  type Episode,
+  type Manifest,
+  type ManifestEpisode,
+} from '@qissa/script/types';
 import { bacaManifestTersimpan, simpanManifest, type Penyimpanan } from './storage.ts';
 
 /** Ketergantungan ke browser, disuntikkan supaya modul ini bisa diuji tanpa DOM. */
@@ -98,7 +103,33 @@ export function episodeTerbit(manifest: Manifest, hariIni: string): ManifestEpis
   return manifest.episodes.filter((e) => e.rilis <= hariIni);
 }
 
-/** Episode cache-first; versi lama episode yang sama dihapus saat versi baru disimpan. */
+/**
+ * Versi lain episode yang sama yang masih tersimpan, untuk dibaca saat versi baru belum bisa diunduh (G2).
+ * Hanya versi yang formatnya dikenal shell ini; selain itu pembaca lebih baik diminta mencoba lagi (ADR-015).
+ */
+async function versiTersimpan(cache: Cache | null, url: string): Promise<Episode | undefined> {
+  if (cache === null) {
+    return undefined;
+  }
+  try {
+    for (const kunci of (await cache.keys()).filter((r) => r.url.includes(`${url}?v=`))) {
+      const respons = await cache.match(kunci);
+      const episode = respons === undefined ? undefined : ((await respons.json()) as Episode);
+      if (episode?.format === FORMAT_EPISODE) {
+        return episode;
+      }
+    }
+  } catch {
+    // Cache rusak atau ditolak: anggap tidak ada cadangan.
+  }
+  return undefined;
+}
+
+/**
+ * Episode cache-first. Versi baru dibaca utuh, disimpan, baru kemudian versi lama episode yang sama dihapus.
+ * Bila versi baru belum tersimpan dan unduhannya gagal (offline, putus di tengah, galat server, atau JSON rusak),
+ * versi lama yang masih tersimpan dipakai (SRS PWA-4, NFR-2).
+ */
 export async function muatEpisode(entri: ManifestEpisode, ling: Lingkungan): Promise<Episode> {
   const kunci = `${entri.url}?v=${encodeURIComponent(entri.versi_konten)}`;
   let cache: Cache | null = null;
@@ -112,29 +143,42 @@ export async function muatEpisode(entri: ManifestEpisode, ling: Lingkungan): Pro
     cache = null;
   }
 
-  let respons: Response;
+  let teks = '';
+  let episode: Episode | null = null;
+  let galat = `Episode ${entri.id} gagal dimuat: jaringan tidak tersedia.`;
   try {
-    respons = await ling.fetch(entri.url);
-  } catch {
-    throw new GalatMuat(`Episode ${entri.id} gagal dimuat: jaringan tidak tersedia.`);
+    const respons = await ling.fetch(entri.url);
+    if (respons.ok) {
+      teks = await respons.text();
+      episode = JSON.parse(teks) as Episode;
+    } else {
+      galat = `Episode ${entri.id} gagal dimuat (HTTP ${String(respons.status)}).`;
+    }
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      galat = `Episode ${entri.id} rusak: bukan JSON yang sah.`;
+    }
   }
-  if (!respons.ok) {
-    throw new GalatMuat(`Episode ${entri.id} gagal dimuat (HTTP ${String(respons.status)}).`);
+  if (episode === null) {
+    const lama = await versiTersimpan(cache, entri.url);
+    if (lama !== undefined) {
+      return lama;
+    }
+    throw new GalatMuat(galat);
   }
   if (cache !== null) {
     try {
+      await cache.put(
+        kunci,
+        new Response(teks, { headers: { 'Content-Type': 'application/json' } }),
+      );
       const lama = (await cache.keys()).filter(
         (r) => r.url.includes(`${entri.url}?v=`) && !r.url.endsWith(kunci),
       );
       await Promise.all(lama.map((r) => cache.delete(r)));
-      await cache.put(kunci, respons.clone());
     } catch {
-      // Cache penuh atau ditolak: episode tetap bisa dibaca dari jaringan.
+      // Cache penuh atau ditolak: episode tetap terbaca dari jaringan, dan versi lama dibiarkan.
     }
   }
-  try {
-    return (await respons.json()) as Episode;
-  } catch {
-    throw new GalatMuat(`Episode ${entri.id} rusak: bukan JSON yang sah.`);
-  }
+  return episode;
 }
