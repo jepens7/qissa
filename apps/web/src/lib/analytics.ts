@@ -34,5 +34,8 @@ export function pasangUmami(skrip: string | null, websiteId: string | null) {
   el.defer = true;
   el.src = skrip;
   el.setAttribute('data-website-id', websiteId);
+  // Parameter URL (mis. fbclid atau utm_* dari media sosial) tidak ikut terkirim; app tidak memakai query
+  // string (routing hash), jadi tidak ada yang hilang (PRIVACY-SECURITY §1).
+  el.setAttribute('data-exclude-search', 'true');
   document.head.appendChild(el);
 }
