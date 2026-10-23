@@ -123,6 +123,7 @@ Jawaban pemilik atas ringkasan Epik B:
    - E2E dijalankan di job CI yang sudah ada;
    - metrik Tahap 0 dihitung dari pengunjung unik atau Funnel Umami, tanpa menyaring event ganda di kode;
    - mode tema manual tidak dibangun.
+10. CI mengikuti playbook CI pemilik: concurrency hanya membatalkan run PR yang tergantikan (sebelumnya run di `main` ikut dibatalkan bila merge berurutan), dan `--ignore-registry-errors` dihapus dari `pnpm audit` supaya pemindaian yang gagal tidak tersembunyi. Validasi: actionlint dan zizmor lulus.
 
 ## Pertanyaan terbuka
 - Deploy ditunda sampai fase lokal selesai: record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4 dan §6.
