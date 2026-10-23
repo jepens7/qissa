@@ -11,6 +11,10 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/status-bar": "8.0.4",
     "@qissa/engine": "workspace:*",
     "@qissa/script": "workspace:*",
     "react": "^18.3.1",

@@ -45,6 +45,11 @@ export function cekEnv(env: Env): string[] {
     masalah.push('VITE_CONTENT_BASE kosong; isi dengan lokasi konten, misalnya /content.');
   } else if (!contentBase.startsWith('/') && !URL_PENUH.test(contentBase)) {
     masalah.push(`VITE_CONTENT_BASE harus diawali / atau https://, bukan “${contentBase}”.`);
+  } else if (teks(env, 'MODE') === 'android' && !contentBase.startsWith('https://')) {
+    // APK memuat konten dari qissah.id (BACKLOG H2); base relatif akan mengarah ke origin APK.
+    masalah.push(
+      `VITE_CONTENT_BASE untuk APK (mode android) harus diawali https://, bukan “${contentBase}”; misalnya https://qissah.id/content.`,
+    );
   }
 
   return masalah;

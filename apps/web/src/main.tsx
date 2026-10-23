@@ -22,9 +22,17 @@ createRoot(root).render(
   </StrictMode>,
 );
 
+// APK (ADR-020): status bar mengikuti tema. Service worker tidak dipasang, karena app shell ikut
+// di dalam APK dan diperbarui lewat rilis APK. Kondisi mode ditulis langsung (bukan konstanta dari modul lain)
+// supaya Rolldown membuang cabang dan impor dinamisnya dari build web.
+if (import.meta.env.MODE === 'android') {
+  void import('./lib/native.ts').then((m) => m.pasangNative());
+}
+
 // Root sendiri, supaya baris pembaruan tetap ada walau App gagal render; tanpa itu, pembaca yang terkena build
 // rusak tidak bisa pindah ke versi perbaikan (ADR-017).
-const wadahPembaruan = document.getElementById('pembaruan');
+const wadahPembaruan =
+  import.meta.env.MODE === 'android' ? null : document.getElementById('pembaruan');
 if (wadahPembaruan !== null) {
   createRoot(wadahPembaruan).render(
     <StrictMode>

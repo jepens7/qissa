@@ -2,6 +2,7 @@
 .git
 **/node_modules
 **/dist
+**/dist-android
 coverage
 **/test-results
 **/playwright-report
@@ -9,3 +10,5 @@ apps/web/public/content
 **/.env
 **/.env.*
 !**/.env.example
+# Proyek Android (ADR-020) tidak dipakai image web.
+apps/android/android

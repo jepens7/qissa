@@ -56,4 +56,14 @@ describe('cekEnv', () => {
       cekEnv({ VITE_SITE_URL: 'https://qissah.id', VITE_CONTENT_BASE: 'https://cdn.qissah.id/c' }),
     ).toEqual([]);
   });
+
+  test('APK (mode android) hanya menerima lokasi konten https (BACKLOG H2)', () => {
+    const apk = { MODE: 'android', VITE_SITE_URL: 'https://qissah.id' };
+    for (const base of ['/content', 'http://qissah.id/content']) {
+      expect(cekEnv({ ...apk, VITE_CONTENT_BASE: base })).toEqual([
+        `VITE_CONTENT_BASE untuk APK (mode android) harus diawali https://, bukan “${base}”; misalnya https://qissah.id/content.`,
+      ]);
+    }
+    expect(cekEnv({ ...apk, VITE_CONTENT_BASE: 'https://qissah.id/content' })).toEqual([]);
+  });
 });

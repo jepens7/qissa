@@ -1,0 +1,23 @@
+{
+  "name": "@qissa/android",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cap:sync": "node scripts/sync.ts",
+    "cap:open": "cap open android",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "@types/node": "^22.20.5",
+    "typescript": "~6.0.3"
+  }
+}

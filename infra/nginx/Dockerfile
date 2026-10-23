@@ -8,6 +8,8 @@ RUN npm install -g pnpm@11.17.0
 # Manifest dependensi lebih dulu supaya lapisan install tetap di-cache selama lockfile tidak berubah.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/
+# Ikut lockfile workspace; proyek native di apps/android/android tidak masuk konteks (.dockerignore).
+COPY apps/android/package.json apps/android/
 COPY packages/engine/package.json packages/engine/
 COPY packages/script/package.json packages/script/
 RUN pnpm install --frozen-lockfile

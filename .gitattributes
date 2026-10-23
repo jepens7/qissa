@@ -1,3 +1,6 @@
 # Semua teks LF di repo dan di working tree, apa pun pengaturan core.autocrlf mesinnya.
 * text=auto eol=lf
 *.png binary
+# Skrip batch Windows (gradlew.bat di proyek Android, ADR-020) butuh CRLF; Gradle wrapper berupa biner.
+*.bat text eol=crlf
+*.jar binary

@@ -15,3 +15,6 @@ dist/
 coverage/
 test-results/
 playwright-report/
+
+# Proyek Android hasil `cap add` (ADR-020); setelah `cap sync` berisi salinan build web.
+apps/android/android/

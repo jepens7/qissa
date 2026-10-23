@@ -18,7 +18,7 @@ Sekali:
 - [ ] Pendaftaran PSE Lingkup Privat selesai atau sedang berjalan dengan bukti.
 Setiap rilis:
 - [ ] `versionCode` naik, `versionName` = versi web.
-- [ ] `pnpm build && pnpm cap:sync`; build AAB di Android Studio dengan keystore yang benar.
+- [ ] `pnpm cap:sync` (build web mode `android`, lalu `cap sync`); build AAB di Android Studio dengan keystore yang benar.
 - [ ] Internal testing → closed testing → production dengan rollout bertahap 20% lalu 100%.
 - [ ] Deep link `https://qissah.id/#ep02` membuka app ke episode itu.
 - [ ] Catatan rilis satu paragraf berbahasa Indonesia.
