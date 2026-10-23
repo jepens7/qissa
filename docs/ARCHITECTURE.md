@@ -128,7 +128,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 - Build menyalin hasil `qs compile` ke `apps/web/public/content/`: `manifest.json` dan `epNN.json`. Nama berkas tidak memuat versi; app memakai `versi_konten` dari manifest sebagai bagian kunci cache (ADR-017).
 - `manifest.json` dan episode disajikan `Cache-Control: no-cache`. `lib/content.ts` memuat manifest network-first dengan timeout 3 detik, lalu memakai salinan terakhir di localStorage.
-- Episode: cache-first di Cache Storage oleh `lib/content.ts`, dengan kunci `url?v=versi_konten`. Bila manifest menunjuk versi baru, versi itu diunduh saat episode dibuka, lalu versi lama episode yang sama dihapus.
+- Episode: cache-first di Cache Storage oleh `lib/content.ts`, dengan kunci `url?v=versi_konten`. Bila manifest menunjuk versi baru, versi itu diunduh utuh dan disimpan saat episode dibuka, baru kemudian versi lama episode yang sama dihapus. Bila unduhan gagal (offline, putus di tengah, galat server, atau JSON rusak), versi lama yang masih tersimpan dan formatnya dikenal shell tetap dipakai.
 - Penyaringan rilis: app menyembunyikan episode dengan `rilis` di masa depan (zona waktu Asia/Jakarta). JSON-nya tetap bisa diakses langsung; diterima untuk MVP (tidak ada spoiler yang bernilai).
 - Service worker (Workbox lewat `vite-plugin-pwa`, ADR-017) hanya untuk app shell: precache HTML (termasuk `/privasi/` dan `/tentang/`), JS, CSS, ikon, dan manifest web, tanpa `navigateFallback`, dan query string diabaikan saat mencocokkan precache. Runtime: CSS Google Fonts StaleWhileRevalidate, berkas font CacheFirst. Konten tidak dirute service worker. Pembaruan: `registerType: 'prompt'`; `components/update-bar.tsx` menampilkan baris "Versi baru tersedia" tanpa memaksa.
 

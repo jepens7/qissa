@@ -76,23 +76,42 @@ function fetchPalsu(jawaban: Record<string, Jawaban>) {
   return { fetch: f, panggilan };
 }
 
-/** Cache Storage palsu yang cukup untuk open, match, put, keys, dan delete. */
+/** Cache Storage palsu yang cukup untuk open, match, put, keys, dan delete; put bisa dibuat menolak. */
 function cachesPalsu() {
   const isi = new Map<string, Response>();
+  const kontrol = { tolakPut: false };
   const mutlak = (k: RequestInfo | URL) =>
     new URL(typeof k === 'string' ? k : k instanceof URL ? k.href : k.url, 'https://qissah.id')
       .href;
   const cache = {
     match: (k: RequestInfo | URL) => Promise.resolve(isi.get(mutlak(k))?.clone()),
     put: (k: RequestInfo | URL, r: Response) => {
+      if (kontrol.tolakPut) {
+        return Promise.reject(new DOMException('penuh', 'QuotaExceededError'));
+      }
       isi.set(mutlak(k), r);
       return Promise.resolve();
     },
     keys: () => Promise.resolve([...isi.keys()].map((k) => new Request(k))),
     delete: (k: RequestInfo | URL) => Promise.resolve(isi.delete(mutlak(k))),
   };
-  return { caches: { open: () => Promise.resolve(cache) } as unknown as CacheStorage, isi };
+  return {
+    caches: { open: () => Promise.resolve(cache) } as unknown as CacheStorage,
+    isi,
+    kontrol,
+  };
 }
+
+/** Respons 200 yang body-nya putus di tengah unduhan. */
+const putus = () =>
+  new Response(
+    new ReadableStream({
+      start(c) {
+        c.error(new TypeError('koneksi putus'));
+      },
+    }),
+    { status: 200 },
+  );
 
 const json = (data: unknown) => new Response(JSON.stringify(data), { status: 200 });
 
@@ -163,6 +182,78 @@ describe('muatEpisode: cache-first dengan versi_konten', () => {
     await muatEpisode(entri('ep01', { versi_konten: '2026-10-23.1' }), ling);
     expect(panggilan).toHaveLength(2);
     expect([...isi.keys()]).toEqual(['https://qissah.id/content/ep01.json?v=2026-10-23.1']);
+  });
+
+  test('versi baru belum tersimpan dan jaringan gagal atau server menolak: versi lama dipakai (G2)', async () => {
+    const LAMA = { format: 1, id: 'ep01', isi: 'lama' };
+    const { caches, isi } = cachesPalsu();
+    await muatEpisode(
+      entri('ep01'),
+      lingkungan(fetchPalsu({ '/content/ep01.json': json(LAMA) }).fetch, { caches }),
+    );
+    const baru = entri('ep01', { versi_konten: '2026-10-23.1' });
+    expect(await muatEpisode(baru, lingkungan(fetchPalsu({}).fetch, { caches }))).toEqual(LAMA);
+    const { fetch } = fetchPalsu({ '/content/ep01.json': new Response('', { status: 503 }) });
+    expect(await muatEpisode(baru, lingkungan(fetch, { caches }))).toEqual(LAMA);
+    // Versi lama tetap tersimpan sampai versi baru berhasil diunduh.
+    expect([...isi.keys()]).toEqual(['https://qissah.id/content/ep01.json?v=2026-10-22.1']);
+  });
+
+  test('versi lama baru dihapus setelah versi baru tersimpan: cache penuh atau unduhan putus (G2)', async () => {
+    const LAMA = { format: 1, id: 'ep01', isi: 'lama' };
+    const BARU = { format: 1, id: 'ep01', isi: 'baru' };
+    const { caches, isi, kontrol } = cachesPalsu();
+    await muatEpisode(
+      entri('ep01'),
+      lingkungan(fetchPalsu({ '/content/ep01.json': json(LAMA) }).fetch, { caches }),
+    );
+    const baru = entri('ep01', { versi_konten: '2026-10-23.1' });
+    const kunciLama = ['https://qissah.id/content/ep01.json?v=2026-10-22.1'];
+
+    kontrol.tolakPut = true;
+    const online = lingkungan(fetchPalsu({ '/content/ep01.json': json(BARU) }).fetch, { caches });
+    expect(await muatEpisode(baru, online)).toEqual(BARU);
+    expect([...isi.keys()]).toEqual(kunciLama);
+    kontrol.tolakPut = false;
+
+    const terputus = lingkungan(fetchPalsu({ '/content/ep01.json': putus() }).fetch, { caches });
+    expect(await muatEpisode(baru, terputus)).toEqual(LAMA);
+    expect([...isi.keys()]).toEqual(kunciLama);
+    expect(await muatEpisode(baru, lingkungan(fetchPalsu({}).fetch, { caches }))).toEqual(LAMA);
+  });
+
+  test('cadangan dengan format yang tidak dikenal shell tidak dipakai (ADR-015)', async () => {
+    const { caches } = cachesPalsu();
+    await muatEpisode(
+      entri('ep01'),
+      lingkungan(fetchPalsu({ '/content/ep01.json': json({ format: 99, id: 'ep01' }) }).fetch, {
+        caches,
+      }),
+    );
+    const baru = entri('ep01', { versi_konten: '2026-10-23.1' });
+    await expect(muatEpisode(baru, lingkungan(fetchPalsu({}).fetch, { caches }))).rejects.toThrow(
+      'jaringan tidak tersedia',
+    );
+  });
+
+  test('JSON rusak tanpa cadangan: GalatMuat “rusak”', async () => {
+    const { fetch } = fetchPalsu({ '/content/ep01.json': new Response('{', { status: 200 }) });
+    await expect(muatEpisode(entri('ep01'), lingkungan(fetch))).rejects.toThrow(
+      'rusak: bukan JSON yang sah',
+    );
+  });
+
+  test('versi lama episode lain tidak dipakai sebagai cadangan', async () => {
+    const { caches } = cachesPalsu();
+    await muatEpisode(
+      entri('ep10'),
+      lingkungan(fetchPalsu({ '/content/ep10.json': json({ format: 1, id: 'ep10' }) }).fetch, {
+        caches,
+      }),
+    );
+    await expect(
+      muatEpisode(entri('ep01'), lingkungan(fetchPalsu({}).fetch, { caches })),
+    ).rejects.toThrow(GalatMuat);
   });
 
   test('tanpa Cache Storage: langsung dari jaringan setiap kali', async () => {
