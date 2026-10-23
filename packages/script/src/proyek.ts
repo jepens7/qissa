@@ -182,7 +182,7 @@ export function lintProyek(
       continue;
     }
     terdaftar.push({ id, line, data: entri });
-    // Sampai M3a, qs compile selalu menulis /content/epNN.json (DATA-CONTRACTS §2).
+    // qs compile selalu menulis /content/epNN.json, tanpa versi di nama berkas (ADR-017).
     const url = `/content/${id}.json`;
     if (entri['url'] !== undefined && entri['url'] !== url) {
       manifest.lapor(

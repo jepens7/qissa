@@ -1,6 +1,6 @@
-// Memuat manifest dan episode (ARCHITECTURE §7, BACKLOG D6). Sampai service worker (M3a), episode di-cache
-// di Cache Storage dengan versi_konten sebagai bagian kunci, dan salinan manifest terakhir disimpan di
-// localStorage sebagai cadangan offline.
+// Memuat manifest dan episode (ARCHITECTURE §7, BACKLOG D6). Konten di-cache di sini, bukan oleh service worker
+// (ADR-017): episode di Cache Storage dengan versi_konten sebagai bagian kunci, dan salinan manifest terakhir
+// di localStorage sebagai cadangan offline.
 import type { Episode, Manifest, ManifestEpisode } from '@qissa/script/types';
 import { bacaManifestTersimpan, simpanManifest, type Penyimpanan } from './storage.ts';
 

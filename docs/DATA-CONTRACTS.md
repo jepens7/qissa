@@ -25,7 +25,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
     {
       "id": "ep01", "nomor": 1, "judul": "Tangkapan Layar", "teaser": "…",
       "durasi_menit": 5, "rating": "17+",
-      "url": "/content/ep01.2026-11-01.1.json", "versi_konten": "2026-11-01.1",
+      "url": "/content/ep01.json", "versi_konten": "2026-11-01.1",
       "review": { "status": "reviewed", "oleh": "…", "tanggal": "2026-11-10" },
       "rilis": "2026-11-04"
     }
@@ -33,11 +33,10 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 }
 ```
 - `versi`: naik bila bentuk manifest berubah; app menolak versi yang tidak dikenal dan memakai cache.
-- `url` memuat `versi_konten`; berkas lama tetap disajikan selama 30 hari.
+- `url` berbentuk `/content/epNN.json`, tanpa versi; app memakai `versi_konten` sebagai bagian kunci cache (ADR-017).
 - `rilis` tanggal ISO, zona waktu Asia/Jakarta; episode tersembunyi sebelum tanggal itu.
 - Produksi hanya memuat `review.status = "reviewed"`; CI menolak selainnya di branch `main`. Gerbang ini tersedia sebagai `qs lint --wajib-review` dan baru dinyalakan setelah review ulama ep01–02 selesai; sampai saat itu episode draft boleh tayang dengan badge "Belum direview ulama" (ADR-012).
 - `content/manifest.json` ditulis tangan: daftar dan urutan episode, `rilis`, dan `review`. `qs compile` menambahkan `rating` dari front matter dan `versi_konten` dari berkas kunci (§9), lalu menolak bila `nomor`, `judul`, `teaser`, `durasi_menit`, atau `review` berbeda dengan front matter dan `dalil.md`, bila satu episode ditulis dua kali, atau bila `url` yang ditulis tangan tidak sama dengan berkas yang ditulis compile (QISSA-SCRIPT §6, S1, L6, dan L7).
-- Sampai M3a (minggu 5), `url` berbentuk `/content/epNN.json`. Nama berkas berversi dan retensi 30 hari menyusul bersama service worker.
 
 ## 3. Episode JSON
 Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/types.ts` adalah sumber kebenaran; JSON Schema dihasilkan darinya ke `packages/script/schema/episode.schema.json` untuk validasi di CI (ADR-011). JSON episode diawali `format` (versi format, sekarang 1; engine menolak format yang tidak dikenalnya, ADR-015) dan memuat `dalil` dengan struktur §4 di bawah, supaya kartu dalil ikut tersimpan offline bersama episodenya.
@@ -61,7 +60,6 @@ Awalan `qissa.v1.`; nilai JSON string.
 | `qissa.v1.{ep}.refleksi` | `string` | teks bebas |
 | `qissa.v1.ep01.poll` | `string` | `"Tutup"` |
 | `qissa.v1.manifest` | manifest | salinan terakhir |
-| `qissa.v1.shell` | `string` | versi app |
 
 Kuota: total di bawah 200 KB. Tidak ada data pribadi.
 

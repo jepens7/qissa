@@ -124,7 +124,7 @@ export function siapkanKompilasi(
       teaser: episode.meta.teaser,
       durasi_menit: episode.meta.durasi_menit,
       rating: episode.meta.rating,
-      // Sampai M3a, nama berkas belum memuat versi (DATA-CONTRACTS §2).
+      // Nama berkas tidak memuat versi; app memakai versi_konten sebagai kunci cache (ADR-017).
       url: `/content/${id}.json`,
       versi_konten: versi,
       review: {

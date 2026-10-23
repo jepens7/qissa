@@ -20,7 +20,7 @@ Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pe
 
 ## 3. Keamanan aplikasi
 - Semua teks naskah dirender sebagai teks (escaping React); tidak ada HTML mentah dari konten.
-- Content Security Policy (header nginx): `default-src 'self'; script-src 'self' https://umami.qissah.id; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com 'self'; img-src 'self' data:; connect-src 'self' https://umami.qissah.id https://api.qissah.id; frame-ancestors 'none'`.
+- Content Security Policy (header nginx): `default-src 'self'; script-src 'self' https://umami.qissah.id; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com 'self'; img-src 'self' data:; connect-src 'self' https://umami.qissah.id https://fonts.googleapis.com https://fonts.gstatic.com; frame-ancestors 'none'`. Origin font ada di `connect-src` karena service worker mengambil font dengan fetch (ADR-017).
 - Header lain: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` menolak kamera, mikrofon, geolokasi.
 - Dependensi: `pnpm audit` di CI; pembaruan bulanan; tidak ada dependensi baru tanpa ADR.
 - PocketBase (setelah Ramadan, bila form masukan dibangun): admin hanya lewat HTTPS, 2FA bila tersedia, aturan koleksi dikomit sebagai migrasi, rate limit di hook.
