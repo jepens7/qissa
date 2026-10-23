@@ -138,16 +138,18 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 9. Analitik
 
-`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi dengan `data-exclude-search="true"`, supaya parameter URL dari tautan media sosial tidak ikut terkirim. Selama skrip dimuat, event diantre lalu dikirim berurutan begitu termuat (misalnya `mulai` pada kunjungan pertama lewat `#epNN`); bila Umami tidak dikonfigurasi, diblokir, atau gagal dimuat, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
+`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi dengan `data-exclude-search="true"`, dan query string dibuang dari URL sebelum skrip dipasang, supaya parameter URL dari tautan media sosial tidak ikut terkirim; atribut itu saja hanya berlaku untuk pageview sesudah pindah layar. Selama skrip dimuat, event diantre lalu dikirim berurutan begitu termuat (misalnya `mulai` pada kunjungan pertama lewat `#epNN`); bila Umami tidak dikonfigurasi, diblokir, atau gagal dimuat, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
 
 ## 10. Android (Capacitor)
 
 - `apps/android` (paket `@qissa/android`, ADR-020) berisi `capacitor.config.ts` (`appId: 'id.qissah.app'`, `webDir: '../web/dist-android'`), `scripts/sync.ts`, dan folder `android/` hasil `cap add android`.
 - Mode build `android`: kode native di apps/web hanya ada di cabang `import.meta.env.MODE === 'android'` dengan impor dinamis, sehingga build web tidak membawa Capacitor. Di APK, service worker tidak dipasang.
-- Plugin: `@capacitor/share` (lembar bagikan native dari `lib/share.ts`, H3), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links, H3), dan `@capacitor/status-bar` (`lib/native.ts`: ikon status bar mengikuti tema).
+- Plugin: `@capacitor/share` (lembar bagikan native dari `lib/share.ts`, H3), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links dan tombol kembali Android, H3: dari episode ke home, dari home APK ke latar belakang), dan `@capacitor/status-bar` (`lib/native.ts`: ikon status bar mengikuti tema).
+- Halaman statis ditautkan sebagai `/privasi/index.html` dan `/tentang/index.html`, karena server lokal Capacitor menjawab path tanpa titik di segmen terakhir dengan `index.html` aplikasi. Halaman itu tidak memasang listener Capacitor (bridge di-reset setiap muat halaman), jadi tautan episode yang datang saat halaman itu terbuka baru dibuka sesudah pembaca kembali ke aplikasi.
+- Analitik: APK memakai skrip dan Website ID Umami yang sama dengan web; event APK tercatat dengan hostname `localhost`. Cadangan otomatis Android dimatikan (`allowBackup="false"`, ADR-020).
 - Push (ditunda setelah Ramadan, keputusan 23 Oktober): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
 - Konten: APK memuat manifest dan episode dari `https://qissah.id/content`, sehingga episode baru tidak butuh rilis APK. nginx mengirim `Access-Control-Allow-Origin: *` untuk `/content/`, dan `lib/content.ts` me-resolve URL episode terhadap URL manifest (BACKLOG H2).
-- Deep link: `intent-filter` untuk `https://qissah.id` dengan `autoVerify`. Sampai `https://qissah.id/.well-known/assetlinks.json` memuat sidik jari kunci penanda tangan APK, Android membuka tautan di browser atau lewat pemilih aplikasi; `adb shell am start` dengan nama paket tetap bisa dipakai untuk uji.
+- Deep link: `intent-filter` untuk `https://qissah.id` dengan `autoVerify`, hanya path `/`, supaya `/privasi`, `/tentang`, dan berkas lain tetap terbuka di browser; karena itu tautan bagikan berbentuk `https://qissah.id/#epNN` (DATA-CONTRACTS §8). Sampai `https://qissah.id/.well-known/assetlinks.json` memuat sidik jari kunci penanda tangan APK, Android membuka tautan di browser atau lewat pemilih aplikasi; `adb shell am start` dengan nama paket tetap bisa dipakai untuk uji.
 - Build: `pnpm cap:sync` (apps/web mode `android` ke `dist-android`, lalu `cap sync android`), kemudian `pnpm cap:open` dan Android Studio untuk APK atau AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
 
 ## 11. Backend (PocketBase)

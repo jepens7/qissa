@@ -42,12 +42,16 @@ export function pasangUmami(skrip: string | null, websiteId: string | null) {
   if (skrip === null || websiteId === null) {
     return;
   }
+  // Parameter URL (mis. fbclid atau utm_* dari media sosial) tidak ikut terkirim (PRIVACY-SECURITY §1). App tidak
+  // memakai query string (routing hash), jadi query dibuang dari URL sebelum skrip dipasang: pageview pertama
+  // Umami memakai location.href apa adanya, sedangkan data-exclude-search hanya berlaku saat pindah layar.
+  if (window.location.search !== '') {
+    window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+  }
   const el = document.createElement('script');
   el.defer = true;
   el.src = skrip;
   el.setAttribute('data-website-id', websiteId);
-  // Parameter URL (mis. fbclid atau utm_* dari media sosial) tidak ikut terkirim; app tidak memakai query
-  // string (routing hash), jadi tidak ada yang hilang (PRIVACY-SECURITY §1).
   el.setAttribute('data-exclude-search', 'true');
   antrean = [];
   el.onload = () => {

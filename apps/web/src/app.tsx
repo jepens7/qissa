@@ -126,10 +126,11 @@ export function App() {
       {manifest === 'memuat' ? null : (
         <footer>
           {t('footer')}
-          {/* Halaman statis di apps/web/public (BACKLOG E2); garis miring akhir menghindari redirect. */}
+          {/* Halaman statis di apps/web/public (BACKLOG E2). index.html ditulis lengkap: server lokal Capacitor
+              menjawab path tanpa titik dengan aplikasi, jadi /privasi/ di APK membuka home lagi. */}
           <span className="tautan">
-            <a href="/tentang/">{t('footer.tentang')}</a>
-            <a href="/privasi/">{t('footer.privasi')}</a>
+            <a href="/tentang/index.html">{t('footer.tentang')}</a>
+            <a href="/privasi/index.html">{t('footer.privasi')}</a>
           </span>
         </footer>
       )}

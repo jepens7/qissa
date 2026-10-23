@@ -15,8 +15,8 @@ type ElemenPalsu = {
 
 let elTerakhir: ElemenPalsu | undefined;
 
-/** document palsu yang mencatat elemen skrip yang dibuat dan dipasang. */
-function dokumenPalsu() {
+/** document dan window palsu yang mencatat elemen skrip yang dipasang dan pemanggilan replaceState. */
+function dokumenPalsu(search = '') {
   const atribut = new Map<string, string>();
   const el: ElemenPalsu = {
     defer: false,
@@ -34,8 +34,10 @@ function dokumenPalsu() {
       },
     },
   };
+  const replaceState = vi.fn();
+  g.window = { location: { pathname: '/', search, hash: '#ep01' }, history: { replaceState } };
   elTerakhir = el;
-  return { el, atribut, dipasang };
+  return { el, atribut, dipasang, replaceState };
 }
 
 afterEach(() => {
@@ -48,7 +50,7 @@ afterEach(() => {
 
 describe('pasangUmami', () => {
   test('tanpa parameter URL (PRIVACY-SECURITY §1), dan tidak dipasang bila konfigurasi kosong', () => {
-    const { el, atribut, dipasang } = dokumenPalsu();
+    const { el, atribut, dipasang, replaceState } = dokumenPalsu();
     pasangUmami(null, 'abc');
     pasangUmami('https://umami.qissah.id/script.js', null);
     expect(dipasang).toHaveLength(0);
@@ -60,11 +62,21 @@ describe('pasangUmami', () => {
       'data-website-id': 'abc',
       'data-exclude-search': 'true',
     });
+    expect(replaceState).not.toHaveBeenCalled();
+  });
+
+  test('query dibuang dari URL sebelum skrip dipasang, karena pageview pertama Umami memakai URL apa adanya', () => {
+    const { dipasang, replaceState } = dokumenPalsu('?fbclid=abc&utm_source=wa');
+    replaceState.mockImplementation(() => {
+      expect(dipasang).toHaveLength(0);
+    });
+    pasangUmami('https://umami.qissah.id/script.js', 'abc');
+    expect(replaceState).toHaveBeenCalledWith(null, '', '/#ep01');
+    expect(dipasang).toHaveLength(1);
   });
 
   test('event selama skrip dimuat diantre, lalu dikirim berurutan begitu termuat', () => {
     const { el } = dokumenPalsu();
-    g.window = {};
     pasangUmami('https://umami.qissah.id/script.js', 'abc');
     track('poll', { pilih: 'Tutup' });
     track('mulai', { ep: 'ep01' });
@@ -83,7 +95,6 @@ describe('pasangUmami', () => {
 
   test('skrip gagal dimuat (mis. diblokir): antrean dibuang dan event berikutnya tidak diantre', () => {
     const { el } = dokumenPalsu();
-    g.window = {};
     pasangUmami('https://umami.qissah.id/script.js', 'abc');
     track('mulai', { ep: 'ep01' });
     el.onerror?.();

@@ -7,7 +7,7 @@ import { kirimTeks, teksBagikan } from '../src/lib/share.ts';
 
 test('teks bagikan: kalimat bagikan lalu URL episode', () => {
   expect(teksBagikan('Lu bakal gimana?', 'https://qissah.id', 'ep01')).toBe(
-    'Lu bakal gimana?\nhttps://qissah.id#ep01',
+    'Lu bakal gimana?\nhttps://qissah.id/#ep01',
   );
 });
 

@@ -14,7 +14,7 @@ Semua struktur yang melintasi batas antar-bagian. Perubahan di sini adalah perub
 | `VITE_PB_URL` | `https://api.qissah.id` | tidak |
 | `VITE_APP_VERSION` | `1.2.0`; bila kosong diambil dari `version` di `apps/web/package.json` (tag `web-vX.Y.Z` mengikutinya) | tidak |
 
-`.env.example` dikomit; `.env` tidak. Di Docker dan Easypanel, nilai yang sama masuk sebagai build arg `infra/nginx/Dockerfile` (lihat `infra/easypanel.md`). `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia. Untuk APK, `pnpm cap:sync` memakai `VITE_SITE_URL=https://qissah.id` dan `VITE_CONTENT_BASE=https://qissah.id/content` bila keduanya tidak diisi di lingkungan; di mode `android`, `VITE_CONTENT_BASE` wajib https (ADR-020).
+`.env.example` dikomit; `.env` tidak. Di Docker dan Easypanel, nilai yang sama masuk sebagai build arg `infra/nginx/Dockerfile` (lihat `infra/easypanel.md`). `vite build` gagal dengan pesan berbahasa Indonesia bila `VITE_SITE_URL` atau `VITE_CONTENT_BASE` kosong; `vite dev` hanya memberi peringatan. Semua nilai `VITE_*` ikut ke bundel publik, jadi tidak boleh berisi rahasia. Untuk APK, `pnpm cap:sync` memakai nilai bawaan `VITE_SITE_URL=https://qissah.id`, `VITE_CONTENT_BASE=https://qissah.id/content`, serta `VITE_UMAMI_SCRIPT` dan `VITE_UMAMI_ID` yang sama dengan web (APK ikut Umami, keputusan 24 Oktober), kecuali variabelnya diisi di shell. Nilai bawaan itu mengalahkan `apps/web/.env`, karena Vite tidak menimpa variabel yang sudah ada di lingkungan proses; `VITE_WA_CHANNEL` tidak punya nilai bawaan dan dibaca seperti biasa. Bila Website ID Umami berubah, perbarui juga nilai bawaannya di `apps/android/scripts/sync.ts`, lalu rilis APK. Di mode `android`, `VITE_CONTENT_BASE` wajib https (ADR-020).
 
 ## 2. `manifest.json`
 
@@ -81,7 +81,7 @@ Ditunda setelah Ramadan (keputusan 23 Oktober 2026); MVP tidak memakai PocketBas
 API rules: create = siapa pun; list, view, update, delete = admin. Hook: batas 5 create per IP per jam.
 
 ## 8. Teks bagikan
-`bagikan` dari front matter + `\n` + `VITE_SITE_URL#epNN`. Tidak pernah memuat jalur atau refleksi.
+`bagikan` dari front matter + `\n` + `VITE_SITE_URL/#epNN`. Garis miring sebelum `#` membuat path tautan menjadi `/`, satu-satunya path yang dibuka APK (ADR-020). Tidak pernah memuat jalur atau refleksi.
 
 ## 9. Versi
 - App shell: semver di `package.json` dan tag git `web-v1.2.0`; Android `versionName` sama, `versionCode` naik tiap rilis.
