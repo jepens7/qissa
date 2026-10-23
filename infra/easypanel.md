@@ -8,7 +8,7 @@
    - Domain: `qissah.id`, port 80, HTTPS otomatis.
 3. Umami: Templates → Umami → project yang sama, domain `umami.qissah.id`. Login awal `admin`/`umami`, ganti segera. Add website `qissah.id`, salin Website ID.
 4. Di Environment service web, isi `VITE_UMAMI_SCRIPT=https://umami.qissah.id/script.js`, `VITE_UMAMI_ID` (Website ID dari langkah 3), dan `VITE_WA_CHANNEL` bila saluran sudah ada, lalu Deploy. Nilai `VITE_*` dibakar ke bundel saat build, jadi perubahan baru berlaku setelah build ulang.
-5. PocketBase (saat dibutuhkan): Templates → PocketBase → domain `api.qissah.id`; impor `backend/pocketbase/pb_migrations`.
+5. PocketBase (setelah Ramadan, bila form masukan dibangun): Templates → PocketBase → domain `api.qissah.id`; impor `backend/pocketbase/pb_migrations`.
 6. Uji:
    - `curl -I https://qissah.id` menampilkan `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, dan `Cache-Control: no-cache`.
    - `https://qissah.id/healthz` menjawab `ok`; pasang pemantau uptime ke alamat ini (RUNBOOK).

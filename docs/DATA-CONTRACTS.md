@@ -70,6 +70,8 @@ Nama dan data di `docs/SRS.md` §8. Semua nilai string pendek; tidak ada teks be
 
 ## 7. PocketBase: koleksi `feedback`
 
+Ditunda setelah Ramadan (keputusan 23 Oktober 2026); MVP tidak memakai PocketBase.
+
 | Kolom | Tipe | Aturan |
 | --- | --- | --- |
 | `episode` | text (≤ 8) | wajib |

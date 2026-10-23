@@ -1,6 +1,6 @@
 # Progres pengerjaan
 
-Pelacak tugas BACKLOG, keputusan per sesi, dan pertanyaan yang masih terbuka. Urutan dan cara kerja minggu 1–2 ada di `docs/PLAN.md`. Setiap commit tugas memperbarui barisnya sendiri di sini. Ringkasan status tetap ada di `CLAUDE.md` bagian "Status saat ini".
+Pelacak tugas BACKLOG, keputusan per sesi, dan pertanyaan yang masih terbuka. Urutan dan cara kerja ada di `docs/PLAN.md` (§2 untuk minggu 1–2, §6 untuk fase lokal sebelum deploy). Setiap commit tugas memperbarui barisnya sendiri di sini. Ringkasan status tetap ada di `CLAUDE.md` bagian "Status saat ini".
 
 ## Epik A dan B
 
@@ -38,9 +38,33 @@ Urutan sesuai `docs/PLAN.md` §2. Status: belum, sedang, menunggu (butuh keputus
 | D3 `features/reader` | selesai | `features/reader/langkah.ts` (modul murni): satu ketukan menjadi langkah engine; pil `view` langsung diikuti baris berikutnya seperti prototipe; blok pilihan di-snapshot; restore memotong item ke `rendered`. Diuji untuk 9 jalur ep01 dan 9 jalur ep02 dari golden snapshot. `pemutar.tsx`: ketukan dan Space/Enter/panah kanan, typing dengan titik dan status "mengetik…" yang berlanjut sendiri, jeda 250 ms (0 dengan reduced motion) sesudah memilih, gulir ke baris terbaru, `aria-live`, sampul dengan memo jalur episode sebelumnya (LIB-3), tombol "Daftar episode", akhir dicatat ke storage dan `selesai` dikirim. ErrorBoundary meminta pembaruan aplikasi untuk format tak dikenal. Di Chrome DevTools 360×780: ep01 "Tutup → Ketemu dulu" lewat ketukan dan "Tegur → Cerita semuanya" (dua typing) lewat Space; ep02 "Balikin sebagian → Nanti aja" dengan pil baru T2 dan memo sampul; `#ep02` membuka episode lengkap; tanpa pesan di console |
 | D4 `features/ending` | selesai | `features/ending/ending.tsx`: kartu tamat dengan catatan poll Episode 1 (sama atau beda), kartu dalil dari struktur `Dalil`, refleksi tersimpan di perangkat (dan dimuat lagi), bagikan dan masukan lewat `lib/share.ts` (Web Share, cadangan salin ke clipboard seperti prototipe; teks bagikan tanpa pilihan pembaca), kartu saluran bila `VITE_WA_CHANNEL` terisi, "Lanjut" hanya untuk episode berikutnya yang sudah terbit, ulang dari Pilihan 2 (snapshot engine), ulang dari awal (pemutar dibuat ulang, `mulai` terkirim lagi seperti prototipe), dan daftar. ESLint `no-restricted-syntax` melarang `dangerouslySetInnerHTML` dan penugasan `innerHTML` di apps/web. Tes `akhir.test.ts`. Di Chrome DevTools 360×780 terang dan gelap: teks kartu akhir sama dengan prototipe, kecuali tambahan dari `dalil.md` (catatan "perlu verifikasi pereview" dan catatan UU ITE); event `bagikan`, `masukan`, `pilihan`, `selesai`, `mulai` dengan isi sesuai SRS §8; ep02 menampilkan "Episode 3 menyusul."; tanpa pesan di console |
 | D5 `features/home` | selesai | `features/home/home-screen.tsx`: poll Episode 1 dari id.json (tampil langsung tanpa menunggu manifest; pilihan disimpan, event `poll` dikirim, lalu ep01 dibuka), pengantar, daftar episode yang sudah terbit dengan status per perangkat ("Mulai dari sini", "Baru", atau "Selesai. Akhir yang sudah dibaca: N dari 3"), kartu saluran bila `VITE_WA_CHANNEL` terisi, dan pesan "Daftar episode gagal dimuat" dengan "Coba lagi" bila manifest gagal dan tidak ada salinan. Footer dari i18n tampil di home dan episode seperti prototipe. Tes `home.test.tsx` (status sebelum dan sesudah membaca) dan `home.node.test.ts` (nama opsi poll di id.json sama dengan opsi p1 ep01 di golden snapshot). Di Chrome DevTools 360×780: teks home sama dengan prototipe kecuali status header dan footer tanpa kata "prototipe"; status berubah menjadi "1 dari 3" sesudah membaca; kartu saluran di home dan di akhir ep01/ep02 diuji dengan URL saluran contoh dan mengirim `saluran` dengan `dari` yang benar; tanpa pesan di console |
-| E1 Dockerfile, header keamanan, CSP | sedang | Kode dan verifikasi lokal selesai; tinggal deploy Easypanel oleh pemilik. `infra/nginx/Dockerfile` multi-tahap (`node:22-alpine` + pnpm 11.17.0 menjalankan `pnpm build`, lalu `nginx:1.30-alpine`) dengan semua `VITE_*` sebagai build arg; `.dockerignore` membuang `node_modules`, `dist`, `.git`, dan `.env` lokal. `nginx.conf`: CSP dan header PRIVACY-SECURITY §3 di level server untuk semua respons, `/healthz` menjawab `ok`, aset `/assets/` `immutable` dan sisanya `no-cache`, `.webmanifest` sebagai `application/manifest+json`, redirect relatif di balik proxy, path tak dikenal 404 karena routing memakai hash. Diuji dengan `docker build`, `docker run`, dan `curl -I` (header di `/`, `/healthz`, manifest, episode, ikon, aset, dan 404); build tanpa `VITE_SITE_URL` gagal dengan pesan jelas; di Chrome, situs dari image berjalan tanpa pelanggaran CSP (font Google termuat, episode diputar dengan jam digeser melewati `rilis`). `infra/easypanel.md`, ARCHITECTURE §12–13, dan DATA-CONTRACTS §1 diperbarui: `VITE_*` lewat Environment Easypanel sebagai build arg |
+| E1 Dockerfile, header keamanan, CSP | terblokir | Kode dan verifikasi lokal selesai; deploy Easypanel ditunda sampai fase lokal selesai (keputusan 23 Oktober). `infra/nginx/Dockerfile` multi-tahap (`node:22-alpine` + pnpm 11.17.0 menjalankan `pnpm build`, lalu `nginx:1.30-alpine`) dengan semua `VITE_*` sebagai build arg; `.dockerignore` membuang `node_modules`, `dist`, `.git`, dan `.env` lokal. `nginx.conf`: CSP dan header PRIVACY-SECURITY §3 di level server untuk semua respons, `/healthz` menjawab `ok`, aset `/assets/` `immutable` dan sisanya `no-cache`, `.webmanifest` sebagai `application/manifest+json`, redirect relatif di balik proxy, path tak dikenal 404 karena routing memakai hash. Diuji dengan `docker build`, `docker run`, dan `curl -I` (header di `/`, `/healthz`, manifest, episode, ikon, aset, dan 404); build tanpa `VITE_SITE_URL` gagal dengan pesan jelas; di Chrome, situs dari image berjalan tanpa pelanggaran CSP (font Google termuat, episode diputar dengan jam digeser melewati `rilis`). `infra/easypanel.md`, ARCHITECTURE §12–13, dan DATA-CONTRACTS §1 diperbarui: `VITE_*` lewat Environment Easypanel sebagai build arg |
 | E2 Halaman `/privasi` dan `/tentang` | selesai | Teks "Tentang" disetujui pemilik 23 Oktober; kalimat pereview dinetralkan ("pereview yang disebut di kartu") karena bentuk nama pereview masih terbuka di PRD §14. Paragraf "Masukan sukarela" (masukan lewat lembar bagikan, nomor atau akun pengirim terlihat) dan kalimat log IP 7 hari juga disetujui; PRIVACY-SECURITY §1 dan §3–§6 diselaraskan, form PocketBase ditunda sampai setelah Ramadan. `apps/web/public/privasi/index.html` memuat teks PRIVACY-SECURITY §6 apa adanya (frasa pembuka tiap paragraf ditebalkan, tanggal "Diperbarui: 23 Oktober 2026"); `halaman.node.test.ts` gagal bila halaman dan dokumen berbeda. `tentang/index.html` didraf dari PRD §1 dan PRIVACY-SECURITY §4 (cabang cerita bukan anjuran). Keduanya memakai `halaman.css` (warna dari tokens.css, terang dan gelap) dan ditautkan dari footer lewat i18n. Di image E1: `/privasi` dialihkan relatif ke `/privasi/`, kedua halaman 200 dengan header keamanan, tanpa pesan di console. Di `vite dev`, `/privasi/` jatuh ke aplikasi karena fallback SPA Vite; berkasnya bisa dibuka di `/privasi/index.html` |
-| E3 Umami dan tujuh event | sedang | Kode selesai di D7: skrip Umami dipasang hanya bila `VITE_UMAMI_SCRIPT` dan `VITE_UMAMI_ID` terisi, dan event diuji di Chrome selama D3–D5 (nama dan isi sesuai SRS §8). Urutan sesi uji yang memicu tujuh event ada di `infra/easypanel.md` langkah 6. Tinggal sesi uji dan screenshot dasbor oleh pemilik di situs live, pada atau setelah 4 November |
+| E3 Umami dan tujuh event | terblokir | Sesi uji menunggu deploy (keputusan 23 Oktober). Kode selesai di D7: skrip Umami dipasang hanya bila `VITE_UMAMI_SCRIPT` dan `VITE_UMAMI_ID` terisi, dan event diuji di Chrome selama D3–D5 (nama dan isi sesuai SRS §8). Urutan sesi uji yang memicu tujuh event ada di `infra/easypanel.md` langkah 6. Tinggal sesi uji dan screenshot dasbor oleh pemilik di situs live, pada atau setelah 4 November |
+
+## Fase lokal sebelum deploy: Epik F dan G
+
+Urutan sesuai `docs/PLAN.md` §6.
+
+| Tugas | Status | Bukti terima |
+| --- | --- | --- |
+| F0 Rencana fase lokal di dokumen | selesai | PLAN §6, BACKLOG Epik F–H dan pemicu, tabel ini, ROADMAP minggu 2–6 dan 9, PRD §7, §13, dan §14, SRS (§1.1, diagram, SHR-3, AND-3, §5.4), ARCHITECTURE §2, §3, §10, dan §11, DATA-CONTRACTS §7, RUNBOOK, `.env.example`, `infra/easypanel.md`, dan CLAUDE.md memuat keputusan 23 Oktober; rujukan PocketBase dan FCM ditandai "setelah Ramadan" |
+| F1 Aksesibilitas, `#debug`, memo sampul | belum | |
+| F2 Bagian dalil `ikhtilaf` | belum | |
+| G1 Service worker dan baris versi baru | belum | |
+| G2 Episode lama tetap terbaca offline | belum | |
+| G3 E2E Playwright | belum | |
+| QA lokal | belum | |
+
+## Sesudah deploy web dan pemicu
+
+| Tugas | Status | Bukti terima |
+| --- | --- | --- |
+| H1 Proyek Capacitor dan APK debug | belum | Dimulai sesudah deploy web, paralel dengan Tahap 0 |
+| H2 Konten APK dari qissah.id | belum | Bagian web dan infra boleh dikerjakan lebih dulu |
+| H3 Share native dan deep link | belum | |
+| I1 Gerbang `--wajib-review` | terblokir | Menunggu review ulama ep01–02 |
+| I2 Pensiunkan prototipe | terblokir | Menunggu uji paritas di HP oleh pemilik |
 
 ## Keputusan sesi 21 Oktober 2026
 
@@ -86,6 +110,20 @@ Jawaban pemilik atas ringkasan Epik B:
 2. Domain menjadi `qissah.id` (terdaftar 22 Oktober di Hostinger). Semua rujukan `qissa.id` di dokumen, infra, CI, dan apps/web diganti, termasuk `umami.`, `api.`, dan `staging.qissah.id`. `appId` Android ikut menjadi `id.qissah.app` supaya sesuai domain yang dimiliki; belum pernah dipublikasikan, jadi aman diganti. Nama aplikasi tetap "Qissa".
 3. Email kontak `halo@qissah.id` mengisi kebijakan privasi (PRIVACY-SECURITY §6).
 4. `apps/web/.env.example` berisi nilai produksi (`https://qissah.id`, `/content`, skrip Umami); Website ID Umami dan URL saluran diisi setelah tersedia.
+5. Fase lokal dulu: semua bagian web diselesaikan dan diuji di lokal sebelum deploy (Epik F, G, dan QA lokal; `docs/PLAN.md` §6). Deploy web menyusul dengan sasaran 12 November dan batas 1 Desember. Android (Epik H) dikerjakan sesudah deploy, paralel dengan Tahap 0.
+6. Dependensi baru disetujui: `vite-plugin-pwa` (G1) dan `@playwright/test` (G3), masing-masing dengan ADR di PR-nya. Capacitor menunggu Epik H.
+7. Tanpa form masukan PocketBase (SRS SHR-3) dan tanpa push FCM (AND-3) di MVP; keduanya masuk daftar "Setelah Ramadan". Masukan tetap lewat lembar bagikan (SHR-2). Kebijakan privasi kini menyebut nomor atau akun pengirim yang terlihat dan log IP 7 hari (E2).
+8. Teks "Tentang" dan memo sampul baru ("Di episode sebelumnya kamu memilih …") disetujui. Memo diubah di F1, karena ep01 dan ep02 terbit di hari yang sama.
+9. Diserahkan ke Claude dan dicatat di ADR atau PR masing-masing:
+   - konten tetap di-cache `lib/content.ts`, tanpa nama berkas episode berversi dan tanpa retensi 30 hari;
+   - font di-cache service worker, dengan `connect-src` ditambah dua origin Google;
+   - `#debug` hanya di dev;
+   - `--muted` terang menjadi `#5F686F`;
+   - `ikhtilaf` masuk `format: 1` sebelum deploy pertama;
+   - E2E dijalankan di job CI yang sudah ada;
+   - metrik Tahap 0 dihitung dari pengunjung unik atau Funnel Umami, tanpa menyaring event ganda di kode;
+   - mode tema manual tidak dibangun.
 
 ## Pertanyaan terbuka
-- Record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4.
+- Deploy ditunda sampai fase lokal selesai: record DNS `qissah.id` (kini ke halaman parkir Hostinger) dan `umami.qissah.id` ke VPS Easypanel, lalu langkah Easypanel, berurutan di `docs/PLAN.md` §4 dan §6.
+- Pembaca publik tidak tahu ke mana mengirim templat masukan, karena lembar bagikan tidak punya tujuan. Usulan: cantumkan `halo@qissah.id` di templat atau di kartu bagikan; butuh persetujuan teks pemilik.

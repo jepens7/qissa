@@ -29,7 +29,7 @@ Kalau kode dan dokumen bertentangan, dokumen yang benar; perbaiki kodenya, atau 
 - `packages/engine`: mesin cerita murni TypeScript tanpa DOM (step, branch, variabel, snapshot). Wajib bisa diuji tanpa browser.
 - `packages/script`: parser dan compiler Qissa Script (`.qs.md`) menjadi JSON episode, plus linter konten. CLI: `pnpm qs compile`, `pnpm qs lint`.
 - `content/`: naskah `.qs.md`, `dalil.md`, dan `manifest.json`. Konten adalah data; tidak ada teks cerita di dalam kode aplikasi.
-- `backend/pocketbase`: PocketBase. MVP hanya koleksi `feedback`; akun dan progres di fase 2.
+- `backend/pocketbase`: PocketBase untuk form masukan (SRS SHR-3), ditunda setelah Ramadan dan belum ada di repo; akun dan progres di fase 2.
 - `apps/android`: Capacitor (digenerate; hanya konfigurasi yang diedit manual).
 - `infra/`: Dockerfile, nginx.conf, catatan Easypanel, dan `infra/prototype/index.html` sebagai implementasi rujukan satu berkas yang sudah diuji pembaca.
 - Package manager: pnpm 11 (workspaces). Node 22 LTS ke atas, minimal 22.18 karena CLI `qs` dijalankan langsung dari TypeScript lewat type stripping Node (ADR-010).
@@ -58,7 +58,7 @@ qissa/
   apps/android/         Capacitor
   packages/engine/      mesin cerita
   packages/script/      compiler + linter Qissa Script
-  backend/pocketbase/   pb_migrations, pb_hooks
+  backend/pocketbase/   pb_migrations, pb_hooks (setelah Ramadan)
   infra/                nginx, Dockerfile, easypanel.md, prototype/
 ```
 
@@ -92,8 +92,8 @@ Nama event tetap: `poll`, `mulai`, `pilihan`, `selesai`, `bagikan`, `masukan`, `
 - Perbarui bagian "Status saat ini" di bawah setiap kali milestone berubah.
 
 ## Status saat ini
-- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (hijau sejak 23 Oktober), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Epik C: `packages/engine` (`createStory`, tes jelajah semua episode, snapshot dan restore). Epik D: apps/web lengkap (token dan tema, komponen, reader, layar akhir, home, konten offline-first, analitik tujuh event, routing hash), diperiksa terhadap prototipe di 360×780. E1: image nginx multi-tahap dengan CSP dan `/healthz`. Rinciannya di `docs/PROGRESS.md`.
-- Sedang: qissah.id live (Epik E, `docs/PLAN.md`): deploy Easypanel dan DNS oleh pemilik, halaman `/privasi` dan `/tentang` menunggu persetujuan teks "Tentang", sesi uji Umami pada atau setelah 4 November.
+- Selesai: story bible, naskah Episode 1 dan 2 (`content/episodes`), prototipe satu berkas (`infra/prototype/index.html`) yang sudah diuji ke teman, paket deploy nginx. Epik A: scaffold monorepo pnpm, CI GitHub Actions (hijau sejak 23 Oktober), konfigurasi lingkungan apps/web. Epik B: `packages/script` lengkap (parser, emitter, penjelajah jalur, linter S1, L1–L7, dan W1–W4, `compileDalil`, serta CLI `qs compile`, `qs lint`, dan `qs walk`); ep01 dan ep02 terkompilasi dan jalurnya sama dengan prototipe. Epik C: `packages/engine` (`createStory`, tes jelajah semua episode, snapshot dan restore). Epik D: apps/web lengkap (token dan tema, komponen, reader, layar akhir, home, konten offline-first, analitik tujuh event, routing hash), diperiksa terhadap prototipe di 360×780. E1: image nginx multi-tahap dengan CSP dan `/healthz`. E2: halaman `/privasi` dan `/tentang`. Rinciannya di `docs/PROGRESS.md`.
+- Sedang: fase lokal sebelum deploy (`docs/PLAN.md` §6): Epik F (aksesibilitas, `#debug`, `ikhtilaf`) dan G (service worker, offline, E2E), lalu QA lokal. Sesudahnya deploy qissah.id dan sesi uji Umami (E1 dan E3 tinggal langkah pemilik); Android (Epik H) paralel dengan Tahap 0.
 - Belum: review ulama (badge masih "Belum direview"), Play Store, konten Ramadan, Episode 3.
 
 ## Rujukan eksternal

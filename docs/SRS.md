@@ -5,7 +5,7 @@ Spesifikasi kebutuhan perangkat lunak untuk MVP. Kata "wajib" berarti harus ada 
 ## 1. Pendahuluan
 
 ### 1.1 Lingkup
-Sistem terdiri dari: (a) konten episode dalam Qissa Script yang dikompilasi menjadi JSON, (b) aplikasi web PWA yang memutar episode, (c) bungkus Android lewat Capacitor, (d) PocketBase untuk masukan pembaca, (e) Umami untuk analitik, (f) nginx di Easypanel untuk menyajikan semuanya.
+Sistem terdiri dari: (a) konten episode dalam Qissa Script yang dikompilasi menjadi JSON, (b) aplikasi web PWA yang memutar episode, (c) bungkus Android lewat Capacitor, (d) PocketBase untuk masukan pembaca (ditunda setelah Ramadan; MVP memakai lembar bagikan), (e) Umami untuk analitik, (f) nginx di Easypanel untuk menyajikan semuanya.
 
 ### 1.2 Definisi
 - Episode: satu cerita 3–8 menit dengan dua titik pilihan dan tiga akhir.
@@ -22,9 +22,9 @@ Sistem terdiri dari: (a) konten episode dalam Qissa Script yang dikompilasi menj
 content/*.qs.md ──(qs compile)──> content JSON ──┐
                                                  ▼
   nginx (Easypanel, qissah.id) ── serves ── apps/web (PWA) ──> Umami (events)
-                                   │                └──> PocketBase (feedback, fase 2: akun)
+                                   │                └──> PocketBase (setelah Ramadan: feedback, akun)
                                    └── /content/manifest.json + /content/epNN.json
-  apps/android (Capacitor) = apps/web + WebView + plugin (share, push nanti)
+  apps/android (Capacitor) = apps/web + WebView + plugin (share; push setelah Ramadan)
 ```
 
 Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend hanya untuk hal yang benar-benar butuh server.
@@ -76,7 +76,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 ### 3.7 Bagikan dan masukan (SHR)
 - SHR-1 (wajib) "Bagikan dilemanya" memakai Web Share API dengan teks dari front matter `bagikan` plus `siteUrl#epNN`; fallback salin ke clipboard dengan pesan.
 - SHR-2 (wajib) "Kirim masukan" membuka Web Share atau salin dengan templat lima pertanyaan dan jalur pembaca.
-- SHR-3 (sebaiknya) Form masukan in-app mengirim ke PocketBase koleksi `feedback` (aturan create publik, read admin), tanpa login, dengan rate limit.
+- SHR-3 (sebaiknya) Form masukan in-app mengirim ke PocketBase koleksi `feedback` (aturan create publik, read admin), tanpa login, dengan rate limit. Ditunda setelah Ramadan (keputusan 23 Oktober); masukan MVP lewat SHR-2.
 - SHR-4 (wajib) Teks bagikan tidak pernah memuat pilihan pembaca atau isi refleksi.
 
 ### 3.8 Saluran WhatsApp (WA)
@@ -91,7 +91,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 ### 3.10 Android (AND)
 - AND-1 (wajib) Capacitor membungkus apps/web; `appId` `id.qissah.app`; target Android 8.0 ke atas.
 - AND-2 (wajib) Plugin: Share (native share sheet), App (deep link `qissah.id/#epNN`), StatusBar (warna mengikuti tema).
-- AND-3 (sebaiknya) Push notification FCM untuk pengingat harian Ramadan; opt-in eksplisit; tidak ada notifikasi rasa bersalah.
+- AND-3 (sebaiknya) Push notification FCM untuk pengingat harian Ramadan; opt-in eksplisit; tidak ada notifikasi rasa bersalah. Ditunda setelah Ramadan (keputusan 23 Oktober); Saluran WhatsApp menggantikan.
 - AND-4 (wajib) Play Store listing: rating konten 17+, kebijakan privasi di qissah.id/privasi, deklarasi data (tidak ada data yang dikumpulkan selain analitik agregat).
 - AND-5 (wajib) Pendaftaran PSE Komdigi sebelum rilis produksi.
 
@@ -132,7 +132,7 @@ Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ format, id, nomor, j
 ### 5.3 Penyimpanan perangkat (localStorage)
 Kunci, tipe, dan contohnya ada di DATA-CONTRACTS §5 (awalan `qissa.v1.`): akhir yang sudah dibaca, jalur terakhir, dan refleksi per episode; jawaban poll landing; salinan manifest terakhir; versi app shell.
 
-### 5.4 PocketBase (MVP)
+### 5.4 PocketBase (ditunda setelah Ramadan, keputusan 23 Oktober)
 Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pertanyaan), `versi_app` (text), `dibuat` (auto). Aturan: create publik dengan rate limit, list dan view hanya admin. Tidak ada kolom identitas.
 
 ### 5.5 PocketBase (fase 2, dirancang sekarang, tidak dibangun)

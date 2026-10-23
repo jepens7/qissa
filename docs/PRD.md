@@ -67,10 +67,10 @@ Tes untuk setiap episode dan setiap fitur: apakah pembaca merasakan sesuatu sebe
 | Must | Konten dimuat dari server (manifest) sehingga episode baru tidak butuh rilis app | Wajib untuk "30 Malam" |
 | Must | PWA: bisa dipasang, episode yang sudah dibuka bisa dibaca offline | |
 | Must | Android (Capacitor) di Play Store, rating 17+ | Termasuk pendaftaran PSE Komdigi |
-| Should | Push notification harian selama Ramadan (FCM) | Kalau tidak sempat, Saluran WA menggantikan |
+| Should | Push notification harian selama Ramadan (FCM) | Ditunda setelah Ramadan (keputusan 23 Oktober); Saluran WA menggantikan |
 | Should | Sapaan sampul yang mengingat pilihan di episode sebelumnya | Sudah ada di prototipe |
-| Should | Form masukan ke PocketBase (tanpa login) sebagai alternatif share | |
-| Could | Mode gelap/terang manual | Sistem sudah mengikuti perangkat |
+| Should | Form masukan ke PocketBase (tanpa login) sebagai alternatif share | Ditunda setelah Ramadan (keputusan 23 Oktober); masukan lewat lembar bagikan |
+| Could | Mode gelap/terang manual | Sistem sudah mengikuti perangkat; tidak dibangun di MVP (23 Oktober) |
 | Won't (MVP) | Akun, sinkronisasi progres, halaqah, langganan, bahasa lain, iOS | Fase 2 |
 
 ## 8. Alur pengguna utama
@@ -110,11 +110,11 @@ Inti gratis selamanya tanpa iklan. Qissa Plus (langganan, harga regional Rp19–
 
 ## 13. Jadwal
 
-Lihat `docs/ROADMAP.md`. Tonggak utama: qissah.id live (4 November), Tahap 0 selesai (18 November), Android closed testing (9 Desember), konten Ramadan dibekukan (20 Januari), rilis (7 Februari 2027).
+Lihat `docs/ROADMAP.md`. Tonggak utama (direvisi 23 Oktober): qissah.id live setelah uji lokal (sasaran 12 November, paling lambat 1 Desember), Tahap 0 selesai (sekitar 26 November), Android closed testing (9 Desember), konten Ramadan dibekukan (20 Januari), rilis (7 Februari 2027).
 
 ## 14. Pertanyaan terbuka
 
 - Format "30 Malam": mikro atau penuh? (keputusan 1 Desember)
-- Push notification masuk MVP atau cukup Saluran WA?
+- Push notification masuk MVP atau cukup Saluran WA? Dijawab 23 Oktober: cukup Saluran WA; push FCM setelah Ramadan.
 - Nama pereview ditampilkan dengan nama lengkap, inisial, atau lembaga?
 - Apakah Dion (Episode 2) kembali di Episode 11?
