@@ -572,7 +572,8 @@ main {
 textarea {
   width: 100%;
   min-height: 96px;
-  border: 1.5px solid var(--line);
+  /* Batas kolom isian butuh kontras ≥ 3:1 (WCAG 1.4.11); --line hanya 1,25:1. */
+  border: 1.5px solid var(--muted);
   border-radius: 12px;
   padding: 12px;
   font: inherit;
@@ -581,6 +582,10 @@ textarea {
   background: var(--screen);
   color: var(--ink);
   resize: vertical;
+}
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
 }
 textarea:focus-visible {
   outline: 2px solid var(--accent);

@@ -49,7 +49,7 @@ Urutan sesuai `docs/PLAN.md` §6.
 | Tugas | Status | Bukti terima |
 | --- | --- | --- |
 | F0 Rencana fase lokal di dokumen | selesai | PLAN §6, BACKLOG Epik F–H dan pemicu, tabel ini, ROADMAP minggu 2–6 dan 9, PRD §7, §13, dan §14, SRS (§1.1, diagram, SHR-3, AND-3, §5.4), ARCHITECTURE §2, §3, §10, dan §11, DATA-CONTRACTS §7, RUNBOOK, `.env.example`, `infra/easypanel.md`, dan CLAUDE.md memuat keputusan 23 Oktober; rujukan PocketBase dan FCM ditandai "setelah Ramadan" |
-| F1 Aksesibilitas, `#debug`, memo sampul | belum | |
+| F1 Aksesibilitas, `#debug`, memo sampul | selesai | `--muted` terang #5F686F di tokens.css dan `public/halaman.css`; rasio kontras semua token teks, termasuk teks ber-opacity, dihitung dengan rumus WCAG dan dicatat di DESIGN-SYSTEM §1 (terendah 4,60:1). Border dan placeholder textarea memakai `--muted` (WCAG 1.4.11). Kartu tamat tetap di region `aria-live`, sedangkan kartu dalil, refleksi, bagikan, saluran, dan lanjut dirender di luarnya; di Chrome region live berakhir di kartu "Episode 2 selesai". `#debug` hanya saat `vite dev`: `vite preview` membuka home untuk `#debug`, string halaman debug hilang dari bundel (171,78 KB, gzip 55,92 KB; sebelumnya 56,97 KB), dan `route.test.ts` menguji jalur produksi dengan `vi.stubEnv`. Memo sampul ep02 tampil "Di episode sebelumnya kamu memilih …" (sengaja berbeda dari prototipe). ARCHITECTURE §6 diselaraskan, termasuk menghapus `lib/dalil.ts` yang tidak pernah ada. Ditinjau tiga peninjau dengan verifikasi adversarial: dua temuan dokumen (rasio `--accent-ink` dan teks ber-opacity) diperbaiki; tanpa temuan kode |
 | F2 Bagian dalil `ikhtilaf` | belum | |
 | G1 Service worker dan baris versi baru | belum | |
 | G2 Episode lama tetap terbaca offline | belum | |

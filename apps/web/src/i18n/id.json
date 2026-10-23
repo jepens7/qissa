@@ -22,7 +22,7 @@
   "reader.hint.mulai": "Ketuk untuk mulai",
   "reader.hint.lanjut": "Ketuk untuk lanjut",
   "sampul.kicker": "Qissa, Episode {nomor}",
-  "sampul.memo": "Minggu lalu kamu memilih {pertama}, lalu {kedua}.",
+  "sampul.memo": "Di episode sebelumnya kamu memilih {pertama}, lalu {kedua}.",
   "sampul.mandiri": "Episode ini bisa dibaca tanpa Episode {nomor}.",
   "sampul.panjang": "{menit} menit. {pilihan} pilihan. Ketuk layar untuk melanjutkan.",
   "shot.tertutup.cap": "Tangkapan layar",

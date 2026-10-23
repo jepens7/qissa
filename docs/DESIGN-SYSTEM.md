@@ -12,7 +12,7 @@ Token dan komponen yang sudah terbukti di prototipe (`infra/prototype/index.html
 | `--surface-2` | #E8EDF3 | #232E39 | Pil sistem, placeholder |
 | `--ink` | #141A1F | #E8EDF1 | Teks utama |
 | `--ink-2` | #4A545D | #B9C2CB | Teks narasi, teks sekunder |
-| `--muted` | #78848D | #8E9AA5 | Label, status, catatan |
+| `--muted` | #5F686F | #8E9AA5 | Label, status, catatan, batas kolom isian |
 | `--line` | rgba(20,26,31,.11) | rgba(232,237,241,.11) | Garis dan border |
 | `--accent` | #2B4DD6 | #8DA3FF | Tombol utama, fokus |
 | `--accent-ink` | #1E3BAE | #B4C2FF | Nama pengirim di grup, tautan |
@@ -27,6 +27,11 @@ Token dan komponen yang sudah terbukti di prototipe (`infra/prototype/index.html
 | `--bank-ink` | #E9F5EF | #E9F5EF | Teks kartu m-banking |
 
 Aturan: komponen hanya memakai token; tidak ada warna literal di komponen. Setiap pasangan teks/latar diuji kontras ≥ 4.5:1 (teks kecil) atau 3:1 (teks ≥ 18 px tebal). Mode gelap mengikuti sistem; `data-theme` disiapkan untuk pilihan manual nanti.
+
+Hasil uji kontras (23 Oktober, F1), rasio terendah tiap token teks terhadap latar tempat ia dipakai:
+- Terang: `--ink` 14,22; `--ink-2` 6,26; `--muted` 4,60 (di `--bg`); `--accent-ink` 7,43 (tautan footer di `--bg`); `--out-ink` 11,43 (label lampiran dengan opacity 0,75: 5,72); `--on-accent` 6,70; `--paper-ink` 14,32; `--paper-muted` 4,65; `--bank-ink` 11,15 (label kecil dengan opacity 0,75: 6,99). `--muted` terang digelapkan dari #78848D (prototipe, 3,10–3,83:1) menjadi #5F686F.
+- Gelap: `--muted` 4,81 (di `--surface-2`); token lain ≥ 6,45; teks dengan opacity 0,75: label lampiran gelembung keluar 6,06 dan label kecil kartu bank 6,65.
+- Batas kolom isian (textarea) memakai `--muted` (≥ 4,60:1, syarat WCAG 1.4.11 adalah 3:1). `--line` (1,25:1) hanya untuk garis dekoratif.
 
 ## 2. Tipografi
 
