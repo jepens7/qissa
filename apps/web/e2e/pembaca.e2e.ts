@@ -116,6 +116,8 @@ test('sesi yang hidup melewati 00.00 WIB tanggal rilis: episode tampil tanpa mua
   const sebelum = new Date(`${rilis}T00:00:00+07:00`).getTime() - 60_000;
   const sesudah = new Date(`${rilis}T00:01:00+07:00`);
   const kartu = page.getByRole('button', { name: /Tangkapan Layar/ });
+  // Poll Episode 1 mengikuti rilis ep01 (keputusan 23 Oktober butir 12).
+  const poll = page.getByRole('button', { name: 'Tutup, jangan dibuka' });
   // Footer baru tampil setelah manifest termuat.
   const footer = page.getByRole('link', { name: 'Kebijakan privasi' });
 
@@ -124,11 +126,13 @@ test('sesi yang hidup melewati 00.00 WIB tanggal rilis: episode tampil tanpa mua
   await page.goto('/#home');
   await expect(footer).toBeVisible();
   await expect(kartu).toHaveCount(0);
+  await expect(poll).toHaveCount(0);
   await page.clock.setFixedTime(sesudah);
   await page.evaluate(() => {
     document.dispatchEvent(new Event('visibilitychange'));
   });
   await expect(kartu).toBeVisible();
+  await expect(poll).toBeVisible();
 
   // Tautan #ep01 dibuka di jendela yang sama sesudah tengah malam.
   await page.clock.setFixedTime(sebelum);

@@ -33,7 +33,7 @@ Satu dokumen di password manager berisi: registrar domain, DNS, VPS, Easypanel, 
 
 ## 7. Insiden: kontroversi konten
 Pemicu: episode atau potongan episode dipelintir di media sosial, atau pereview menarik persetujuan.
-1. Dalam 1 jam: sembunyikan episode terkait dengan mengubah `rilis` ke tanggal jauh di masa depan (satu PR kecil, merge ke `main`); konfirmasi di HP.
+1. Dalam 1 jam: sembunyikan episode terkait dengan mengubah `rilis` ke tanggal jauh di masa depan (satu PR kecil, merge ke `main`); konfirmasi di HP. Menyembunyikan ep01 ikut menyembunyikan poll di landing, tetapi pratinjau tautan (`og:description` di `apps/web/index.html` dan `og.png`) tetap memuat dilema ep01; menggantinya butuh PR kode.
 2. Dalam 4 jam: hubungi pereview episode itu; sepakati apakah perlu revisi, klarifikasi, atau penarikan.
 3. Dalam 24 jam: satu pernyataan singkat di saluran WA dan halaman "Tentang": apa yang terjadi, apa yang diubah, siapa yang mereview. Tidak berdebat di kolom komentar.
 4. Setelah tenang: catat di `docs/DECISIONS.md` bila ada aturan konten yang berubah.
