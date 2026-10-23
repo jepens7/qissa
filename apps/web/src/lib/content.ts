@@ -70,15 +70,23 @@ async function ambilDenganBatas(ling: Lingkungan, url: string, batasMs: number):
 
 /**
  * Manifest network-first. Bila jaringan gagal, melewati batas waktu, atau versi manifest tidak dikenal,
- * dipakai salinan terakhir; null bila keduanya tidak ada.
+ * dipakai salinan terakhir; null bila keduanya tidak ada. Batas waktu hanya berlaku bila ada salinan:
+ * tanpa salinan, jawaban jaringan ditunggu, karena menyerah lebih awal hanya berujung galat (kunjungan
+ * pertama di jaringan lambat, saat service worker juga sedang mengunduh precache).
  */
 export async function muatManifest(
   base: string,
   ling: Lingkungan,
   batasMs = BATAS_MANIFEST_MS,
 ): Promise<Manifest | null> {
+  const salinan = bacaManifestTersimpan(ling.penyimpanan);
+  const cadangan = adalahManifest(salinan) ? salinan : null;
+  const url = `${base}/manifest.json`;
   try {
-    const respons = await ambilDenganBatas(ling, `${base}/manifest.json`, batasMs);
+    const respons =
+      cadangan === null
+        ? await ling.fetch(url, { cache: 'no-cache' })
+        : await ambilDenganBatas(ling, url, batasMs);
     if (respons.ok) {
       const data: unknown = await respons.json();
       if (adalahManifest(data)) {
@@ -89,8 +97,7 @@ export async function muatManifest(
   } catch {
     // Jaringan gagal atau terlalu lambat: pakai salinan.
   }
-  const salinan = bacaManifestTersimpan(ling.penyimpanan);
-  return adalahManifest(salinan) ? salinan : null;
+  return cadangan;
 }
 
 /** Tanggal hari ini di Asia/Jakarta, YYYY-MM-DD. */
