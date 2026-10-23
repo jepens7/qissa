@@ -5,7 +5,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 ## 1. Deploy
 - Produksi: merge ke `main` → CI hijau → Easypanel membangun image → live dalam 3–5 menit. Cek `https://qissah.id/healthz` dan buka satu episode di HP.
 - Staging: push ke `staging` → `staging.qissah.id`. Manifest staging boleh memuat episode `draft`.
-- Rollback: Easypanel → service `qissa` → Deployments → pilih image sebelumnya → Redeploy. Waktu: 1 menit. Konten ikut kembali ke versi image itu.
+- Rollback: Easypanel → service `qissa` → Deployments → pilih image sebelumnya → Redeploy. Waktu: 1 menit. Konten (manifest dan episode) ikut kembali seketika. App shell hasil rollback baru dipakai perangkat yang sudah punya service worker setelah pembaca mengetuk "Muat ulang" di baris "Versi baru tersedia" atau menutup semua tab dan aplikasi Qissa; muat ulang biasa tidak cukup (ADR-017). Saat memeriksa di HP sendiri, ketuk "Muat ulang" atau hapus data situs.
 
 ## 2. Rilis konten (episode baru)
 1. PR `content:` dengan `episode.qs.md`, `dalil.md` (`status: reviewed`, `reviewed_by`, `reviewed_at`), dan entri manifest dengan `rilis`.
@@ -42,6 +42,7 @@ Pemicu: episode atau potongan episode dipelintir di media sosial, atau pereview 
 - Dugaan kebocoran kredensial: ganti kata sandi akun terkait, cabut token, periksa deployment dan DNS, catat waktu dan tindakan.
 - Spam feedback (bila form PocketBase dibangun setelah Ramadan): naikkan rate limit di hook PocketBase atau matikan create sementara (ubah aturan koleksi).
 - Sertifikat kedaluwarsa: Easypanel memperbarui otomatis; bila gagal, tekan "Renew" di panel domain.
+- Mengubah header keamanan (CSP dan lainnya) di `nginx.conf`: HTML yang di-precache service worker menyimpan header lamanya, jadi perubahan baru sampai ke pembaca lama bila deploy yang sama juga mengubah app shell (misalnya menaikkan `version` di `apps/web/package.json`) dan pembaca mengetuk "Muat ulang" (ADR-017).
 
 ## 9. Kontak dan jadwal tetap
 - Pereview: nama, nomor, honor, episode yang direview (diisi).

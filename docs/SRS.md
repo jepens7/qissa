@@ -84,7 +84,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 
 ### 3.9 PWA dan offline (PWA)
 - PWA-1 (wajib) Manifest web app, ikon 192 dan 512, `display: standalone`, warna tema.
-- PWA-2 (wajib) Service worker: app shell precache; manifest konten network-first dengan fallback cache; episode JSON cache-first setelah pernah diunduh; font dan gambar stale-while-revalidate.
+- PWA-2 (wajib) Service worker mem-precache app shell (HTML, JS, CSS, ikon) dan meng-cache font (CSS stale-while-revalidate, berkas font cache-first). Manifest konten network-first dengan cadangan salinan terakhir, dan episode JSON cache-first setelah pernah diunduh, keduanya oleh `lib/content.ts` (ADR-017).
 - PWA-3 (wajib) Pembaruan app shell: setelah build baru terdeteksi, tampilkan satu baris "Versi baru tersedia, muat ulang" tanpa memaksa.
 - PWA-4 (wajib) Semua fitur inti bekerja tanpa jaringan untuk episode yang sudah pernah dibuka.
 
@@ -130,7 +130,7 @@ Skema lengkap di `docs/QISSA-SCRIPT.md` §4. Ringkasnya: `{ format, id, nomor, j
 ```
 
 ### 5.3 Penyimpanan perangkat (localStorage)
-Kunci, tipe, dan contohnya ada di DATA-CONTRACTS §5 (awalan `qissa.v1.`): akhir yang sudah dibaca, jalur terakhir, dan refleksi per episode; jawaban poll landing; salinan manifest terakhir; versi app shell.
+Kunci, tipe, dan contohnya ada di DATA-CONTRACTS §5 (awalan `qissa.v1.`): akhir yang sudah dibaca, jalur terakhir, dan refleksi per episode; jawaban poll landing; salinan manifest terakhir.
 
 ### 5.4 PocketBase (ditunda setelah Ramadan, keputusan 23 Oktober)
 Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pertanyaan), `versi_app` (text), `dibuat` (auto). Aturan: create publik dengan rate limit, list dan view hanya admin. Tidak ada kolom identitas.
@@ -139,7 +139,7 @@ Koleksi `feedback`: `episode` (text), `jalur` (text), `jawaban` (json, lima pert
 `users` (auth Google), `progress` (user, episode, akhir[], jalur, updated), `circles` dan `circle_members` (halaqah), `subscriptions` (status langganan dari webhook). Refleksi tetap di perangkat kecuali pengguna memilih sinkronisasi terenkripsi (keputusan terpisah).
 
 ## 6. Antarmuka eksternal
-- Konten: `https://qissah.id/content/manifest.json` dan `/content/epNN.json`, `Cache-Control: no-cache` untuk manifest, `max-age=31536000, immutable` untuk JSON berversi (nama berkas memuat versi).
+- Konten: `https://qissah.id/content/manifest.json` dan `/content/epNN.json`, `Cache-Control: no-cache` untuk manifest dan episode (nama berkas tanpa versi, ADR-017); aset ber-hash di `/assets/` `max-age=31536000, immutable`.
 - Umami: skrip `https://umami.qissah.id/script.js` dengan `data-website-id`; event lewat `umami.track(nama, data)`.
 - Saluran WhatsApp: URL dari konfigurasi.
 - Play Store dan FCM (nanti).

@@ -126,11 +126,11 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 7. Konten: pengiriman, versi, cache
 
-- Build menyalin hasil `qs compile` ke `apps/web/public/content/`: `manifest.json`, `ep01.<versi>.json`. Nama berkas memuat versi sehingga bisa `immutable`. Sampai M3a (minggu 5), nama berkas belum memuat versi (`ep01.json`) dan app memakai `versi_konten` sebagai kunci cache.
-- `manifest.json` disajikan `Cache-Control: no-cache`; app memuatnya network-first dengan timeout 3 detik, lalu fallback ke salinan di Cache Storage.
-- Episode: cache-first. Bila manifest menunjuk versi baru, URL berubah, sehingga versi baru terunduh saat dibuka; versi lama dihapus oleh service worker saat aktivasi.
+- Build menyalin hasil `qs compile` ke `apps/web/public/content/`: `manifest.json` dan `epNN.json`. Nama berkas tidak memuat versi; app memakai `versi_konten` dari manifest sebagai bagian kunci cache (ADR-017).
+- `manifest.json` dan episode disajikan `Cache-Control: no-cache`. `lib/content.ts` memuat manifest network-first dengan timeout 3 detik, lalu memakai salinan terakhir di localStorage.
+- Episode: cache-first di Cache Storage oleh `lib/content.ts`, dengan kunci `url?v=versi_konten`. Bila manifest menunjuk versi baru, versi itu diunduh saat episode dibuka, lalu versi lama episode yang sama dihapus.
 - Penyaringan rilis: app menyembunyikan episode dengan `rilis` di masa depan (zona waktu Asia/Jakarta). JSON-nya tetap bisa diakses langsung; diterima untuk MVP (tidak ada spoiler yang bernilai).
-- Service worker (Workbox lewat `vite-plugin-pwa`): precache app shell; runtime: manifest NetworkFirst, episode CacheFirst, font dan gambar StaleWhileRevalidate. Pembaruan: `registerType: 'prompt'`; UI menampilkan baris "Versi baru tersedia".
+- Service worker (Workbox lewat `vite-plugin-pwa`, ADR-017) hanya untuk app shell: precache HTML (termasuk `/privasi/` dan `/tentang/`), JS, CSS, ikon, dan manifest web, tanpa `navigateFallback`, dan query string diabaikan saat mencocokkan precache. Runtime: CSS Google Fonts StaleWhileRevalidate, berkas font CacheFirst. Konten tidak dirute service worker. Pembaruan: `registerType: 'prompt'`; `components/update-bar.tsx` menampilkan baris "Versi baru tersedia" tanpa memaksa.
 
 ## 8. Penyimpanan perangkat
 
@@ -172,9 +172,9 @@ GitHub Actions `ci.yml` (setiap PR dan push): `pnpm install --frozen-lockfile`, 
 
 ## 15. Alur utama
 
-Membuka episode: Home → `open(epNN)` → `content.loadEpisode` (cache/network) → `createStory` → Cover → ketukan pertama → `next()` berulang → `choice` → `snapshot('p1')` → `choose(i)` → … → `end` → Ending.
+Membuka episode: Home → `#epNN` → `muatEpisode` di `lib/content.ts` (cache, lalu jaringan) → `createStory` → Cover → ketukan pertama → `next()` berulang → `choice` → `snapshot('p1')` → `choose(i)` → … → `end` → Ending.
 
-Pembaruan konten: manifest baru → UI membandingkan `versi_konten` → episode yang berubah ditandai "diperbarui"; JSON lama tetap bisa dibaca sampai pembaca membuka ulang.
+Pembaruan konten: manifest baru membawa `versi_konten` baru → saat episode dibuka, `muatEpisode` mengunduh versi itu lalu menghapus versi lama dari cache. Pembaruan app shell: service worker baru menunggu → baris "Versi baru tersedia" → pembaca mengetuk "Muat ulang" (ADR-017).
 
 ## 16. Utang teknis yang diterima di MVP
 - Progres hanya di perangkat.

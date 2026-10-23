@@ -77,6 +77,7 @@ Tanda baca tipografis (“ ” ’) di semua teks. Huruf kapital hanya di awal k
 | `ShareCard` | onShare, onFeedback, note | | |
 | `ChannelCard` | url | | Hanya bila URL dikonfigurasi |
 | `NextCard` | next?, onRestartP2, onRestart, onHome | | |
+| `UpdateBar` | | tampil saat service worker baru menunggu | Satu baris di atas Header: "Versi baru tersedia." dan tombol "Muat ulang"; tidak memaksa (SRS PWA-3) |
 
 ## 5. Microcopy
 - Nada tombol: kata kerja, kalimat biasa: "Ketuk untuk lanjut", "Simpan di HP ini", "Bagikan dilemanya", "Ikuti saluran", "Ulang dari Pilihan 2".

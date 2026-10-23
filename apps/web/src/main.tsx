@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app.tsx';
+import { UpdateBar } from './components/update-bar.tsx';
 import { pasangUmami } from './lib/analytics.ts';
 import { getConfig } from './lib/config.ts';
 import './styles/tokens.css';
@@ -19,3 +20,14 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 );
+
+// Root sendiri, supaya baris pembaruan tetap ada walau App gagal render; tanpa itu, pembaca yang terkena build
+// rusak tidak bisa pindah ke versi perbaikan (ADR-017).
+const wadahPembaruan = document.getElementById('pembaruan');
+if (wadahPembaruan !== null) {
+  createRoot(wadahPembaruan).render(
+    <StrictMode>
+      <UpdateBar />
+    </StrictMode>,
+  );
+}

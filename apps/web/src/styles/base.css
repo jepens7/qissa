@@ -693,3 +693,25 @@ footer a {
   color: var(--accent-ink);
   padding: 6px 0;
 }
+
+/* Baris "Versi baru tersedia" (SRS PWA-3, components/update-bar.tsx). */
+.pembaruan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: 14px;
+}
+/* Tetap ada di pohon aksesibilitas saat kosong, supaya isinya diumumkan begitu muncul. */
+.pembaruan:empty {
+  padding: 0;
+}
+.pembaruan .btn {
+  margin: 0;
+  padding: 8px 14px;
+}
