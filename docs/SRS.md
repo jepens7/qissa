@@ -58,7 +58,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - UI-8 (wajib) Tipografi: Plus Jakarta Sans (UI dan chat), Newsreader (narasi, dalil), Amiri (Arab), semua dengan fallback sistem; font di-host sendiri (ADR-019) dan dimuat dengan `font-display: swap`.
 
 ### 3.4 Daftar episode (LIB)
-- LIB-1 (wajib) Landing menampilkan poll Episode 1 (tiga opsi), lalu daftar episode dari manifest dengan status per perangkat: belum dibaca, selesai, jumlah akhir yang sudah dibaca dari 3.
+- LIB-1 (wajib) Landing menampilkan poll Episode 1 (tiga opsi) selama manifest dimuat atau bila ep01 terbit (CNT-2), lalu daftar episode dari manifest dengan status per perangkat: belum dibaca, selesai, jumlah akhir yang sudah dibaca dari 3.
 - LIB-2 (wajib) Jawaban poll disimpan di perangkat dan dibandingkan dengan pilihan pertama saat Episode 1 tamat.
 - LIB-3 (sebaiknya) Sampul episode N menampilkan satu kalimat yang mengingat jalur pembaca di episode N-1.
 - LIB-4 (wajib) Tautan `#epNN` membuka episode itu langsung.

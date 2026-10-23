@@ -46,6 +46,9 @@ export function App() {
     let batal = false;
     void muatManifest(getConfig().contentBase, ling).then((m) => {
       if (!batal) {
+        // Tanggal juga dihitung saat manifest tiba: #epNN yang dibuka tepat sebelum 00.00 WIB tanggal rilis tetap
+        // terbuka bila manifest baru tiba sesudahnya.
+        setHariIni(hariIniJakarta(new Date()));
         setManifest(m);
       }
     });

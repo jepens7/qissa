@@ -15,7 +15,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 
 ## 3. Ramadan: rotasi harian
 - Semua episode malam 1–10 sudah di `main` dengan tanggal `rilis` masing-masing sebelum 20 Januari; malam 11–30 menyusul per 10 hari.
-- Setiap pagi (10 menit): cek Umami: `mulai` dan `selesai` episode semalam; cek saluran WA untuk masukan; cek uptime.
+- Setiap pagi (10 menit): cek Umami: `mulai` dan `selesai` episode semalam; cek `halo@qissah.id` untuk masukan (templat masukan mengarah ke sana); cek uptime.
 - Setiap sore (15 menit): tulis pesan saluran WA untuk malam ini (judul, satu kalimat dilema, tautan `#epNN`).
 - Kalau sakit atau tidak bisa: tidak ada yang perlu dilakukan; rilis sudah terjadwal. Pesan saluran bisa dijadwalkan lewat fitur jadwal WhatsApp Business bila tersedia, atau dilewati.
 
@@ -33,7 +33,7 @@ Satu dokumen di password manager berisi: registrar domain, DNS, VPS, Easypanel, 
 
 ## 7. Insiden: kontroversi konten
 Pemicu: episode atau potongan episode dipelintir di media sosial, atau pereview menarik persetujuan.
-1. Dalam 1 jam: sembunyikan episode terkait dengan mengubah `rilis` ke tanggal jauh di masa depan (satu PR kecil, merge ke `main`); konfirmasi di HP. Menyembunyikan ep01 ikut menyembunyikan poll di landing, tetapi pratinjau tautan (`og:description` di `apps/web/index.html` dan `og.png`) tetap memuat dilema ep01; menggantinya butuh PR kode.
+1. Dalam 1 jam: sembunyikan episode terkait dengan mengubah `rilis` ke tanggal jauh di masa depan (satu PR kecil, merge ke `main`); konfirmasi di HP sesudah Qissa ditutup dari daftar aplikasi terbaru lalu dibuka lagi, karena sesi yang masih hidup memakai manifest lama. Menyembunyikan ep01 ikut menyembunyikan poll di landing, tetapi pratinjau tautan (`og:description` di `apps/web/index.html` dan `og.png`) tetap memuat dilema ep01; menggantinya butuh PR kode.
 2. Dalam 4 jam: hubungi pereview episode itu; sepakati apakah perlu revisi, klarifikasi, atau penarikan.
 3. Dalam 24 jam: satu pernyataan singkat di saluran WA dan halaman "Tentang": apa yang terjadi, apa yang diubah, siapa yang mereview. Tidak berdebat di kolom komentar.
 4. Setelah tenang: catat di `docs/DECISIONS.md` bila ada aturan konten yang berubah.

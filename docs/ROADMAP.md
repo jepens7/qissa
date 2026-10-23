@@ -21,7 +21,7 @@ Tanggal mulai: 22 Oktober 2026. Ramadan diperkirakan 8 Februari 2027 (menunggu r
 | 15 | 28 Jan–7 Feb | M6b Rilis | Pengumuman di saluran dan media sosial; rilis 7 Februari; rotasi harian selama Ramadan |
 
 ## Selama Ramadan (8 Feb–8 Mar 2027)
-Satu episode per malam (atau dua hari sekali, sesuai keputusan 1 Desember), rilis otomatis lewat manifest; pantau completion harian; tanggapi masukan di saluran; jangan tambah fitur.
+Satu episode per malam (atau dua hari sekali, sesuai keputusan 1 Desember), rilis otomatis lewat manifest; pantau completion harian; tanggapi masukan yang masuk ke `halo@qissah.id`; jangan tambah fitur.
 
 ## Setelah Ramadan
 Ukur retensi 30 hari pasca-Idulfitri (target ≥ 25%). Jika tercapai: fase 2 (akun Google dan sinkronisasi, halaqah kecil, Qissa Plus, B2B sekolah, bahasa Melayu). Jika tidak: Qissa sebagai produk musiman plus B2B; produksi Season 1 dilanjutkan dengan tempo lebih lambat.
