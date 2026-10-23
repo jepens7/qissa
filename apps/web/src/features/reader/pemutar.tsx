@@ -120,6 +120,7 @@ export function Pemutar(props: Props) {
   const [galat, setGalat] = useState<Error | null>(null);
   const waktu = useRef<number | undefined>(undefined);
   const mulaiTerkirim = useRef(false);
+  const log = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!mulaiTerkirim.current) {
@@ -205,15 +206,19 @@ export function Pemutar(props: Props) {
     };
   }, []);
 
-  // Gulir ke baris terbaru; tanpa animasi bila prefers-reduced-motion (SRS UI-6).
+  // Gulir ke baris terbaru; tanpa animasi bila prefers-reduced-motion (SRS UI-6). Saat tamat, baris terbaru
+  // adalah kartu tamat (anak terakhir log), bukan dasar halaman: ia ditengahkan supaya kartu dalil di bawahnya
+  // tidak terlewati (SRS UI-5).
   useEffect(() => {
     if (mode === 'sampul') {
       return;
     }
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: reducedMotion ? 'auto' : 'smooth',
-    });
+    const behavior = reducedMotion ? 'auto' : 'smooth';
+    if (mode === 'tamat') {
+      log.current?.lastElementChild?.scrollIntoView({ block: 'center', behavior });
+      return;
+    }
+    window.scrollTo({ top: document.body.scrollHeight, behavior });
   }, [items, mode, reducedMotion]);
 
   if (galat !== null) {
@@ -282,7 +287,7 @@ export function Pemutar(props: Props) {
         }
       />
       <main>
-        <div aria-live="polite" onClick={klikLog}>
+        <div ref={log} aria-live="polite" onClick={klikLog}>
           <Cover
             kicker={t('sampul.kicker', { nomor: episode.nomor })}
             title={episode.judul}

@@ -81,6 +81,8 @@ test('poll membuka Episode 1 sampai tamat, refleksi tersimpan, bagikan memakai c
   await pilih(page, /Ketemu dulu/);
   const tamat = page.getByRole('heading', { name: 'Episode 1 selesai' });
   await majuSampai(page, tamat);
+  // Saat tamat halaman berhenti di kartu tamat, bukan di dasar halaman (SRS UI-5, UI-6).
+  await expect(tamat).toBeInViewport();
   await expect(page.getByText('Jalur kamu: Tutup → Ketemu dulu.')).toBeVisible();
   await expect(page.getByText('Di awal kamu bilang Tutup. Kamu menepatinya.')).toBeVisible();
   // Kartu dalil tampil; status review-nya tidak dikunci, karena akan berubah setelah review ulama.
