@@ -39,6 +39,8 @@
   "dalil.bagian.ayat": "Ayat",
   "dalil.bagian.hadis": "Hadis",
   "dalil.bagian.catatan": "Catatan",
+  "dalil.bagian.ikhtilaf": "Ulama berbeda",
+  "dalil.ikhtilaf.penutup": "Tanyakan ustadz yang Anda percaya untuk kasus Anda.",
   "dalil.bagian.hukum": "Hukum negara",
   "dalil.draft": "Belum direview ulama",
   "dalil.reviewed": "Direview oleh {oleh}, {tanggal}",

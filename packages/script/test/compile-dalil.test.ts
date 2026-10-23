@@ -156,3 +156,89 @@ describe('adalahArab', () => {
     expect(adalahArab(teks)).toBe(harapan);
   });
 });
+
+test('“Ulama berbeda” menjadi bagian ikhtilaf: dua pendapat, masing-masing berujukan (BACKLOG F2)', () => {
+  const hasil = compileDalil(
+    [
+      '---',
+      'status: draft',
+      'reviewed_by:',
+      'reviewed_at:',
+      '---',
+      '## Hadis',
+      '### Uji',
+      'Teks hadis uji.',
+      'HR Uji no. 1',
+      '## Catatan',
+      'Catatan uji.',
+      '## Ulama berbeda',
+      '### Pendapat pertama',
+      'Sebagian ulama berpendapat A.',
+      'Sumber: Kitab Uji A',
+      '### Pendapat kedua',
+      'Sebagian ulama lain berpendapat B.',
+      'Sumber: Kitab Uji B',
+      '## Hukum negara',
+      'Hukum uji.',
+    ].join('\n'),
+    { file: 'dalil.md' },
+  );
+  expect(ringkas(hasil.diagnostics)).toEqual([]);
+  expect(hasil.dalil?.sections.map((s) => s.kind)).toEqual([
+    'hadis',
+    'catatan',
+    'ikhtilaf',
+    'hukum',
+  ]);
+  expect(hasil.dalil?.sections[2]).toEqual({
+    kind: 'ikhtilaf',
+    entries: [
+      {
+        title: 'Pendapat pertama',
+        lines: [
+          { kind: 'teks', text: 'Sebagian ulama berpendapat A.' },
+          { kind: 'rujukan', text: 'Sumber: Kitab Uji A' },
+        ],
+      },
+      {
+        title: 'Pendapat kedua',
+        lines: [
+          { kind: 'teks', text: 'Sebagian ulama lain berpendapat B.' },
+          { kind: 'rujukan', text: 'Sumber: Kitab Uji B' },
+        ],
+      },
+    ],
+  });
+});
+
+test('bagian diurutkan menurut urutan baku kartu, apa pun urutannya di berkas (SRS DLL-1)', () => {
+  const hasil = compileDalil(
+    [
+      '---',
+      'status: draft',
+      'reviewed_by:',
+      'reviewed_at:',
+      '---',
+      '## Hukum negara',
+      'Hukum uji.',
+      '## Ulama berbeda',
+      '### Pendapat pertama',
+      'Pendapat A.',
+      'Sumber: Kitab Uji A',
+      '## Catatan',
+      'Catatan uji.',
+      '## Hadis',
+      '### Uji',
+      'Teks hadis uji.',
+      'HR Uji no. 1',
+    ].join('\n'),
+    { file: 'dalil.md' },
+  );
+  expect(ringkas(hasil.diagnostics)).toEqual([]);
+  expect(hasil.dalil?.sections.map((s) => s.kind)).toEqual([
+    'hadis',
+    'catatan',
+    'ikhtilaf',
+    'hukum',
+  ]);
+});

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { adalahRujukan, parseDalil } from '../src/dalil.ts';
+import { adalahRujukan, JUDUL_BAGIAN, parseDalil } from '../src/dalil.ts';
 import { pengumpul } from '../src/diagnostics.ts';
 import { DALIL, bacaRepo, ringkas } from './bantuan.ts';
 
@@ -83,6 +83,13 @@ describe('struktur dalil.md yang salah adalah S1', () => {
     const { diagnostik } = baca(`${awal}${isi}`);
     expect(diagnostik).toHaveLength(1);
     expect(diagnostik[0]).toContain(harapan);
+  });
+
+  test('pesan judul tak dikenal menyebut semua judul yang sah', () => {
+    const { diagnostik } = baca(`${awal}## Ulama Berbeda\nTeks.`);
+    for (const judul of Object.keys(JUDUL_BAGIAN)) {
+      expect(diagnostik[0]).toContain(judul);
+    }
   });
 
   test('bagian tanpa ### menjadi satu entri tanpa judul', () => {

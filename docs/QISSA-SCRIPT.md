@@ -172,13 +172,23 @@ HR Muslim no. 2589, sahih
 ## Catatan
 …
 
+## Ulama berbeda
+### Pendapat pertama
+…
+Sumber: …
+### Pendapat kedua
+…
+Sumber: …
+
 ## Hukum negara
 …
 ```
 
-Judul bagian (`## Riwayat`, `## Ayat`, `## Hadis`, `## Catatan`, `## Hukum negara`) tetap; yang kosong dihilangkan. Judul lain atau judul ganda ditolak (S1). Baris Arab adalah baris yang memuat huruf Arab (blok Unicode Arab, termasuk harakat dan tanda waqaf) dan tidak memuat huruf Latin; dirender RTL. Baris terakhir tiap entri yang diawali "HR", "Terjemahan", atau "Sumber", atau yang memuat kata "HR", dirender sebagai rujukan (contoh: "Bagian dari hadis Jibril, HR Muslim no. 8, sahih").
+Judul bagian (`## Riwayat`, `## Ayat`, `## Hadis`, `## Catatan`, `## Ulama berbeda`, `## Hukum negara`) tetap; yang kosong dihilangkan, dan saat dikompilasi bagian diurutkan menurut urutan baku itu (SRS DLL-1) apa pun urutannya di berkas. Judul lain atau judul ganda ditolak (S1). Baris Arab adalah baris yang memuat huruf Arab (blok Unicode Arab, termasuk harakat dan tanda waqaf) dan tidak memuat huruf Latin; dirender RTL. Baris terakhir tiap entri yang diawali "HR", "Terjemahan", atau "Sumber", atau yang memuat kata "HR", dirender sebagai rujukan (contoh: "Bagian dari hadis Jibril, HR Muslim no. 8, sahih").
 
 `dalil.md` dibaca per baris, bukan sebagai Markdown: satu paragraf ditulis dalam satu baris, baris kosong diabaikan, dan teks diambil apa adanya. `###` memulai entri baru; bagian tanpa `###` (biasanya Catatan dan Hukum negara) menjadi satu entri tanpa judul. Front matter memakai subset YAML yang sama dengan §1: `status` hanya `draft` atau `reviewed`, `reviewed_at` berformat `YYYY-MM-DD`, dan nilai kosong berarti `null`. Hasil `compileDalil` ikut dalam JSON episode sebagai `dalil`.
+
+`## Ulama berbeda` (jenis `ikhtilaf`, CONTENT-RULES §7) memuat dua pendapat, masing-masing satu entri `###` yang diakhiri baris rujukan berawalan "Sumber:". Kartu menampilkannya tanpa judul entri, seperti hadis, lalu menutupnya dengan kalimat dari i18n: "Tanyakan ustadz yang Anda percaya untuk kasus Anda." Jenis ini masuk `format: 1` karena ditambahkan sebelum deploy pertama, saat belum ada shell yang beredar (ADR-015).
 
 ## 6. Aturan linter (`qs lint`)
 

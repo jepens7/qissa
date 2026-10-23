@@ -142,6 +142,45 @@ describe('PaperCard', () => {
     );
   });
 
+  test('ulama berbeda: label, dua pendapat berujukan, kalimat penutup, lalu hukum menempel (F2)', () => {
+    const html = renderToStaticMarkup(
+      <PaperCard
+        dalil={{
+          ...DALIL,
+          sections: [
+            { kind: 'catatan', entries: [{ lines: [{ kind: 'teks', text: 'Catatan.' }] }] },
+            {
+              kind: 'ikhtilaf',
+              entries: [
+                {
+                  title: 'Pendapat pertama',
+                  lines: [
+                    { kind: 'teks', text: 'Pendapat A.' },
+                    { kind: 'rujukan', text: 'Sumber: Kitab Uji A' },
+                  ],
+                },
+                {
+                  title: 'Pendapat kedua',
+                  lines: [
+                    { kind: 'teks', text: 'Pendapat B.' },
+                    { kind: 'rujukan', text: 'Sumber: Kitab Uji B' },
+                  ],
+                },
+              ],
+            },
+            { kind: 'hukum', entries: [{ lines: [{ kind: 'teks', text: 'Hukum.' }] }] },
+          ],
+        }}
+      />,
+    );
+    expect(html).toContain(
+      '<h4>Catatan</h4><p>Catatan.</p>' +
+        '<hr/><h4>Ulama berbeda</h4><p>Pendapat A.</p><p class="ref">Sumber: Kitab Uji A</p>' +
+        '<p>Pendapat B.</p><p class="ref">Sumber: Kitab Uji B</p>' +
+        '<p>Tanyakan ustadz yang Anda percaya untuk kasus Anda.</p><p class="ref">Hukum.</p>',
+    );
+  });
+
   test('pengelompokan tidak mengubah struktur Dalil', () => {
     const salinan = structuredClone(DALIL);
     kelompokDalil(DALIL.sections);

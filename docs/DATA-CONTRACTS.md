@@ -46,7 +46,7 @@ Skema di `docs/QISSA-SCRIPT.md` §4; tipe TypeScript di `packages/script/src/typ
 ```ts
 type Dalil = {
   status: 'draft' | 'reviewed'; reviewed_by: string | null; reviewed_at: string | null;
-  sections: { kind: 'riwayat' | 'ayat' | 'hadis' | 'catatan' | 'hukum'; entries: Entry[] }[];
+  sections: { kind: 'riwayat' | 'ayat' | 'hadis' | 'catatan' | 'ikhtilaf' | 'hukum'; entries: Entry[] }[];
 };
 type Entry = { title?: string; lines: { kind: 'arab' | 'teks' | 'rujukan'; text: string }[] };
 ```
