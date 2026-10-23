@@ -8,7 +8,7 @@
 | Jawaban refleksi | localStorage perangkat | hanya pembaca | privat, tidak pernah dikirim |
 | Event analitik (tujuh nama, nilai pendek) | Umami self-hosted | founder | metrik agregat |
 | Masukan sukarela (templat dari “Kirim masukan ke pembuat”) | WhatsApp, email, atau aplikasi yang dipilih pembaca, paling lama 12 bulan | founder | perbaikan konten |
-| Alamat IP | log nginx (7 hari), Umami (di-hash, tidak disimpan mentah) | founder | keamanan, rate limit |
+| Alamat IP | Umami memakainya sesaat (di-hash, tidak disimpan mentah); log akses nginx memakai format tanpa IP (keputusan 24 Oktober) | founder | menghitung pengunjung |
 
 Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pelacak, SDK pihak ketiga. Skrip Umami dipasang dengan `data-exclude-search="true"`, jadi parameter URL yang ditambahkan aplikasi lain ke tautan Qissa (misalnya `fbclid` atau `utm_source`) tidak ikut tersimpan. Pembaca yang mengirim masukan lewat WhatsApp atau email memperlihatkan nomor atau alamatnya kepada founder; hal ini disebut di kebijakan privasi (§6). Form masukan ke PocketBase (SRS SHR-3) ditunda sampai setelah Ramadan.
 
@@ -36,7 +36,7 @@ Aplikasi tidak mengumpulkan: akun, email, nomor telepon, nama, lokasi, cookie pe
 | Kehilangan akses solo founder | Daftar akun dan kontak pemulihan di RUNBOOK §6 |
 
 ## 5. Kepatuhan
-- UU PDP (UU 27/2022): data yang diproses minimal (IP di log server paling lama 7 hari, masukan sukarela lewat aplikasi pilihan pembaca); dasar pemrosesan kepentingan sah dan persetujuan untuk masukan; retensi log 7 hari, feedback 12 bulan; kontak permintaan hapus di kebijakan privasi.
+- UU PDP (UU 27/2022): data yang diproses minimal (IP tidak dicatat di log server, masukan sukarela lewat aplikasi pilihan pembaca); dasar pemrosesan kepentingan sah dan persetujuan untuk masukan; retensi feedback 12 bulan; kontak permintaan hapus di kebijakan privasi.
 - PSE Lingkup Privat (Komdigi): pendaftaran sebelum rilis Play Store produksi, melalui OSS; cek langkah terbaru karena prosedur bisa berubah.
 - Play Store Data Safety: "tidak mengumpulkan data pengguna" untuk kategori identitas; "data aplikasi dan performa: analitik" dikumpulkan, tidak dibagikan, tidak bisa dihapus per pengguna karena tidak terkait identitas. Kebijakan privasi: `https://qissah.id/privasi`.
 - Rating konten: isi kuesioner IARC dengan jujur: ada referensi ke perjudian dan tema dewasa tanpa adegan eksplisit; harapkan 17+.
@@ -49,7 +49,7 @@ Qissa adalah aplikasi cerita interaktif. Kami merancangnya supaya bisa dipakai t
 
 Apa yang kami simpan di perangkat Anda. Progres cerita, pilihan Anda, dan jawaban refleksi disimpan di penyimpanan browser atau aplikasi di perangkat Anda sendiri. Jawaban refleksi tidak pernah dikirim ke server kami. Menghapus data aplikasi atau data situs di perangkat akan menghapus semuanya.
 
-Apa yang kami ukur. Kami menghitung berapa orang yang membuka episode, memilih, menamatkan, dan membagikan, memakai perangkat lunak analitik yang kami jalankan sendiri (Umami) tanpa cookie dan tanpa identitas pengguna. Alamat IP dipakai sesaat untuk menghitung pengunjung dan tidak disimpan dalam bentuk mentah. Server kami mencatat alamat IP di log akses paling lama 7 hari untuk keamanan, lalu menghapusnya.
+Apa yang kami ukur. Kami menghitung berapa orang yang membuka episode, memilih, menamatkan, dan membagikan, memakai perangkat lunak analitik yang kami jalankan sendiri (Umami) tanpa cookie dan tanpa identitas pengguna. Alamat IP dipakai sesaat untuk menghitung pengunjung dan tidak disimpan dalam bentuk mentah. Log akses server web kami tidak memuat alamat IP.
 
 Masukan sukarela. Tombol “Kirim masukan ke pembuat” membuka lembar bagikan di perangkat Anda. Kalau Anda mengirimnya lewat WhatsApp, email, atau aplikasi lain, kami menerima isi pesan (termasuk jalur cerita di templatnya) beserta nomor atau akun pengirim yang terlihat di aplikasi itu. Kami memakainya hanya untuk memperbaiki cerita dan membalas Anda, dan tidak menyimpannya lebih dari 12 bulan.
 
