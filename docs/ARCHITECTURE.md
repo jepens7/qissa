@@ -14,9 +14,9 @@ Dokumen ini menjelaskan bagaimana sistem dibagi, bagaimana data mengalir, dan an
 ```
                   ┌────────────────────────────────────────────────────┐
                   │ VPS (Easypanel)                                    │
-  Pembaca ──HTTPS─┤ nginx: qissah.id ─ app shell + /content/*.json      │
-  (PWA/Android)   │ Umami: umami.qissah.id ─ event agregat              │
-                  │ PocketBase: api.qissah.id ─ koleksi feedback (ops.) │
+  Pembaca ──HTTPS─┤ nginx: qissah.id ─ app shell + /content/*.json     │
+  (PWA/Android)   │ Umami: umami.qissah.id ─ event agregat             │
+                  │ PocketBase (setelah Ramadan): api.qissah.id        │
                   └────────────────────────────────────────────────────┘
                          ▲ image Docker dari GitHub (CI: lint, test, build)
   Founder ── git push ───┘
@@ -30,7 +30,7 @@ packages/script   → tidak bergantung pada paket lain (hanya Node untuk CLI)
 packages/engine   → bergantung pada tipe dari packages/script (types saja)
 apps/web          → bergantung pada engine + script/types; tidak boleh mengimpor compiler
 apps/android      → membungkus hasil build apps/web
-backend/pocketbase→ mandiri (migrasi dan hooks)
+backend/pocketbase→ mandiri (migrasi dan hooks; setelah Ramadan)
 ```
 
 Aturan: `engine` dan `script` tidak boleh mengimpor `react` atau memakai `window` dan `document`. ESLint (`no-restricted-imports` dan `no-restricted-globals`) serta tsconfig tanpa lib DOM menegakkannya. `apps/web` hanya boleh mengimpor `@qissa/script/types`. Pengecualian satu-satunya: tes engine dan tes Node apps/web membaca golden snapshot `packages/script/__snapshots__/*.json` dengan `node:fs` (ADR-016).
@@ -144,10 +144,12 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 - `apps/android` berisi `capacitor.config.ts` (`appId: 'id.qissah.app'`, `webDir` ke build web) dan folder `android/` hasil `cap add`.
 - Plugin: `@capacitor/share` (dipakai `lib/share.ts` bila `Capacitor.isNativePlatform()`), `@capacitor/app` (deep link `https://qissah.id/#epNN` lewat App Links), `@capacitor/status-bar`.
-- Push (opsional): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
+- Push (ditunda setelah Ramadan, keputusan 23 Oktober): `@capacitor/push-notifications` + FCM; topik `ramadan`; opt-in dari layar pengaturan sederhana.
 - Build: `pnpm build && pnpm cap:sync`, lalu Android Studio untuk AAB. Keystore disimpan di luar repo dan dicadangkan (lihat RUNBOOK).
 
 ## 11. Backend (PocketBase)
+
+Ditunda setelah Ramadan (keputusan 23 Oktober 2026): MVP tidak memakai PocketBase, dan masukan dikirim lewat lembar bagikan (SRS SHR-2). Rancangan di bawah dipakai bila form dibangun.
 
 MVP: koleksi `feedback` dengan aturan API: create `@request.auth.id = "" || @request.auth.id != ""` (siapa pun), list/view admin saja. Hook `pb_hooks/feedback.pb.js` membatasi 5 create per IP per jam dan menolak payload > 4 KB. Migrasi di `pb_migrations/` dikomit.
 

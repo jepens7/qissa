@@ -35,5 +35,23 @@ Tiap tugas punya kriteria terima. Urutan kerja minggu 1–2 mengikuti `docs/PLAN
 - E2 Halaman `/privasi` dan `/tentang` (HTML statis di `apps/web/public/`, tanpa konversi markdown). Terima: tautan dari footer.
 - E3 Umami terpasang dan tujuh event terlihat di dasbor dari sesi uji. Terima: screenshot dasbor di PR.
 
-## Setelah Minggu 2 (dipilih sesuai ROADMAP)
-PWA (service worker, offline, pembaruan), Capacitor Android, form feedback PocketBase, push FCM opsional, Episode 3.
+## Epik F: merapikan web (sebelum deploy)
+- F0 Rencana fase lokal dan keputusan 23 Oktober dicatat di dokumen. Terima: PLAN §6, BACKLOG, PROGRESS, ROADMAP, PRD, SRS, dan CLAUDE.md selaras; `pnpm verify` hijau.
+- F1 Aksesibilitas, `#debug`, dan memo sampul. Terima: kontras teks ≥ 4,5:1 di kedua tema, dengan rasionya dicatat di DESIGN-SYSTEM §1; region `aria-live` tidak memuat kartu dalil; `#debug` di build produksi kembali ke home; memo sampul tanpa "Minggu lalu".
+- F2 Bagian dalil "Ulama berbeda" (`ikhtilaf`) masuk `format: 1`. Terima: tes `compileDalil` dan markup PaperCard; golden snapshot ep01–02 tidak berubah.
+
+## Epik G: PWA dan offline (M3a, sebelum deploy)
+- G1 Service worker dan baris "Versi baru tersedia". Terima: dalam mode offline, muat ulang menampilkan home dan episode yang pernah dibuka bisa ditamatkan; tanpa pelanggaran CSP di image Docker; app shell ≤ 150 KB gzip.
+- G2 Episode yang pernah dibuka tetap terbaca offline setelah `versi_konten` naik. Terima: tes dengan cache dan fetch palsu.
+- G3 E2E Playwright di 360×780 untuk enam skenario SRS §9. Terima: hijau di lokal dan di CI; skenario offline gagal bila service worker dimatikan.
+
+## Epik H: Android (M3b, sesudah deploy web)
+- H1 Proyek Capacitor dan APK debug. Terima: ep01 bisa ditamatkan di HP; `pnpm verify` tetap hijau setelah `cap sync`.
+- H2 APK memuat konten dari qissah.id. Terima: build Android gagal bila `VITE_CONTENT_BASE` bukan https; header CORS `/content/` terlihat di `curl -I`.
+- H3 Share native dan deep link. Terima: lembar bagikan native terbuka; `#ep02` terbuka lewat `adb shell am start`, baik saat aplikasi tertutup maupun terbuka.
+
+## Pemicu
+- I1 Gerbang `qs lint --wajib-review` di CI dan Dockerfile, setelah review ulama ep01–02 tercatat. Terima: PR berisi dalil draft ke `main` merah.
+- I2 Prototipe dipensiunkan setelah pemilik menguji paritas di HP. Terima: `pnpm verify` hijau tanpa `infra/prototype`.
+
+Setelah Ramadan (ROADMAP): form masukan PocketBase, push FCM, dan mode tema manual. Episode 3 adalah pekerjaan konten (ROADMAP minggu 3).

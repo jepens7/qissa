@@ -25,7 +25,7 @@ Untuk satu orang yang mengoperasikan produksi. Setiap prosedur ditulis supaya bi
 - Log nginx: 7 hari, hanya dilihat saat insiden.
 
 ## 5. Cadangan
-- Umami (PostgreSQL) dan PocketBase (`pb_data`): snapshot harian oleh Easypanel ke penyimpanan objek (S3-kompatibel) dengan retensi 14 hari. Uji pemulihan sekali sebelum Ramadan.
+- Umami (PostgreSQL), dan PocketBase (`pb_data`) bila dibangun setelah Ramadan: snapshot harian oleh Easypanel ke penyimpanan objek (S3-kompatibel) dengan retensi 14 hari. Uji pemulihan sekali sebelum Ramadan.
 - Repo GitHub adalah cadangan konten dan kode. Keystore Android dicadangkan terenkripsi di dua tempat terpisah dari repo.
 
 ## 6. Pemulihan akses (bus factor)
@@ -40,7 +40,7 @@ Pemicu: episode atau potongan episode dipelintir di media sosial, atau pereview 
 
 ## 8. Insiden: keamanan
 - Dugaan kebocoran kredensial: ganti kata sandi akun terkait, cabut token, periksa deployment dan DNS, catat waktu dan tindakan.
-- Spam feedback: naikkan rate limit di hook PocketBase atau matikan create sementara (ubah aturan koleksi).
+- Spam feedback (bila form PocketBase dibangun setelah Ramadan): naikkan rate limit di hook PocketBase atau matikan create sementara (ubah aturan koleksi).
 - Sertifikat kedaluwarsa: Easypanel memperbarui otomatis; bila gagal, tekan "Renew" di panel domain.
 
 ## 9. Kontak dan jadwal tetap
