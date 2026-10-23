@@ -96,7 +96,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - AND-5 (wajib) Pendaftaran PSE Komdigi sebelum rilis produksi.
 
 ### 3.11 Analitik (ANL)
-Lihat §8. Semua event dikirim lewat `umami.track` bila skrip Umami termuat; bila tidak, diabaikan tanpa error.
+Lihat §8. Semua event dikirim lewat `umami.track` bila skrip Umami termuat. Selama skrip masih dimuat, event diantre lalu dikirim berurutan begitu termuat; bila Umami tidak dikonfigurasi, diblokir, atau gagal dimuat, event diabaikan tanpa error.
 
 ## 4. Persyaratan non-fungsional
 

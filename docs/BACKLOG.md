@@ -52,6 +52,6 @@ Tiap tugas punya kriteria terima. Urutan kerja minggu 1–2 mengikuti `docs/PLAN
 
 ## Pemicu
 - I1 Gerbang `qs lint --wajib-review` di CI dan Dockerfile, setelah review ulama ep01–02 tercatat. Terima: PR berisi dalil draft ke `main` merah.
-- I2 Prototipe dipensiunkan setelah pemilik menguji paritas di HP. Terima: `pnpm verify` hijau tanpa `infra/prototype`.
+- I2 Prototipe dipensiunkan setelah pemilik menguji paritas di HP. Terima: `pnpm verify` hijau tanpa `infra/prototype`. Revisi naskah pertama sesudahnya (baca Gen Z) juga memangkas kartu narasi ep01–ep02 yang lebih dari tiga kalimat (CONTENT-RULES §4; PROGRESS keputusan 23 Oktober butir 12).
 
 Setelah Ramadan (ROADMAP): form masukan PocketBase, push FCM, dan mode tema manual. Episode 3 adalah pekerjaan konten (ROADMAP minggu 3).

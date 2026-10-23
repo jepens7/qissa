@@ -107,7 +107,7 @@ src/
   components/                  # Header, Bubble, NarrationCard, Pill, ShotCard, NotifCard, BankCard, TypingDots, ChoiceBlock, Cover, EpisodeCard, PaperCard
   lib/content.ts               # muat manifest + episode (fetch, cache, versi)
   lib/storage.ts               # kunci localStorage, try/catch, versi skema
-  lib/analytics.ts             # track(); no-op bila umami tidak ada
+  lib/analytics.ts             # track(); antre selama Umami dimuat, no-op bila tidak ada
   lib/share.ts                 # Web Share, fallback clipboard, Capacitor Share bila native
   i18n/id.json
   styles/tokens.css, base.css
@@ -138,7 +138,7 @@ Tema: `tokens.css` mendefinisikan token terang di `:root` dan gelap di `@media (
 
 ## 9. Analitik
 
-`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi dengan `data-exclude-search="true"`, supaya parameter URL dari tautan media sosial tidak ikut terkirim; bila tidak ada, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
+`lib/analytics.ts`: `track(name: EventName, data?: Record<string, string>)`. `EventName` adalah union tujuh nama tetap. Skrip Umami dimuat dari konfigurasi dengan `data-exclude-search="true"`, supaya parameter URL dari tautan media sosial tidak ikut terkirim. Selama skrip dimuat, event diantre lalu dikirim berurutan begitu termuat (misalnya `mulai` pada kunjungan pertama lewat `#epNN`); bila Umami tidak dikonfigurasi, diblokir, atau gagal dimuat, `track` no-op. Tidak ada identitas perangkat yang dibuat oleh app.
 
 ## 10. Android (Capacitor)
 
