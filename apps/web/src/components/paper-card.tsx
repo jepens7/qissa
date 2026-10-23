@@ -7,6 +7,7 @@ const LABEL: Record<DalilSection['kind'], KunciPesan> = {
   ayat: 'dalil.bagian.ayat',
   hadis: 'dalil.bagian.hadis',
   catatan: 'dalil.bagian.catatan',
+  ikhtilaf: 'dalil.bagian.ikhtilaf',
   hukum: 'dalil.bagian.hukum',
 };
 
@@ -15,8 +16,9 @@ type Kelompok = { judul: string | null; baris: DalilLine[]; rujukanSemua: boolea
 
 /**
  * Kelompok kartu seperti prototipe: setiap entri riwayat dan ayat berdiri sendiri dengan judulnya;
- * hadis dan catatan masing-masing satu kelompok berjudul bagian; hukum negara menempel di kelompok
- * terakhir sebagai baris rujukan.
+ * hadis, catatan, dan ulama berbeda masing-masing satu kelompok berjudul bagian; hukum negara menempel
+ * di kelompok terakhir sebagai baris rujukan. Ulama berbeda ditutup kalimat penutup dari i18n
+ * (CONTENT-RULES §7, STORY-BIBLE).
  */
 export function kelompokDalil(sections: readonly DalilSection[]): Kelompok[] {
   const hasil: Kelompok[] = [];
@@ -34,11 +36,11 @@ export function kelompokDalil(sections: readonly DalilSection[]): Kelompok[] {
         ...s.entries.flatMap((e) => e.lines.map((l) => ({ ...l, kind: 'rujukan' as const }))),
       );
     } else {
-      hasil.push({
-        judul: label,
-        baris: s.entries.flatMap((e) => e.lines),
-        rujukanSemua: s.kind === 'hukum',
-      });
+      const baris = s.entries.flatMap((e) => e.lines);
+      if (s.kind === 'ikhtilaf') {
+        baris.push({ kind: 'teks', text: t('dalil.ikhtilaf.penutup') });
+      }
+      hasil.push({ judul: label, baris, rujukanSemua: s.kind === 'hukum' });
     }
   }
   return hasil;

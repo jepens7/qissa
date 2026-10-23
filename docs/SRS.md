@@ -64,7 +64,7 @@ Prinsip: konten statis dan ter-cache; aplikasi bekerja tanpa backend; backend ha
 - LIB-4 (wajib) Tautan `#epNN` membuka episode itu langsung.
 
 ### 3.5 Kartu dalil (DLL)
-- DLL-1 (wajib) Kartu merender `dalil.md` dengan urutan: judul, riwayat sejarah (bila ada, ditandai bukan hadis), ayat (Arab, terjemahan Kemenag, rujukan), hadis (terjemahan, perawi, nomor, derajat), catatan prinsip, hukum negara (bila ada), status review.
+- DLL-1 (wajib) Kartu merender `dalil.md` dengan urutan: judul, riwayat sejarah (bila ada, ditandai bukan hadis), ayat (Arab, terjemahan Kemenag, rujukan), hadis (terjemahan, perawi, nomor, derajat), catatan prinsip, ulama berbeda (bila ada: dua pendapat dengan rujukan, ditutup ajakan bertanya kepada ustadz), hukum negara (bila ada), status review.
 - DLL-2 (wajib) Bila `status` bukan `reviewed`, badge "Belum direview ulama" tampil; bila `reviewed`, tampil "Direview oleh {nama}, {tanggal}".
 - DLL-3 (wajib) Teks Arab dirender RTL dengan font Amiri; terjemahan tidak dipotong.
 - DLL-4 (wajib) Tidak ada elemen UI yang menilai pilihan pembaca di kartu dalil.

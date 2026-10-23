@@ -135,7 +135,7 @@ export type DalilLine = { kind: DalilLineKind; text: string };
 
 export type DalilEntry = { title?: string; lines: DalilLine[] };
 
-export type DalilSectionKind = 'riwayat' | 'ayat' | 'hadis' | 'catatan' | 'hukum';
+export type DalilSectionKind = 'riwayat' | 'ayat' | 'hadis' | 'catatan' | 'ikhtilaf' | 'hukum';
 
 export type DalilSection = { kind: DalilSectionKind; entries: DalilEntry[] };
 

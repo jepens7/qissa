@@ -10,12 +10,13 @@ export const KEY_DALIL: Readonly<Record<string, SpesifikasiKey>> = {
   reviewed_at: { teksBebas: false },
 };
 
-/** Judul bagian yang sah dan jenisnya; yang lain ditolak. */
+/** Judul bagian yang sah dan jenisnya, dalam urutan baku kartu (SRS DLL-1); yang lain ditolak. */
 export const JUDUL_BAGIAN: Readonly<Record<string, DalilSectionKind>> = {
   Riwayat: 'riwayat',
   Ayat: 'ayat',
   Hadis: 'hadis',
   Catatan: 'catatan',
+  'Ulama berbeda': 'ikhtilaf',
   'Hukum negara': 'hukum',
 };
 
@@ -58,7 +59,12 @@ function teksFrontMatter(field: FieldFrontMatter | undefined): string | null {
   return field?.nilai.kind === 'teks' ? field.nilai.teks : null;
 }
 
-/** Struktur Dalil (docs/DATA-CONTRACTS.md §4) dari AST; bagian tanpa entri dihilangkan. */
+const URUTAN_BAGIAN: readonly DalilSectionKind[] = Object.values(JUDUL_BAGIAN);
+
+/**
+ * Struktur Dalil (docs/DATA-CONTRACTS.md §4) dari AST; bagian tanpa entri dihilangkan, dan bagian diurutkan
+ * menurut urutan baku kartu apa pun urutannya di berkas.
+ */
 export function bentukDalil(ast: DalilAst): Dalil {
   const fm = ast.frontMatter;
   return {
@@ -67,6 +73,7 @@ export function bentukDalil(ast: DalilAst): Dalil {
     reviewed_at: teksFrontMatter(fm.get('reviewed_at')),
     sections: ast.bagian
       .filter((b) => b.entries.length > 0)
+      .sort((a, b) => URUTAN_BAGIAN.indexOf(a.kind) - URUTAN_BAGIAN.indexOf(b.kind))
       .map((b) => ({
         kind: b.kind,
         entries: b.entries.map((e) => ({
@@ -103,7 +110,7 @@ export function parseDalil(sumber: string, lapor: Lapor): DalilAst {
         lapor(
           'S1',
           line,
-          `Judul bagian “${judul}” tidak dikenal; pakai Riwayat, Ayat, Hadis, Catatan, atau Hukum negara.`,
+          `Judul bagian “${judul}” tidak dikenal; pakai Riwayat, Ayat, Hadis, Catatan, Ulama berbeda, atau Hukum negara.`,
         );
         sekarang = null;
         lewati = true;
