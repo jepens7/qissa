@@ -51,7 +51,7 @@ Qissa adalah aplikasi cerita interaktif. Kami merancangnya supaya bisa dipakai t
 
 Apa yang kami simpan di perangkat Anda. Progres cerita, pilihan Anda, dan jawaban refleksi disimpan di penyimpanan browser atau aplikasi di perangkat Anda sendiri. Jawaban refleksi tidak pernah dikirim ke server kami. Menghapus data aplikasi atau data situs di perangkat akan menghapus semuanya.
 
-Apa yang kami ukur. Kami menghitung berapa orang yang membuka episode, memilih, menamatkan, dan membagikan, memakai perangkat lunak analitik yang kami jalankan sendiri (Umami) tanpa cookie dan tanpa identitas pengguna. Alamat IP dipakai sesaat untuk menghitung pengunjung dan tidak disimpan dalam bentuk mentah. Log akses server web kami tidak memuat alamat IP.
+Apa yang kami ukur. Kami menghitung berapa orang yang membuka episode, memilih, menamatkan, dan membagikan, memakai perangkat lunak analitik yang kami jalankan sendiri (Umami) tanpa cookie dan tanpa identitas pengguna. Alamat IP dipakai sesaat untuk menghitung pengunjung dan memperkirakan negara, provinsi, serta kota asal kunjungan, dan tidak disimpan dalam bentuk mentah. Log akses server web kami tidak memuat alamat IP.
 
 Masukan sukarela. Tombol “Kirim masukan ke pembuat” membuka lembar bagikan di perangkat Anda. Kalau Anda mengirimnya lewat WhatsApp, email, atau aplikasi lain, kami menerima isi pesan (termasuk jalur cerita di templatnya) beserta nomor atau akun pengirim yang terlihat di aplikasi itu. Kami memakainya hanya untuk memperbaiki cerita dan membalas Anda, dan tidak menyimpannya lebih dari 12 bulan.
 
