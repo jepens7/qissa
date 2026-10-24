@@ -221,6 +221,26 @@ export function Pemutar(props: Props) {
     window.scrollTo({ top: document.body.scrollHeight, behavior });
   }, [items, mode, reducedMotion]);
 
+  // Saat pilihan muncul dan saat tamat, tombol lanjut disembunyikan. Fokus yang ada di tombol itu (keyboard,
+  // pembaca layar) dipindah ke label pilihan atau judul kartu tamat, dan sesudah memilih kembali ke tombol lanjut,
+  // supaya tidak jatuh ke awal halaman (DESIGN-SYSTEM §6). Tanpa gulir, karena posisinya diatur efek di atas.
+  useEffect(() => {
+    const aktif = document.activeElement;
+    const lepas = aktif === null || aktif === document.body;
+    let sasaran: HTMLElement | null | undefined = null;
+    if (mode === 'jeda' && (lepas || aktif.closest('.choices') !== null)) {
+      sasaran = log.current?.parentElement?.querySelector<HTMLElement>('.hint');
+    } else if (
+      (mode === 'memilih' || mode === 'tamat') &&
+      (lepas || aktif.classList.contains('hint'))
+    ) {
+      sasaran = log.current?.lastElementChild?.querySelector<HTMLElement>(
+        mode === 'memilih' ? '.label' : 'h3',
+      );
+    }
+    sasaran?.focus({ preventScroll: true });
+  }, [mode]);
+
   if (galat !== null) {
     throw galat;
   }

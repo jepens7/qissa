@@ -9,11 +9,11 @@ type Props = {
   pollNote?: string;
 };
 
-/** Kartu tamat: diumumkan datar, tanpa penilaian (DESIGN-SYSTEM §5). */
+/** Kartu tamat: diumumkan datar, tanpa penilaian (DESIGN-SYSTEM §5). Judulnya bisa menerima fokus dari Pemutar. */
 export function EndCard({ nomor, path, endings, pollNote }: Props) {
   return (
     <section className="card">
-      <h3>{t('akhir.selesai', { nomor })}</h3>
+      <h3 tabIndex={-1}>{t('akhir.selesai', { nomor })}</h3>
       <p>{t('akhir.jalur', { jalur: path.join(' → ') })}</p>
       {pollNote === undefined ? null : <p>{pollNote}</p>}
       <p>{t('akhir.dibaca', { jumlah: endings })}</p>

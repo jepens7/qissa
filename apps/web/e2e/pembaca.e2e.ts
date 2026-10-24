@@ -77,12 +77,27 @@ test('poll membuka Episode 1 sampai tamat, refleksi tersimpan, bagikan memakai c
   await expect(page).toHaveURL(/#ep01$/);
   await expect(page.getByRole('heading', { name: 'Tangkapan Layar', level: 1 })).toBeVisible();
 
-  await pilih(page, 'Tutup, jangan dibuka');
+  // Tombol lanjut hilang saat pilihan muncul; fokusnya pindah ke label pilihan, bukan ke awal halaman, dan
+  // Tab berikutnya sampai ke opsi. Sesudah memilih lewat keyboard, fokus kembali ke tombol lanjut
+  // (DESIGN-SYSTEM §6).
+  const opsi1 = page
+    .locator('.choices button:not([disabled])')
+    .filter({ hasText: 'Tutup, jangan dibuka' });
+  await majuSampai(page, opsi1);
+  await expect(page.getByText('Pilihan 1 dari 2')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Buka dan baca semuanya' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(opsi1).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('button.hint')).toBeFocused();
   await pilih(page, /Ketemu dulu/);
   const tamat = page.getByRole('heading', { name: 'Episode 1 selesai' });
   await majuSampai(page, tamat);
-  // Saat tamat halaman berhenti di kartu tamat, bukan di dasar halaman (SRS UI-5, UI-6).
+  // Saat tamat halaman berhenti di kartu tamat, bukan di dasar halaman (SRS UI-5, UI-6), dan fokus pindah ke
+  // judulnya.
   await expect(tamat).toBeInViewport();
+  await expect(tamat).toBeFocused();
   await expect(page.getByText('Jalur kamu: Tutup → Ketemu dulu.')).toBeVisible();
   await expect(page.getByText('Di awal kamu bilang Tutup. Kamu menepatinya.')).toBeVisible();
   // Kartu dalil tampil; status review-nya tidak dikunci, karena akan berubah setelah review ulama.
