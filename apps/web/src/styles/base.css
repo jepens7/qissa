@@ -496,6 +496,12 @@ main {
   color: var(--muted);
   margin: 0 0 8px 4px;
 }
+/* Label pilihan dan judul kartu tamat menerima fokus dari Pemutar (DESIGN-SYSTEM §6). */
+.choices .label:focus-visible,
+.card h3:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .choice {
   display: block;
   width: 100%;

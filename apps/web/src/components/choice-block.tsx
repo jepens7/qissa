@@ -7,11 +7,13 @@ type Props = {
   onPick: (index: number) => void;
 };
 
-/** Blok pilihan: label lalu tiga tombol. */
+/** Blok pilihan: label lalu tiga tombol. Label bisa menerima fokus dari Pemutar (DESIGN-SYSTEM §6). */
 export function ChoiceBlock({ label, options, picked, disabled, onPick }: Props) {
   return (
     <div className="choices">
-      <p className="label">{label}</p>
+      <p className="label" tabIndex={-1}>
+        {label}
+      </p>
       {options.map((o, i) => (
         <button
           key={i}

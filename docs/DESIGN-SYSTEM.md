@@ -89,5 +89,6 @@ Tanda baca tipografis (“ ” ’) di semua teks. Huruf kapital hanya di awal k
 - Semua tombol asli `<button>`; fokus terlihat dengan outline 2 px `--accent`.
 - Area cerita bisa dimajukan dengan Space, Enter, panah kanan; textarea dan tombol tidak mencuri pintasan itu.
 - `aria-live="polite"` pada log cerita; satu baris baru per ketukan sehingga pembaca layar tidak kebanjiran.
+- Saat pilihan muncul atau episode tamat, tombol "Ketuk untuk lanjut" disembunyikan. Fokus yang ada di tombol itu pindah ke label pilihan ("Pilihan 1 dari 2") atau judul kartu tamat, dan sesudah memilih kembali ke tombol lanjut, tanpa menggulir, supaya keyboard dan pembaca layar tidak mulai lagi dari awal halaman.
 - Teks Arab diberi `lang="ar"` dan `dir="rtl"`.
 - Ukuran sentuh minimal 44 px tinggi untuk tombol pilihan.
